@@ -162,7 +162,7 @@ def init_base_project(project_dir):
             (config.get("platformio", "include_dir"), init_include_readme),
             (config.get("platformio", "lib_dir"), init_lib_readme),
             (config.get("platformio", "test_dir"), init_test_readme),
-            (project_dir + "/talamo", None),
+            (project_dir + "/talamo", init_talamo_scripts),
             (project_dir + "/spined", None),
         ]
         for path, cb in dir_to_readme:
@@ -171,6 +171,20 @@ def init_base_project(project_dir):
             os.makedirs(path)
             if cb:
                 cb(path)
+
+
+def init_talamo_scripts(talamo_dir):
+    with open(os.path.join(talamo_dir, "main.cpp"), mode="w", encoding="utf8") as fp:
+        fp.write(
+            """
+#include <bits/stdc++.h>
+
+int main() {
+    std::cout<<"Hello World"<<std::endl;
+    return 0;
+}
+"""
+        )
 
 
 def init_include_readme(include_dir):
