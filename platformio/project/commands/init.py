@@ -174,15 +174,10 @@ def init_base_project(project_dir):
 
 
 def init_talamo_scripts(talamo_dir):
-    with open(os.path.join(talamo_dir, "main.cpp"), mode="w", encoding="utf8") as fp:
+    import subprocess
+    with open(os.path.join(talamo_dir, "main.c"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
-#include <bits/stdc++.h>
-
-int main() {
-    std::cout<<"Hello World"<<std::endl;
-    return 0;
-}
 """
         )
 
