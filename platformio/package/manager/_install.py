@@ -60,11 +60,13 @@ class PackageManagerInstallMixin:
     ):
         spec = self.ensure_spec(spec)
         self.spec = spec
-        spec.uri = (
-            "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
-            + spec.name
-            + ".tar.xz"
-        )
+
+        if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra"):
+            spec.uri = (
+                "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
+                + spec.name
+                + ".tar.xz"
+            )
 
         # avoid circle dependencies
         if not self._INSTALL_HISTORY:

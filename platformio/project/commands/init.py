@@ -201,7 +201,7 @@ obj-y := main.o
 ##################################
 
 
-export SPINE_DIR := $(realpath ../../dependency)
+SPINE_DIR ?= $(realpath ../../../..)
 
 
 export APP := $(notdir $(shell pwd))
