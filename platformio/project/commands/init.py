@@ -254,6 +254,26 @@ int main(void)
 
 """
         )
+    with open(os.path.join(talamo_dir, "Makefile"), mode="w", encoding="utf8") as fp:
+        fp.write(
+            """
+obj-y := main.o
+
+##################################
+# Kbuild application targets
+##################################
+
+
+export SPINE_DIR := $(realpath ../../dependency)
+
+
+export APP := $(notdir $(shell pwd))
+
+
+-include $(SPINE_DIR)/scripts/Makefile.wrapper
+
+            """
+        )
 
 
 def init_include_readme(include_dir):
