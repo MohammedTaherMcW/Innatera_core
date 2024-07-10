@@ -183,11 +183,11 @@ CONFIG_RISCV_ISA_C=y
 CONFIG_CONSOLE_ENABLE=y
 CONFIG_LOG_LEVEL_INFO=y
 CONFIG_PLL_INIT=y
-CONFIG_CROSS_COMPILE="toolchain-spine/bin/riscv32-corev-elf-"
 CONFIG_T1_CPR=y
 CONFIG_CYCLE_COUNTER_CV32E40P=y
 CONFIG_GPIO=y
 CONFIG_UART=y
+CONFIG_CROSS_COMPILE="/home/armnn/.platformio/packages/spine_tools-0.1.0-rc0/bin/riscv32-corev-elf-"
             """
         )
 def init_makefile_script(make_dir):    
