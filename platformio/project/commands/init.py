@@ -164,21 +164,25 @@ def init_base_project(project_dir):
             (config.get("platformio", "test_dir"), init_test_readme),
             (project_dir + "/talamo", None),
             (project_dir + "/spine", None),
-            (project_dir+"/config",init_config_script),
-            (project_dir+"/",init_makefile_script)
+            (project_dir + "/config", init_config_script),
+            (project_dir + "/", init_makefile_script),
         ]
         for path, cb in dir_to_readme:
             if os.path.isdir(path):
+                if cb:
+                    cb(path)
                 continue
             os.makedirs(path)
             if cb:
                 cb(path)
 
+
 def init_config_script(config_dir):
-    with open(os.path.join(config_dir, "app_defconfig"), mode="w", encoding="utf8") as fp:
+    with open(
+        os.path.join(config_dir, "app_defconfig"), mode="w", encoding="utf8"
+    ) as fp:
         fp.write(
-            """
-CONFIG_ENABLE_FPU=y
+            """CONFIG_ENABLE_FPU=y
 CONFIG_RISCV_ISA_C=y
 CONFIG_CONSOLE_ENABLE=y
 CONFIG_LOG_LEVEL_INFO=y
@@ -187,26 +191,32 @@ CONFIG_T1_CPR=y
 CONFIG_CYCLE_COUNTER_CV32E40P=y
 CONFIG_GPIO=y
 CONFIG_UART=y
-CONFIG_CROSS_COMPILE="/home/armnn/.platformio/packages/spine_tools-0.1.0-rc0/bin/riscv32-corev-elf-"
+CONFIG_CROSS_COMPILE="/home/armnn/.platformio/packages/toolchain-spine/bin/riscv32-corev-elf-"
             """
         )
-def init_makefile_script(make_dir):    
+
+
+def init_makefile_script(make_dir):
     with open(os.path.join(make_dir, "Makefile"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
-obj-y := main.o
+# Makefile
 
-##################################
-# Kbuild application targets
-##################################
+# Define the build directory
+BUILD_DIR ?= $(CURDIR)/.pio/build/innetra_board
 
+# Spine directory
+export SPINE_DIR := $(HOME)/.platformio/packages/framework-innetra
 
-SPINE_DIR ?= $(realpath ../../../..)
+# Object files
+obj-y += src/main.o
 
+VPATH += src
 
-export APP := $(notdir $(shell pwd))
+# Application name
+export APP := $(notdir $(CURDIR))
 
-
+# Include the wrapper Makefile
 -include $(SPINE_DIR)/scripts/Makefile.wrapper
 
             """
