@@ -59,6 +59,12 @@ class PackageManagerInstallMixin:
         compatibility: PackageCompatibility = None,
     ):
         spec = self.ensure_spec(spec)
+        self.spec = spec
+        spec.uri = (
+            "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
+            + spec.name
+            + ".tar.xz"
+        )
 
         # avoid circle dependencies
         if not self._INSTALL_HISTORY:

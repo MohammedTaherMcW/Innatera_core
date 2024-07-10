@@ -188,11 +188,10 @@ CONFIG_T1_CPR=y
 CONFIG_CYCLE_COUNTER_CV32E40P=y
 CONFIG_GPIO=y
 CONFIG_UART=y
-
             """
         )
-def init_makefile_script(make_dir):
-    with open(os.path.join(make_dir, "makefile"), mode="w", encoding="utf8") as fp:
+def init_makefile_script(make_dir):    
+    with open(os.path.join(make_dir, "Makefile"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
 obj-y := main.o

@@ -153,6 +153,7 @@ class FileUnpacker:
             b"\x1f\x8b\x08": TARArchiver,
             b"\x42\x5a\x68": TARArchiver,
             b"\x50\x4b\x03\x04": ZIPArchiver,
+            b"\xfd\x37\x7a\x58\x5a\x00": TARArchiver,
         }
         magic_len = max(len(k) for k in magic_map)
         with open(path, "rb") as fp:
