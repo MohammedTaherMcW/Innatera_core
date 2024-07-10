@@ -163,7 +163,9 @@ def init_base_project(project_dir):
             (config.get("platformio", "lib_dir"), init_lib_readme),
             (config.get("platformio", "test_dir"), init_test_readme),
             (project_dir + "/talamo", None),
-            (project_dir + "/spined", None),
+            (project_dir + "/spine", None),
+            (project_dir+"/config",init_config_script),
+            (project_dir+"/",init_makefile_script)
         ]
         for path, cb in dir_to_readme:
             if os.path.isdir(path):
@@ -172,8 +174,48 @@ def init_base_project(project_dir):
             if cb:
                 cb(path)
 
+def init_config_script(config_dir):
+    with open(os.path.join(config_dir, "app_defconfig"), mode="w", encoding="utf8") as fp:
+        fp.write(
+            """
+CONFIG_ENABLE_FPU=y
+CONFIG_RISCV_ISA_C=y
+CONFIG_CONSOLE_ENABLE=y
+CONFIG_LOG_LEVEL_INFO=y
+CONFIG_PLL_INIT=y
+CONFIG_CROSS_COMPILE="toolchain-spine/bin/riscv32-corev-elf-"
+CONFIG_T1_CPR=y
+CONFIG_CYCLE_COUNTER_CV32E40P=y
+CONFIG_GPIO=y
+CONFIG_UART=y
+
+            """
+        )
+def init_makefile_script(make_dir):
+    with open(os.path.join(make_dir, "makefile"), mode="w", encoding="utf8") as fp:
+        fp.write(
+            """
+obj-y := main.o
+
+##################################
+# Kbuild application targets
+##################################
+
+
+export SPINE_DIR := $(realpath ../../dependency)
+
+
+export APP := $(notdir $(shell pwd))
+
+
+-include $(SPINE_DIR)/scripts/Makefile.wrapper
+
+            """
+        )
+
 
 def init_talamo_scripts(talamo_dir):
+    import os
     import subprocess
 
     with open(os.path.join(talamo_dir, "main.c"), mode="w", encoding="utf8") as fp:
@@ -209,49 +251,46 @@ static void blinking_cursor(unsigned int reps)
     for (int n = 0; n < reps; n++) {
         print_char('_');
         hal_delay_ms(CURSOR_DELAY_MS);
-        print_char('\b');
+        print_char('\\b');
         print_char(' ');
-        print_char('\b');
+        print_char('\\b');
         hal_delay_ms(CURSOR_DELAY_MS);
     }
 }
 
 int main(void)
 {
-
-    typer("___\n");
-    typer("\nWelcome Innaterian!");
+    typer("___\\n");
+    typer("\\nWelcome Innaterian!");
     blinking_cursor(1);
-    typer("\n");
+    typer("\\n");
     blinking_cursor(3);
-    typer("\nThis is a demonstration of the build and boot flow for the");
-    typer("\nInnatera's Spiking Neural Processor T1, the ultra-low power");
-    typer("\nneuromorphic microcontroller for always-on sensing applications.");
+    typer("\\nThis is a demonstration of the build and boot flow for the");
+    typer("\\nInnatera's Spiking Neural Processor T1, the ultra-low power");
+    typer("\\nneuromorphic microcontroller for always-on sensing applications.");
     blinking_cursor(2);
-    typer("\n");
-    typer("\nThe processor uses an ultra-low-power spiking neural network");
-    typer("\nengine and a nimble RISC-V processor core to form a single-chip");
-    typer("\nsolution for processing sensor data quickly and efficiently.");
+    typer("\\n");
+    typer("\\nThe processor uses an ultra-low-power spiking neural network");
+    typer("\\nengine and a nimble RISC-V processor core to form a single-chip");
+    typer("\\nsolution for processing sensor data quickly and efficiently.");
     blinking_cursor(2);
-    typer("\n");
-    typer("\nThe development kit contains more applications that demonstrate");
-    typer("\nthe capabilities of the Neural Network accelerators available in T1.");
+    typer("\\n");
+    typer("\\nThe development kit contains more applications that demonstrate");
+    typer("\\nthe capabilities of the Neural Network accelerators available in T1.");
     blinking_cursor(1);
-    typer("\n");
-    typer("\nHave fun spiking!");
+    typer("\\n");
+    typer("\\nHave fun spiking!");
     blinking_cursor(2);
-    typer("\n\n");
+    typer("\\n\\n");
 
-    print_string(" _|_|_|  _|      _|  _|      _|    _|_|    _|_|_|_|_|  _|_|_|_|  _|_|_|      _|_|   \n");
-    print_string("   _|    _|_|    _|  _|_|    _|  _|    _|      _|      _|        _|    _|  _|    _| \n");
-    print_string("   _|    _|  _|  _|  _|  _|  _|  _|_|_|_|      _|      _|_|_|    _|_|_|    _|_|_|_| \n");
-    print_string("   _|    _|    _|_|  _|    _|_|  _|    _|      _|      _|        _|    _|  _|    _| \n");
-    print_string(" _|_|_|  _|      _|  _|      _|  _|    _|      _|      _|_|_|_|  _|    _|  _|    _| \n");
+    print_string(" _|_|_|  _|      _|  _|      _|    _|_|    _|_|_|_|_|  _|_|_|_|  _|_|_|      _|_|   \\n");
+    print_string("   _|    _|_|    _|  _|_|    _|  _|    _|      _|      _|        _|    _|  _|    _| \\n");
+    print_string("   _|    _|  _|  _|  _|  _|  _|  _|_|_|_|      _|      _|_|_|    _|_|_|    _|_|_|_| \\n");
+    print_string("   _|    _|    _|_|  _|    _|_|  _|    _|      _|      _|        _|    _|  _|    _| \\n");
+    print_string(" _|_|_|  _|      _|  _|      _|  _|    _|      _|      _|_|_|_|  _|    _|  _|    _| \\n");
 
     return 0;
 }
-
-
 """
         )
 
