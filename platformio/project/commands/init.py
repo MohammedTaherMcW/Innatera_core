@@ -191,7 +191,7 @@ CONFIG_T1_CPR=y
 CONFIG_CYCLE_COUNTER_CV32E40P=y
 CONFIG_GPIO=y
 CONFIG_UART=y
-CONFIG_CROSS_COMPILE="/home/armnn/.platformio/packages/toolchain-spine/bin/riscv32-corev-elf-"
+CONFIG_CROSS_COMPILE="$(HOME)/.platformio/packages/toolchain-spine/bin/riscv32-corev-elf-"
             """
         )
 
