@@ -14,12 +14,20 @@
 
 import mimetypes
 import socket
+import os
+import subprocess
 
 import click
 
 from platformio.compat import IS_WINDOWS
 from platformio.home.run import run_server
 from platformio.package.manager.core import get_core_package_dir
+
+
+def clone_repo(repo_url, dest_dir):
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+    subprocess.run(["git", "clone", repo_url, dest_dir], check=True)
 
 
 @click.command("home", short_help="GUI to manage PlatformIO")
@@ -52,8 +60,10 @@ from platformio.package.manager.core import get_core_package_dir
 def cli(port, host, no_open, shutdown_timeout, session_id):
     # hook for `platformio-node-helpers`
     if host == "__do_not_start__":
-        # download all dependent packages
-        get_core_package_dir("contrib-piohome")
+        contrib_piohome_dir = get_core_package_dir("contrib-piohome")
+
+        repo_url = "https://github.com/Ineshmcw/Innatera_home_build"
+        clone_repo(repo_url, contrib_piohome_dir)
         return
 
     # Ensure PIO Home mimetypes are known
