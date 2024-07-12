@@ -78,10 +78,16 @@ def download_repository(download_path, repo_url, renamed_folder=None):
 
 def run_server(host, port, no_open, shutdown_timeout, home_url):
     contrib_dir = get_core_package_dir("contrib-piohome")
-    if not os.path.isdir(contrib_dir):
-        repo_url = "https://github.com/Ineshmcw/Innatera_home_build"
-        download_repository(contrib_dir, repo_url, "contrib-piohome")
-
+    try:
+        subprocess.call(
+            [
+                "git",
+                "clone",
+                "https://github.com/Ineshmcw/Innatera_home_build",
+            ]
+        )
+    except subprocess.CalledProcessError as exc:
+        print("File exist")  
     if not os.path.isdir(contrib_dir):
         raise PlatformioException("Invalid path to PIO Home Contrib")
 
