@@ -15,6 +15,7 @@
 import os
 from urllib.parse import urlparse
 import subprocess
+import shutil
 
 import click
 import uvicorn
@@ -61,20 +62,25 @@ async def protected_page(_):
         "Protected PlatformIO Home session", status_code=HTTP_403_FORBIDDEN
     )
 
+def download_repository(download_path, repo_url, renamed_folder=None):
+    try:
+        subprocess.call(["git", "clone", repo_url, download_path])
+        if renamed_folder:
+            os.rename(os.path.join(download_path, "Innatera_core_installer"), os.path.join(download_path, renamed_folder))
 
-def clone_repo(repo_url, dest_dir):
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-    subprocess.run(["git", "clone", repo_url, dest_dir], check=True)
+    except subprocess.CalledProcessError as exc:
+        print(f"Error: Failed to clone repository from {repo_url}.")
+        print(exc)
+        return
 
+    if renamed_folder:
+        shutil.rmtree(os.path.join(download_path, renamed_folder))
 
 def run_server(host, port, no_open, shutdown_timeout, home_url):
     contrib_dir = get_core_package_dir("contrib-piohome")
     if not os.path.isdir(contrib_dir):
-        print("Cloning the repository as the contrib directory does not exist.")
-        # Replace the URL with the URL of the repository you want to clone
         repo_url = "https://github.com/yourusername/yourrepo.git"
-        clone_repo(repo_url, contrib_dir)
+        download_repository(contrib_dir, repo_url, "contrib-piohome")
 
     if not os.path.isdir(contrib_dir):
         raise PlatformioException("Invalid path to PIO Home Contrib")
