@@ -14,6 +14,7 @@
 
 import os
 from urllib.parse import urlparse
+import subprocess
 
 import click
 import uvicorn
@@ -60,44 +61,53 @@ async def protected_page(_):
         "Protected PlatformIO Home session", status_code=HTTP_403_FORBIDDEN
     )
 
-
 def run_server(host, port, no_open, shutdown_timeout, home_url):
-    contrib_dir = get_core_package_dir("contrib-piohome")
-    if not os.path.isdir(contrib_dir):
-        raise PlatformioException("Invalid path to PIO Home Contrib")
+    # contrib_dir = get_core_package_dir("contrib-piohome")
+    try:
+        subprocess.call(
+            [
+                "git",
+                "clone",
+                "https://github.com/Ineshmcw/Innatera_home_build",
+            ]
+        )
+    except subprocess.CalledProcessError as exc:
+        print("File exist")  
+    # if not os.path.isdir(contrib_dir):
+    #     raise PlatformioException("Invalid path to PIO Home Contrib")
 
-    ws_rpc_factory = WebSocketJSONRPCServerFactory(shutdown_timeout)
-    ws_rpc_factory.add_object_handler(AccountRPC(), namespace="account")
-    ws_rpc_factory.add_object_handler(AppRPC(), namespace="app")
-    ws_rpc_factory.add_object_handler(IDERPC(), namespace="ide")
-    ws_rpc_factory.add_object_handler(MiscRPC(), namespace="misc")
-    ws_rpc_factory.add_object_handler(OSRPC(), namespace="os")
-    ws_rpc_factory.add_object_handler(PIOCoreRPC(), namespace="core")
-    ws_rpc_factory.add_object_handler(ProjectRPC(), namespace="project")
-    ws_rpc_factory.add_object_handler(PlatformRPC(), namespace="platform")
-    ws_rpc_factory.add_object_handler(RegistryRPC(), namespace="registry")
+    # ws_rpc_factory = WebSocketJSONRPCServerFactory(shutdown_timeout)
+    # ws_rpc_factory.add_object_handler(AccountRPC(), namespace="account")
+    # ws_rpc_factory.add_object_handler(AppRPC(), namespace="app")
+    # ws_rpc_factory.add_object_handler(IDERPC(), namespace="ide")
+    # ws_rpc_factory.add_object_handler(MiscRPC(), namespace="misc")
+    # ws_rpc_factory.add_object_handler(OSRPC(), namespace="os")
+    # ws_rpc_factory.add_object_handler(PIOCoreRPC(), namespace="core")
+    # ws_rpc_factory.add_object_handler(ProjectRPC(), namespace="project")
+    # ws_rpc_factory.add_object_handler(PlatformRPC(), namespace="platform")
+    # ws_rpc_factory.add_object_handler(RegistryRPC(), namespace="registry")
 
-    path = urlparse(home_url).path
-    routes = [
-        WebSocketRoute(path + "wsrpc", ws_rpc_factory, name="wsrpc"),
-        Route(path + "__shutdown__", shutdown_server, methods=["POST"]),
-        Mount(path, StaticFiles(directory=contrib_dir, html=True), name="static"),
-    ]
-    if path != "/":
-        routes.append(Route("/", protected_page))
+    # path = urlparse(home_url).path
+    # routes = [
+    #     WebSocketRoute(path + "wsrpc", ws_rpc_factory, name="wsrpc"),
+    #     Route(path + "__shutdown__", shutdown_server, methods=["POST"]),
+    #     Mount(path, StaticFiles(directory=contrib_dir, html=True), name="static"),
+    # ]
+    # if path != "/":
+    #     routes.append(Route("/", protected_page))
 
-    uvicorn.run(
-        Starlette(
-            middleware=[Middleware(ShutdownMiddleware)],
-            routes=routes,
-            on_startup=[
-                lambda: click.echo(
-                    "PIO Home has been started. Press Ctrl+C to shutdown."
-                ),
-                lambda: None if no_open else click.launch(home_url),
-            ],
-        ),
-        host=host,
-        port=port,
-        log_level="warning",
-    )
+    # uvicorn.run(
+    #     Starlette(
+    #         middleware=[Middleware(ShutdownMiddleware)],
+    #         routes=routes,
+    #         on_startup=[
+    #             lambda: click.echo(
+    #                 "PIO Home has been started. Press Ctrl+C to shutdown."
+    #             ),
+    #             lambda: None if no_open else click.launch(home_url),
+    #         ],
+    #     ),
+    #     host=host,
+    #     port=port,
+    #     log_level="warning",
+    # )
