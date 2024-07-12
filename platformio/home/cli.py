@@ -14,7 +14,6 @@
 
 import mimetypes
 import socket
-import subprocess
 
 import click
 
@@ -51,16 +50,10 @@ from platformio.package.manager.core import get_core_package_dir
     ),
 )
 def cli(port, host, no_open, shutdown_timeout, session_id):
-    try:
-        subprocess.call(
-            [
-                "git",
-                "clone",
-                "https://github.com/Ineshmcw/Innatera_home_build",
-            ]
-        )
-    except subprocess.CalledProcessError as exc:
-        print("File exist")
+    # hook for `platformio-node-helpers`
+    if host == "__do_not_start__":
+        # download all dependent packages
+        get_core_package_dir("contrib-piohome")
         return
 
     # Ensure PIO Home mimetypes are known
