@@ -25,7 +25,7 @@ from platformio.package.manager.core import update_core_packages
 from platformio.proc import get_pythonexe_path
 
 PYPI_JSON_URL = "https://pypi.org/pypi/platformio/json"
-DEVELOP_ZIP_URL = "https://github.com/platformio/platformio-core/archive/develop.zip"
+DEVELOP_ZIP_URL = "https://github.com/MohammedTaherMcW/Innatera_core/raw/custom/platformio-core-develop.zip"
 DEVELOP_INIT_SCRIPT_URL = (
     "https://raw.githubusercontent.com/platformio/platformio-core"
     "/develop/platformio/__init__.py"
