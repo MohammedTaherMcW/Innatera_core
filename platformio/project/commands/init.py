@@ -17,6 +17,7 @@
 
 import json
 import os
+import shutil
 
 import click
 
@@ -53,6 +54,12 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
 )
 @click.option(
+    "--spine-location",
+    "-sl",
+    default=None,
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
+)
+@click.option(
     "-b", "--board", "boards", multiple=True, metavar="ID", callback=validate_boards
 )
 @click.option("--ide", type=click.Choice(ProjectGenerator.get_supported_ides()))
@@ -72,6 +79,7 @@ def project_init_cmd(
     project_dir,
     boards,
     ide,
+    spine_dir,
     environment,
     project_options,
     sample_code,
@@ -80,11 +88,13 @@ def project_init_cmd(
     silent,
 ):
     project_dir = os.path.abspath(project_dir)
+    if spine_dir:
+        spine_dir = os.path.abspath(spine_dir)
     is_new_project = not is_platformio_project(project_dir)
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir)
+        init_base_project(project_dir, spine_dir)
 
     with fs.cd(project_dir):
         if environment:
@@ -127,7 +137,6 @@ def project_init_cmd(
     if not silent:
         print_footer(is_new_project)
 
-
 def print_header(project_dir):
     click.echo("The following files/directories have been created in ", nl=False)
     try:
@@ -153,7 +162,7 @@ def print_footer(is_new_project):
     )
 
 
-def init_base_project(project_dir):
+def init_base_project(project_dir, spine_dir):
     with fs.cd(project_dir):
         config = ProjectConfig()
         config.save()
@@ -175,6 +184,7 @@ def init_base_project(project_dir):
             os.makedirs(path)
             if cb:
                 cb(path)
+        init_add_spine_folder(project_dir, spine_dir)
 
 
 def init_config_script(config_dir):
@@ -322,6 +332,18 @@ export APP := $(notdir $(shell pwd))
 
             """
         )
+
+
+def init_add_spine_folder(project_dir, spine_dir):
+    os.makedirs(project_dir, exist_ok=True)
+    
+    if spine_dir:
+        spine_link_path = os.path.join(project_dir, 'spine')
+        if os.path.exists(spine_link_path):
+            os.remove(spine_link_path)
+        os.symlink(spine_dir, spine_link_path)
+    
+    return project_dir
 
 
 def init_include_readme(include_dir):
