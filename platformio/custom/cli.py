@@ -12,7 +12,7 @@ from platformio.package.manager.core import get_core_package_dir
 @click.option("--port", type=int, default=8008, help="HTTP port, default=8008")
 @click.option(
     "--host",
-    default="127.0.0.1",
+    default="127.0.0.2",
     help=(
         "HTTP host, default=127.0.0.1. You can open PIO Custom for inbound "
         "connections with --host=0.0.0.0"
@@ -39,7 +39,7 @@ def cli(port, host, no_open, shutdown_timeout, session_id):
     # hook for `platformio-node-helpers`
     if host == "__do_not_start__":
         # download all dependent packages
-        get_core_package_dir("contrib-piohome")
+        get_core_package_dir("contrib-piocustom")
         return
 
     # Ensure PIO Custom mimetypes are known
