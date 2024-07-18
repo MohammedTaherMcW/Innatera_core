@@ -183,7 +183,7 @@ def init_base_project(project_dir):
             os.makedirs(path)
             if cb:
                 cb(path)
-        init_add_spine_folder(project_dir)
+        # init_add_spine_folder(project_dir)
 
 
 def init_config_script(config_dir):
