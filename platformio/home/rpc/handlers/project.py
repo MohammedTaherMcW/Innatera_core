@@ -190,7 +190,7 @@ class ProjectRPC(BaseRPCHandler):
             )
         return sorted(result, key=lambda data: data["platform"]["title"])
 
-    async def init(self, board, framework, project_dir):
+    async def init(self, board, framework, project_dir, spine_dir):
         assert project_dir
         if not os.path.isdir(project_dir):
             os.makedirs(project_dir)

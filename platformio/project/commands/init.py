@@ -53,12 +53,12 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     default=os.getcwd,
     type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
 )
-# @click.option(
-#     "--spine-dir",
-#     "-sl",
-#     default=None,
-#     type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
-# )
+@click.option(
+    "--spine-dir",
+    "-sl",
+    default=None,
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
+)
 @click.option(
     "-b", "--board", "boards", multiple=True, metavar="ID", callback=validate_boards
 )
@@ -77,7 +77,7 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
 @click.option("-s", "--silent", is_flag=True)
 def project_init_cmd(
     project_dir,
-    # spine_dir,
+    spine_dir,
     boards,
     ide,
     environment,
@@ -88,12 +88,11 @@ def project_init_cmd(
     silent,
 ):
     project_dir = os.path.abspath(project_dir)
-    # spine_dir = os.path.abspath(spine_dir) if spine_dir else '/home/inesh/spine'
     is_new_project = not is_platformio_project(project_dir)
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir)
+        init_base_project(project_dir, spine_dir)
 
     with fs.cd(project_dir):
         if environment:
@@ -161,7 +160,7 @@ def print_footer(is_new_project):
     )
 
 
-def init_base_project(project_dir):
+def init_base_project(project_dir, spine_dir):
 # def init_base_project(project_dir, spine_dir):
     with fs.cd(project_dir):
         config = ProjectConfig()
@@ -183,7 +182,7 @@ def init_base_project(project_dir):
             os.makedirs(path)
             if cb:
                 cb(path)
-        # init_add_spine_folder(project_dir)
+        init_add_spine_folder(project_dir, spine_dir)
 
 
 def init_config_script(config_dir):
@@ -333,8 +332,8 @@ export APP := $(notdir $(shell pwd))
         )
 
 
-def init_add_spine_folder(project_dir):
-    spine_source_location = '/home/inesh/spine_symlink'
+def init_add_spine_folder(project_dir, spine_dir):
+    spine_source_location = os.path.abspath(spine_dir) if spine_dir else '/home/inesh/spine_default'
     symlink_location = os.path.join(project_dir, 'spine')
     
     if os.path.exists(symlink_location):
