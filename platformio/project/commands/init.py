@@ -53,12 +53,12 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     default=os.getcwd,
     type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
 )
-@click.option(
-    "--spine-location",
-    "-sl",
-    default=None,
-    type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
-)
+# @click.option(
+#     "--spine-dir",
+#     "-sl",
+#     default=None,
+#     type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
+# )
 @click.option(
     "-b", "--board", "boards", multiple=True, metavar="ID", callback=validate_boards
 )
@@ -77,9 +77,9 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
 @click.option("-s", "--silent", is_flag=True)
 def project_init_cmd(
     project_dir,
+    # spine_dir,
     boards,
     ide,
-    spine_dir,
     environment,
     project_options,
     sample_code,
@@ -88,13 +88,12 @@ def project_init_cmd(
     silent,
 ):
     project_dir = os.path.abspath(project_dir)
-    if spine_dir:
-        spine_dir = os.path.abspath(spine_dir)
+    # spine_dir = os.path.abspath(spine_dir) if spine_dir else '/home/inesh/spine'
     is_new_project = not is_platformio_project(project_dir)
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_dir)
+        init_base_project(project_dir)
 
     with fs.cd(project_dir):
         if environment:
@@ -162,7 +161,8 @@ def print_footer(is_new_project):
     )
 
 
-def init_base_project(project_dir, spine_dir):
+def init_base_project(project_dir):
+# def init_base_project(project_dir, spine_dir):
     with fs.cd(project_dir):
         config = ProjectConfig()
         config.save()
@@ -172,7 +172,6 @@ def init_base_project(project_dir, spine_dir):
             (config.get("platformio", "lib_dir"), init_lib_readme),
             (config.get("platformio", "test_dir"), init_test_readme),
             (project_dir + "/talamo", None),
-            (project_dir + "/spine", None),
             (project_dir + "/config", init_config_script),
             (project_dir + "/", init_makefile_script),
         ]
@@ -184,7 +183,7 @@ def init_base_project(project_dir, spine_dir):
             os.makedirs(path)
             if cb:
                 cb(path)
-        init_add_spine_folder(project_dir, spine_dir)
+        init_add_spine_folder(project_dir)
 
 
 def init_config_script(config_dir):
@@ -334,16 +333,15 @@ export APP := $(notdir $(shell pwd))
         )
 
 
-def init_add_spine_folder(project_dir, spine_dir):
-    os.makedirs(project_dir, exist_ok=True)
+def init_add_spine_folder(project_dir):
+    spine_source_location = '/home/inesh/spine_symlink'
+    symlink_location = os.path.join(project_dir, 'spine')
     
-    if spine_dir:
-        spine_link_path = os.path.join(project_dir, 'spine')
-        if os.path.exists(spine_link_path):
-            os.remove(spine_link_path)
-        os.symlink(spine_dir, spine_link_path)
-    
-    return project_dir
+    if os.path.exists(symlink_location):
+        os.remove(symlink_location)
+
+    os.symlink(spine_source_location, symlink_location)
+    print(f"Created symlink from {spine_source_location} to {symlink_location}")
 
 
 def init_include_readme(include_dir):
