@@ -14,7 +14,7 @@ from platformio.package.manager.core import get_core_package_dir
     "--host",
     default="127.0.0.2",
     help=(
-        "HTTP host, default=127.0.0.1. You can open PIO Custom for inbound "
+        "HTTP host, default=127.0.0.2. You can open PIO Custom for inbound "
         "connections with --host=0.0.0.0"
     ),
 )
@@ -81,7 +81,7 @@ def cli(port, host, no_open, shutdown_timeout, session_id):
         port=port,
         no_open=no_open,
         shutdown_timeout=shutdown_timeout,
-        custom_url=custom_url,
+        home_url=custom_url,
     )
 
 
