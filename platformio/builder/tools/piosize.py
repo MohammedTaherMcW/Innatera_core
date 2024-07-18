@@ -24,9 +24,11 @@ from elftools.elf.elffile import ELFFile
 
 from platformio.compat import IS_WINDOWS
 from platformio.proc import exec_command
-
+from platformio.debug_const import DEBUG
 
 def _run_tool(cmd, env, tool_args):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piosize - _run_tool \n\n")
     sysenv = environ.copy()
     sysenv["PATH"] = str(env["ENV"]["PATH"])
 
@@ -257,6 +259,8 @@ def exists(_):
 
 
 def generate(env):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piosize - generate \n\n")
     env.AddMethod(pioSizeIsRamSection)
     env.AddMethod(pioSizeIsFlashSection)
     env.AddMethod(pioSizeCalculateFirmwareSize)

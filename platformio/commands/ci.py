@@ -24,9 +24,11 @@ from platformio.exception import CIBuildEnvsEmpty
 from platformio.project.commands.init import project_init_cmd, validate_boards
 from platformio.project.config import ProjectConfig
 from platformio.run.cli import cli as cmd_run
-
+from platformio.debug_const import DEBUG
 
 def validate_path(ctx, param, value):  # pylint: disable=unused-argument
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - ci - validate_path \n\n")
     invalid_path = None
     value = list(value)
     for i, p in enumerate(value):
@@ -76,6 +78,8 @@ def cli(  # pylint: disable=too-many-arguments, too-many-branches
     environments,
     verbose,
 ):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - ci - cli \n\n")
     if not src and os.getenv("PLATFORMIO_CI_SRC"):
         src = validate_path(ctx, None, os.getenv("PLATFORMIO_CI_SRC").split(":"))
     if not src:
@@ -168,6 +172,8 @@ def _exclude_contents(dst_dir, patterns):
 
 
 def _copy_project_conf(build_dir, project_conf):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - ci - _copy_project_conf \n\n")
     config = ProjectConfig(project_conf, parse_extra=False)
     if config.has_section("platformio"):
         config.remove_section("platformio")
