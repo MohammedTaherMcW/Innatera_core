@@ -197,6 +197,8 @@ class ProjectRPC(BaseRPCHandler):
         args = ["init", "--board", board, "--sample-code"]
         if framework:
             args.extend(["--project-option", "framework = %s" % framework])
+        if spine_dir:
+            args.extend(["--spine-dir", spine_dir])
         ide = app.get_session_var("caller_id")
         if ide in ProjectGenerator.get_supported_ides():
             args.extend(["--ide", ide])
