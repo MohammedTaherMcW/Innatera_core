@@ -24,17 +24,11 @@ from starlette.routing import Mount, Route, WebSocketRoute
 from starlette.staticfiles import StaticFiles
 from starlette.status import HTTP_403_FORBIDDEN
 
+from platformio.custom.rpc.handlers.app import AppRPC
 from platformio.compat import aio_get_running_loop
 from platformio.exception import PlatformioException
-from platformio.custom.rpc.handlers.account import AccountRPC
-from platformio.custom.rpc.handlers.app import AppRPC
-from platformio.custom.rpc.handlers.ide import IDERPC
-from platformio.custom.rpc.handlers.misc import MiscRPC
-from platformio.custom.rpc.handlers.os import OSRPC
+from platformio.custom.rpc.handlers.targets import PIOTargets
 from platformio.custom.rpc.handlers.piocore import PIOCoreRPC
-from platformio.custom.rpc.handlers.platform import PlatformRPC
-from platformio.custom.rpc.handlers.project import ProjectRPC
-from platformio.custom.rpc.handlers.registry import RegistryRPC
 from platformio.custom.rpc.server import WebSocketJSONRPCServerFactory
 from platformio.package.manager.core import get_core_package_dir
 from platformio.proc import force_exit
@@ -63,19 +57,14 @@ async def protected_page(_):
 
 def run_server(host, port, no_open, shutdown_timeout, home_url):
     contrib_dir = get_core_package_dir("contrib-piocustom")
+    print("Contrib path: %s" % contrib_dir)
     if not os.path.isdir(contrib_dir):
-        raise PlatformioException("Invalid path to PIO Home Contrib")
+        raise PlatformioException("Invalid path to PIO Custom Contrib")
 
     ws_rpc_factory = WebSocketJSONRPCServerFactory(shutdown_timeout)
-    ws_rpc_factory.add_object_handler(AccountRPC(), namespace="account")
-    ws_rpc_factory.add_object_handler(AppRPC(), namespace="app")
-    ws_rpc_factory.add_object_handler(IDERPC(), namespace="ide")
-    ws_rpc_factory.add_object_handler(MiscRPC(), namespace="misc")
-    ws_rpc_factory.add_object_handler(OSRPC(), namespace="os")
     ws_rpc_factory.add_object_handler(PIOCoreRPC(), namespace="core")
-    ws_rpc_factory.add_object_handler(ProjectRPC(), namespace="project")
-    ws_rpc_factory.add_object_handler(PlatformRPC(), namespace="platform")
-    ws_rpc_factory.add_object_handler(RegistryRPC(), namespace="registry")
+    ws_rpc_factory.add_object_handler(AppRPC(), namespace="app")
+    ws_rpc_factory.add_object_handler(PIOTargets(), namespace="targets")
 
     path = urlparse(home_url).path
     routes = [
