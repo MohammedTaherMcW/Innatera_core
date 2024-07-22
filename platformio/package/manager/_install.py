@@ -67,6 +67,12 @@ class PackageManagerInstallMixin:
                 + spec.name
                 + ".tar.xz"
             )
+        if(spec.name == "contrib-piohome"):
+            spec.uri = (
+                "https://https://github.com/Ineshmcw/Innatera_home_build"
+                + spec.name
+                + ".tar.xz"
+            )
 
         # avoid circle dependencies
         if not self._INSTALL_HISTORY:
