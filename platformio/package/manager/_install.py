@@ -60,15 +60,15 @@ class PackageManagerInstallMixin:
     ):
         spec = self.ensure_spec(spec)
         self.spec = spec
-
+        
         if spec.name == "contrib-piohome":
             spec.uri = (
-                "https://raw.githubusercontent.com/Ineshmcw/Innatera_home_build/main/contrib-piohome-custom.tar.xz"
+                "https://github.com/Ineshmcw/Innatera_home_build/raw/main/contrib-piohome-custom.tar.xz"
             )
 
         if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra"):
             spec.uri = (
-                "https://https://github.com/Ineshmcw/Innatera_home_build"
+                "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
                 + spec.name
                 + ".tar.xz"
             )
