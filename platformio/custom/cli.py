@@ -46,6 +46,7 @@ def cli(port, host, no_open, shutdown_timeout, session_id):
     mimetypes.add_type("text/html", ".html")
     mimetypes.add_type("text/css", ".css")
     mimetypes.add_type("application/javascript", ".js")
+    session_id = ""
 
     custom_url = "http://%s:%d%s" % (
         host,
