@@ -16,6 +16,7 @@ import hashlib
 import os
 import shutil
 import tempfile
+import logging
 
 import click
 
@@ -25,6 +26,7 @@ from platformio.package.meta import PackageCompatibility, PackageItem
 from platformio.package.unpack import FileUnpacker
 from platformio.package.vcsclient import VCSClientFactory
 
+logger = logging.getLogger(__name__)
 
 class PackageManagerInstallMixin:
     _INSTALL_HISTORY = None  # avoid circle dependencies
@@ -60,7 +62,7 @@ class PackageManagerInstallMixin:
     ):
         spec = self.ensure_spec(spec)
         self.spec = spec
-        
+
         if spec.name == "contrib-piohome":
             spec.uri = (
                 "https://github.com/Ineshmcw/Innatera_home_build/raw/main/contrib-piohome-custom.tar.xz"
@@ -194,19 +196,28 @@ class PackageManagerInstallMixin:
             if uri.startswith("file://"):
                 _uri = uri[7:]
                 if os.path.isfile(_uri):
+                    logger.info(f"Unpacking local file: {_uri}")
                     self.unpack(_uri, tmp_dir)
                 else:
+                    logger.info(f"Copying directory: {_uri}")
                     fs.rmtree(tmp_dir)
                     shutil.copytree(_uri, tmp_dir, symlinks=True)
             elif uri.startswith(("http://", "https://")):
+                logger.info(f"Downloading file from: {uri}")
                 dl_path = self.download(uri, checksum)
-                assert os.path.isfile(dl_path)
+                if not os.path.isfile(dl_path):
+                    raise FileNotFoundError(f"Downloaded file not found: {dl_path}")
+                logger.info(f"Unpacking downloaded file: {dl_path}")
                 self.unpack(dl_path, tmp_dir)
             else:
                 vcs = VCSClientFactory.new(tmp_dir, uri)
-                assert vcs.export()
-
+                if not vcs.export():
+                    raise PackageException("Failed to export VCS repository")
+            
             root_dir = self.find_pkg_root(tmp_dir, spec)
+            if not root_dir:
+                raise PackageException("Package root directory not found")
+            
             pkg_item = PackageItem(
                 root_dir,
                 self.build_metadata(
@@ -215,12 +226,17 @@ class PackageManagerInstallMixin:
             )
             pkg_item.dump_meta()
             return self._install_tmp_pkg(pkg_item)
+        
+        except Exception as e:
+            logger.error(f"Failed to install package from URI {uri}: {e}")
+            raise
+        
         finally:
             if os.path.isdir(tmp_dir):
                 try:
                     fs.rmtree(tmp_dir)
-                except:  # pylint: disable=bare-except
-                    pass
+                except Exception as e:
+                    logger.warning(f"Failed to remove temporary directory: {e}")
 
     def _install_tmp_pkg(self, tmp_pkg):
         assert isinstance(tmp_pkg, PackageItem)
