@@ -61,7 +61,7 @@ class PackageManagerInstallMixin:
         spec = self.ensure_spec(spec)
         self.spec = spec
 
-        if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra"):
+        if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra" or spec.name == "contrib-piocustom"):
             spec.uri = (
                 "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
                 + spec.name
