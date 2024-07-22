@@ -65,7 +65,6 @@ def run_server(host, port, no_open, shutdown_timeout, home_url):
     ws_rpc_factory.add_object_handler(PIOCoreRPC(), namespace="core")
     ws_rpc_factory.add_object_handler(AppRPC(), namespace="app")
     ws_rpc_factory.add_object_handler(PIOTargets(), namespace="targets")
-
     path = urlparse(home_url).path
     routes = [
         WebSocketRoute(path + "wsrpc", ws_rpc_factory, name="wsrpc"),
@@ -75,7 +74,7 @@ def run_server(host, port, no_open, shutdown_timeout, home_url):
     if path != "/":
         routes.append(Route("/", protected_page))
 
-    uvicorn.run(
+    uvicorn.run(    
         Starlette(
             middleware=[Middleware(ShutdownMiddleware)],
             routes=routes,
