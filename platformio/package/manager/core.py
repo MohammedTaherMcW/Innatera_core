@@ -39,6 +39,14 @@ def get_core_package_dir(name, spec=None, auto_install=True):
     spec = spec or PackageSpec(
         owner="platformio", name=name, requirements=get_core_dependencies()[name]
     )
+
+    if name == "contrib-piohome":
+        spec.uri = (
+            "https://https://github.com/Ineshmcw/Innatera_home/raw/master/"
+            + name
+            + ".tar.xz"
+        )
+
     pkg = pm.get_package(spec)
     if pkg:
         return pkg.path
