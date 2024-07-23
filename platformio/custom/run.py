@@ -26,6 +26,7 @@ from starlette.status import HTTP_403_FORBIDDEN
 
 from platformio.custom.rpc.handlers.app import AppRPC
 from platformio.compat import aio_get_running_loop
+from platformio.custom.rpc.handlers.ide import IDERPC
 from platformio.exception import PlatformioException
 from platformio.custom.rpc.handlers.targets import PIOTargets
 from platformio.custom.rpc.handlers.piocore import PIOCoreRPC
@@ -65,6 +66,7 @@ def run_server(host, port, no_open, shutdown_timeout, home_url):
     ws_rpc_factory.add_object_handler(PIOCoreRPC(), namespace="core")
     ws_rpc_factory.add_object_handler(AppRPC(), namespace="app")
     ws_rpc_factory.add_object_handler(PIOTargets(), namespace="targets")
+    ws_rpc_factory.add_object_handler(IDERPC(), namespace="ide")
     path = urlparse(home_url).path
     routes = [
         WebSocketRoute(path + "wsrpc", ws_rpc_factory, name="wsrpc"),
