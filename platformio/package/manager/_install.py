@@ -26,7 +26,8 @@ from platformio.package.meta import PackageCompatibility, PackageItem
 from platformio.package.unpack import FileUnpacker
 from platformio.package.vcsclient import VCSClientFactory
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
+logger = logging.basicConfig(filename = "/home/inesh/log/output.log", level = logging.INFO)
 
 class PackageManagerInstallMixin:
     _INSTALL_HISTORY = None  # avoid circle dependencies
