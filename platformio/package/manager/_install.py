@@ -63,7 +63,7 @@ class PackageManagerInstallMixin:
 
         if spec.name == "contrib-piohome":
             spec.uri = (
-                "https://github.com/Ineshmcw/Innatera_home.git"
+                "https://github.com/Ineshmcw/Innatera_home_build"
             )
 
         if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra"):
