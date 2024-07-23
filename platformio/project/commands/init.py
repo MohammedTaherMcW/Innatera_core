@@ -17,7 +17,6 @@
 
 import json
 import os
-import shutil
 
 import click
 
@@ -161,7 +160,6 @@ def print_footer(is_new_project):
 
 
 def init_base_project(project_dir, spine_dir):
-# def init_base_project(project_dir, spine_dir):
     with fs.cd(project_dir):
         config = ProjectConfig()
         config.save()
