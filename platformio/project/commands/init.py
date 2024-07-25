@@ -331,9 +331,14 @@ export APP := $(notdir $(shell pwd))
 
 
 def init_add_spine_folder(project_dir, spine_dir):
-    spine_source_location = os.path.abspath(spine_dir) if spine_dir else '/home/inesh/spine_default'
+    HOME = os.path.expanduser("~")
+    spine_source_location = (
+        os.path.abspath(spine_dir)
+        if spine_dir
+        else HOME + "/.platformio/packages/framework-innetra/"
+    )
     symlink_location = os.path.join(project_dir, 'spine')
-    
+
     if os.path.exists(symlink_location):
         os.remove(symlink_location)
 
