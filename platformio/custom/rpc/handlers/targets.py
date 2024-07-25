@@ -51,5 +51,5 @@ class PIOTargets:
 
         if errors:
             raise JSONRPC20DispatchException(f"Errors occurred: {', '.join(errors)}")
-
+        print(stdout.decode())
         return completed_targets
