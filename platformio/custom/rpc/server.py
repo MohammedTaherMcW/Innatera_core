@@ -15,12 +15,13 @@
 from urllib.parse import parse_qs
 
 import ajsonrpc.utils
+import logging
 import click
 from ajsonrpc.core import JSONRPC20Error, JSONRPC20Request
 from ajsonrpc.dispatcher import Dispatcher
 from ajsonrpc.manager import AsyncJSONRPCResponseManager, JSONRPC20Response
 from starlette.endpoints import WebSocketEndpoint
-
+from starlette.websockets import WebSocketDisconnect
 from platformio.compat import aio_create_task, aio_get_running_loop
 from platformio.http import InternetConnectionError
 from platformio.proc import force_exit
@@ -129,3 +130,44 @@ class WebSocketJSONRPCServer(WebSocketEndpoint):
                     ),
                 )
         await websocket.send_text(self.factory.manager.serialize(response.body))
+
+class WebSocketJSONRPCServer(WebSocketEndpoint):
+    encoding = "text"
+    factory: WebSocketJSONRPCServerFactory = None
+
+    async def on_connect(self, websocket):
+        await websocket.accept()
+        qs = parse_qs(self.scope.get("query_string", b""))
+        actors = qs.get(b"actor")
+        self.factory.on_client_connect(  # pylint: disable=no-member
+            websocket, actor=actors[0].decode() if actors else None
+        )
+
+    async def on_receive(self, websocket, data):
+        aio_create_task(self._handle_rpc(websocket, data))
+
+    async def on_disconnect(self, websocket, close_code):
+        self.factory.on_client_disconnect(websocket)  # pylint: disable=no-member
+
+    async def _handle_rpc(self, websocket, data):
+        try:
+            # pylint: disable=no-member
+            response = await self.factory.manager.get_response_for_payload(data)
+            if response.error and response.error.data:
+                click.secho("Error: %s" % response.error.data, fg="red", err=True)
+                if InternetConnectionError.MESSAGE in response.error.data:
+                    response = JSONRPC20Response(
+                        id=response.id,
+                        error=JSONRPC20Error(
+                            code=4008,
+                            message="No Internet Connection",
+                            data=response.error.data,
+                        ),
+                    )
+            await websocket.send_text(self.factory.manager.serialize(response.body))
+        except WebSocketDisconnect as e:
+            logging.info(f"Waiting for Client Response: {e}")
+        except RuntimeError as e:
+            logging.info(f"Runtime error: {e}")
+        except Exception as e:
+            logging.info(f"An unexpected error occurred: {e}")
