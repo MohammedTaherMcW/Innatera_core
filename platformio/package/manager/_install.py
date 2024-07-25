@@ -66,7 +66,7 @@ class PackageManagerInstallMixin:
                 "https://github.com/Ineshmcw/Innatera_home_build"
             )
 
-        if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra"):
+        if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra" or spec.name == "contrib-piocustom"):
             spec.uri = (
                 "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
                 + spec.name

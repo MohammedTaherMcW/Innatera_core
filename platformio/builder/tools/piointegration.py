@@ -20,13 +20,17 @@ import SCons.Subst  # pylint: disable=import-error
 from SCons.Script import COMMAND_LINE_TARGETS  # pylint: disable=import-error
 
 from platformio.proc import exec_command, where_is_program
-
+from platformio.debug_const import DEBUG
 
 def IsIntegrationDump(_):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - IsIntegrationDump \n\n")
     return set(["__idedata", "idedata"]) & set(COMMAND_LINE_TARGETS)
 
 
 def DumpIntegrationIncludes(env):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - DumpIntegrationIncludes \n\n")
     result = dict(build=[], compatlib=[], toolchain=[])
 
     # `env`(project) CPPPATH
@@ -59,6 +63,8 @@ def DumpIntegrationIncludes(env):
 
 
 def get_gcc_defines(env):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - get_gcc_defines \n\n")
     items = []
     try:
         sysenv = os.environ.copy()
@@ -82,6 +88,8 @@ def get_gcc_defines(env):
 
 
 def dump_defines(env):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - dump_defines \n\n")
     defines = []
     # global symbols
     for item in SCons.Defaults.processDefines(env.get("CPPDEFINES", [])):
@@ -112,6 +120,8 @@ def dump_defines(env):
 
 
 def dump_svd_path(env):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - dump_svd_path \n\n")
     svd_path = env.GetProjectOption("debug_svd_path")
     if svd_path:
         return os.path.abspath(svd_path)
@@ -134,11 +144,15 @@ def dump_svd_path(env):
 
 
 def _split_flags_string(env, s):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - _split_flags_string \n\n")
     args = env.subst_list(s, SCons.Subst.SUBST_CMD)[0]
     return [str(arg) for arg in args]
 
 
 def DumpIntegrationData(*args):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - DumpIntegrationData \n\n")
     projenv, globalenv = args[0:2]  # pylint: disable=unbalanced-tuple-unpacking
     data = {
         "build_type": globalenv.GetBuildType(),
@@ -180,6 +194,8 @@ def exists(_):
 
 
 def generate(env):
+    if DEBUG == 1:
+        print("Debug: Entering - builder - tools - piointegration - generate \n\n")
     env["IDE_EXTRA_DATA"] = {}  # legacy support
     env["INTEGRATION_EXTRA_DATA"] = {}
     env.AddMethod(IsIntegrationDump)

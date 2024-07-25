@@ -19,6 +19,7 @@ from platformio.compat import PY36, is_proxy_set
 
 def get_core_dependencies():
     return {
+        "contrib-piocustom":"0.0.1",
         "contrib-piohome": "~3.4.2",
         "contrib-pioremote": "~1.0.0",
         "tool-scons": "~4.40700.0",

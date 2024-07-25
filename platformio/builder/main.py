@@ -32,9 +32,14 @@ from platformio import app, fs
 from platformio.platform.base import PlatformBase
 from platformio.proc import get_pythonexe_path
 from platformio.project.helpers import get_project_dir
+from platformio.debug_const import DEBUG
 
 AllowSubstExceptions(NameError)
 
+
+
+if DEBUG == 1:
+    print("Debug: Entering - builder - main \n\n")
 # append CLI arguments to build environment
 clivars = Variables(None)
 clivars.AddVariables(
@@ -45,6 +50,7 @@ clivars.AddVariables(
     ("UPLOAD_PORT",),
     ("PROGRAM_ARGS",),
 )
+
 
 DEFAULT_ENV_OPTIONS = dict(
     tools=[
