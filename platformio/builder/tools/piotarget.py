@@ -48,13 +48,28 @@ def CleanProject(env, fullclean=False):
         print(f"Removing {clean_rel_path}")
         fs.rmtree(path)
 
-    build_dir = env.subst("$BUILD_DIR")
+    def _clean_file(path):
+            if os.path.exists(path):
+                print(f"Removing {path}")
+                os.remove(path)
+            else:
+                print(f"{path} does not exist")
+
+
+    bin_dir = env.subst("$BIN_DIR")
     libdeps_dir = env.subst(os.path.join("$PROJECT_LIBDEPS_DIR", "$PIOENV"))
-    if os.path.isdir(build_dir):
-        _clean_dir(build_dir)
+    files_to_remove = [
+        "./.autogen_task_list.ld",
+        "./.config"
+    ]
+    if os.path.isdir(bin_dir):
+        _clean_dir(bin_dir)
     else:
         print("Build environment is clean")
 
+    for file_path in files_to_remove:
+        _clean_file(file_path)
+    
     if fullclean and os.path.isdir(libdeps_dir):
         _clean_dir(libdeps_dir)
 
