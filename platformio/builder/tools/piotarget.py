@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import subprocess
 
 from SCons.Action import Action  # pylint: disable=import-error
 from SCons.Script import ARGUMENTS  # pylint: disable=import-error
@@ -32,46 +33,48 @@ def IsCleanTarget(env):
 
 
 def CleanProject(env, fullclean=False):
-    def _relpath(path):
-        if compat.IS_WINDOWS:
-            prefix = os.getcwd()[:2].lower()
-            if (
-                ":" not in prefix
-                or not path.lower().startswith(prefix)
-                or os.path.relpath(path).startswith("..")
-            ):
-                return path
-        return os.path.relpath(path)
+    # def _relpath(path):
+    #     if compat.IS_WINDOWS:
+    #         prefix = os.getcwd()[:2].lower()
+    #         if (
+    #             ":" not in prefix
+    #             or not path.lower().startswith(prefix)
+    #             or os.path.relpath(path).startswith("..")
+    #         ):
+    #             return path
+    #     return os.path.relpath(path)
 
-    def _clean_dir(path):
-        clean_rel_path = _relpath(path)
-        print(f"Removing {clean_rel_path}")
-        fs.rmtree(path)
+    # def _clean_dir(path):
+    #     clean_rel_path = _relpath(path)
+    #     print(f"Removing {clean_rel_path}")
+    #     fs.rmtree(path)
 
-    def _clean_file(path):
-            if os.path.exists(path):
-                print(f"Removing {path}")
-                os.remove(path)
-            else:
-                print(f"{path} does not exist")
+    # build_dir = env.subst("$BUILD_DIR")
+    # libdeps_dir = env.subst(os.path.join("$PROJECT_LIBDEPS_DIR", "$PIOENV"))
+    # if os.path.isdir(build_dir):
+    #     _clean_dir(build_dir)
+    # else:
+    #     print("Build environment is clean")
 
+    # if fullclean and os.path.isdir(libdeps_dir):
+    #     _clean_dir(libdeps_dir)
 
-    bin_dir = env.subst("$BIN_DIR")
-    libdeps_dir = env.subst(os.path.join("$PROJECT_LIBDEPS_DIR", "$PIOENV"))
-    files_to_remove = [
-        "./.autogen_task_list.ld",
-        "./.config"
-    ]
-    if os.path.isdir(bin_dir):
-        _clean_dir(bin_dir)
-    else:
-        print("Build environment is clean")
+    def _run_make_command(command):
+        try:
+            result = subprocess.run(['make', command], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            print(result.stdout.decode())
+        except subprocess.CalledProcessError as e:
+            print(f"Error during make {command}: {e}")
+            print(f"stdout: {e.stdout.decode()}")
+            print(f"stderr: {e.stderr.decode()}")
+        except Exception as e:
+            print(f"Unexpected error during make {command}: {e}")
 
-    for file_path in files_to_remove:
-        _clean_file(file_path)
-    
-    if fullclean and os.path.isdir(libdeps_dir):
-        _clean_dir(libdeps_dir)
+    _run_make_command('clean')
+
+    if fullclean:
+        print('Running command make mrproper')
+        _run_make_command('mrproper')
 
     print("Done cleaning")
 

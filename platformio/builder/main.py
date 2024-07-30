@@ -84,7 +84,6 @@ DEFAULT_ENV_OPTIONS = dict(
     COMPILATIONDB_PATH=os.path.join("$PROJECT_DIR", "compile_commands.json"),
     LIBPATH=["$BUILD_DIR"],
     PROGNAME="program",
-    BIN_DIR=os.path.join("$PROJECT_DIR", "bin"),
     PROGPATH=os.path.join("$BUILD_DIR", "$PROGNAME$PROGSUFFIX"),
     PROG_PATH="$PROGPATH",  # deprecated
     PYTHONEXE=get_pythonexe_path(),
