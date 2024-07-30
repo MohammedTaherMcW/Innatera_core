@@ -169,7 +169,7 @@ def init_base_project(project_dir, spine_dir):
             (config.get("platformio", "lib_dir"), init_lib_readme),
             (config.get("platformio", "test_dir"), init_test_readme),
             (project_dir + "/talamo", None),
-            (project_dir + "/config", init_config_script),
+            (project_dir + "/configs", init_config_script),
             (project_dir + "/", init_makefile_script),
         ]
         for path, cb in dir_to_readme:
