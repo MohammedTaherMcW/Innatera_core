@@ -172,6 +172,12 @@ env.SConsignFile(
 
 env.SConscript(env.GetExtraScripts("pre"), exports="env")
 
+if env.isBuildTarget():
+    build_type = 'debug' if "makedebug" in COMMAND_LINE_TARGETS else 'release' if "makerelease" in COMMAND_LINE_TARGETS else None
+    if build_type:
+        env.ExecuteBuildProject(build_type=build_type)
+    env.Exit(0)
+  
 if env.IsCleanTarget():
     env.CleanProject(fullclean=int(ARGUMENTS.get("FULLCLEAN", 0)))
     env.Exit(0)
