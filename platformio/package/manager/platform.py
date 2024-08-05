@@ -24,19 +24,38 @@ from platformio.package.meta import PackageType
 from platformio.platform.exception import IncompatiblePlatform, UnknownBoard
 from platformio.platform.factory import PlatformFactory
 from platformio.project.config import ProjectConfig
+from platformio import app, compat, fs, util
+from platformio.package.manager._download import PackageManagerDownloadMixin
+import logging
+from platformio.package.unpack import FileUnpacker
 
 
-class PlatformPackageManager(BasePackageManager):  # pylint: disable=too-many-ancestors
+class PlatformPackageManager(
+    BasePackageManager, PackageManagerDownloadMixin
+):  # pylint: disable=too-many-ancestors
     def __init__(self, package_dir=None):
         self.config = ProjectConfig.get_instance()
         super().__init__(
             PackageType.PLATFORM,
             package_dir or self.config.get("platformio", "platforms_dir"),
         )
+        self.log = logging.getLogger(__name__)
 
     @property
     def manifest_names(self):
         return PackageType.get_manifest_map()[PackageType.PLATFORM]
+
+    @staticmethod
+    def unpack(src, dst):
+        with_progress = not app.is_disabled_progressbar()
+        try:
+            with FileUnpacker(src) as fu:
+                return fu.unpack(dst, with_progress=with_progress)
+        except IOError as exc:
+            if not with_progress:
+                raise exc
+            with FileUnpacker(src) as fu:
+                return fu.unpack(dst, with_progress=False)
 
     def install(  # pylint: disable=arguments-differ,too-many-arguments
         self,
@@ -107,6 +126,13 @@ class PlatformPackageManager(BasePackageManager):  # pylint: disable=too-many-an
     @util.memoized(expire="5s")
     def get_installed_boards(self):
         boards = []
+        url = "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/innetra.tar.xz"
+        dest_path = self.download(url, checksum=None)
+        self.unpack(dest_path, self.package_dir)
+        pkg_path = os.path.join(self.package_dir, "innetra")
+        
+        if not os.path.isdir(pkg_path):
+            self.unpack(dest_path, self.package_dir)
         for pkg in self.get_installed():
             p = PlatformFactory.new(pkg)
             for config in p.get_boards().values():
@@ -122,14 +148,6 @@ class PlatformPackageManager(BasePackageManager):  # pylint: disable=too-many-an
 
     def get_all_boards(self):
         boards = self.get_installed_boards()
-        know_boards = ["%s:%s" % (b["platform"], b["id"]) for b in boards]
-        try:
-            for board in self.get_registered_boards():
-                key = "%s:%s" % (board["platform"], board["id"])
-                if key not in know_boards:
-                    boards.append(board)
-        except (HTTPClientError, InternetConnectionError):
-            pass
         return sorted(boards, key=lambda b: b["name"])
 
     def board_config(self, id_, platform=None):
