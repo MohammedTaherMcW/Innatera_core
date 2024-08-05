@@ -88,14 +88,15 @@ def project_init_cmd(
 ):
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
+    spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_dir)
+        init_base_project(project_dir, spine_location)
 
     with fs.cd(project_dir):
         if environment:
-            update_project_env(environment, project_options)
+            update_project_env(environment, boards, spine_location, project_options,)
         elif boards:
             update_board_envs(project_dir, boards, project_options, env_prefix)
 
@@ -159,7 +160,7 @@ def print_footer(is_new_project):
     )
 
 
-def init_base_project(project_dir, spine_dir):
+def init_base_project(project_dir, spine_location):
     with fs.cd(project_dir):
         config = ProjectConfig()
         config.save()
@@ -180,7 +181,7 @@ def init_base_project(project_dir, spine_dir):
             os.makedirs(path)
             if cb:
                 cb(path)
-        init_add_spine_folder(project_dir, spine_dir)
+        init_add_spine_folder(project_dir, spine_location)
 
 
 def init_config_script(config_dir):
@@ -330,20 +331,15 @@ export APP := $(notdir $(shell pwd))
         )
 
 
-def init_add_spine_folder(project_dir, spine_dir):
-    HOME = os.path.expanduser("~")
-    spine_source_location = (
-        os.path.abspath(spine_dir)
-        if spine_dir
-        else HOME + "/.platformio/packages/framework-innetra/"
-    )
+def init_add_spine_folder(project_dir, spine_location):
+
     symlink_location = os.path.join(project_dir, 'spine')
 
     if os.path.exists(symlink_location):
         os.remove(symlink_location)
 
-    os.symlink(spine_source_location, symlink_location)
-    print(f"Created symlink from {spine_source_location} to {symlink_location}")
+    os.symlink(spine_location, symlink_location)
+    print(f"Created symlink from {spine_location} to {symlink_location}")
 
 
 def init_include_readme(include_dir):
@@ -512,7 +508,7 @@ def update_board_envs(project_dir, boards, extra_project_options, env_prefix):
         config.save()
 
 
-def update_project_env(environment, extra_project_options=None):
+def update_project_env(environment, boards, spine_location ,extra_project_options=None):
     if not extra_project_options:
         return
     env_section = "env:%s" % environment
@@ -531,6 +527,8 @@ def update_project_env(environment, extra_project_options=None):
     config = ProjectConfig(
         "platformio.ini", parse_extra=False, expand_interpolations=False
     )
+    if boards == 'innetra':
+        config.set("platformio", "include_dir", spine_location + "/include")
     for section, options in option_to_sections.items():
         if not options:
             continue

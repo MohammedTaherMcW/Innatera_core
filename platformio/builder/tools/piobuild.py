@@ -15,6 +15,7 @@
 import fnmatch
 import os
 import sys
+import subprocess
 
 from SCons import Builder, Util  # pylint: disable=import-error
 from SCons.Node import FS  # pylint: disable=import-error
@@ -35,6 +36,27 @@ SRC_C_EXT = ["c"]
 SRC_CXX_EXT = ["cc", "cpp", "cxx", "c++"]
 SRC_BUILD_EXT = SRC_C_EXT + SRC_CXX_EXT + SRC_ASM_EXT
 SRC_FILTER_DEFAULT = ["+<*>", "-<.git%s>" % os.sep, "-<.svn%s>" % os.sep]
+
+
+def isBuildTarget(env):
+    return "makedebug" in COMMAND_LINE_TARGETS or "makerelease" in COMMAND_LINE_TARGETS
+
+def ExecuteBuildProject(env, build_type):
+    print(f"Running build type {build_type}")
+    try:
+        config_path = os.path.join(env.subst("$PROJECT_DIR"), ".config")
+        if not os.path.isfile(config_path):
+            print(".config file not found! Running 'make defconfig' first.")
+            result = subprocess.run(['make', 'defconfig'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            print(result.stdout.decode())
+        result = subprocess.run(['make', f'BUILD={build_type}'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(result.stdout.decode())
+    except subprocess.CalledProcessError as e:
+        print(f"Error during make {build_type}: {e}")
+        print(f"stdout: {e.stdout.decode()}")
+        print(f"stderr: {e.stderr.decode()}")
+    except Exception as e:
+        print(f"Unexpected error during make {build_type}: {e}")
 
 
 def scons_patched_match_splitext(path, suffixes=None):
@@ -412,6 +434,8 @@ def generate(env):
     if DEBUG == 1:
         print("Debug: Entering - builder - tools - piobuild - generate \n\n")
     env.AddMethod(GetBuildType)
+    env.AddMethod(isBuildTarget)
+    env.AddMethod(ExecuteBuildProject)
     env.AddMethod(BuildProgram)
     env.AddMethod(ProcessProgramDeps)
     env.AddMethod(ProcessCompileDbToolchainOption)
