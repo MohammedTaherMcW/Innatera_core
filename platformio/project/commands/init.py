@@ -96,7 +96,7 @@ def project_init_cmd(
 
     with fs.cd(project_dir):
         if environment:
-            update_project_env(environment, boards, spine_location, project_options,)
+            update_project_env(environment, project_options)
         elif boards:
             update_board_envs(project_dir, boards, project_options, env_prefix)
 
@@ -508,7 +508,7 @@ def update_board_envs(project_dir, boards, extra_project_options, env_prefix):
         config.save()
 
 
-def update_project_env(environment, boards, spine_location ,extra_project_options=None):
+def update_project_env(environment, extra_project_options=None):
     if not extra_project_options:
         return
     env_section = "env:%s" % environment
@@ -527,8 +527,6 @@ def update_project_env(environment, boards, spine_location ,extra_project_option
     config = ProjectConfig(
         "platformio.ini", parse_extra=False, expand_interpolations=False
     )
-    if boards == 'innetra':
-        config.set("platformio", "include_dir", spine_location + "/include")
     for section, options in option_to_sections.items():
         if not options:
             continue

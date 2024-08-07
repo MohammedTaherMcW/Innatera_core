@@ -15,6 +15,8 @@
 import glob
 import os
 
+import click
+
 import SCons.Defaults  # pylint: disable=import-error
 import SCons.Subst  # pylint: disable=import-error
 from SCons.Script import COMMAND_LINE_TARGETS  # pylint: disable=import-error
@@ -22,11 +24,20 @@ from SCons.Script import COMMAND_LINE_TARGETS  # pylint: disable=import-error
 from platformio.proc import exec_command, where_is_program
 from platformio.debug_const import DEBUG
 
+@click.option(
+    "--spine-dir",
+    "-sl",
+    default=None,
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
+)
 def IsIntegrationDump(_):
     if DEBUG == 1:
         print("Debug: Entering - builder - tools - piointegration - IsIntegrationDump \n\n")
     return set(["__idedata", "idedata"]) & set(COMMAND_LINE_TARGETS)
 
+def get_spine_location(spine_dir):
+    spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
+    return spine_location
 
 def DumpIntegrationIncludes(env):
     if DEBUG == 1:
@@ -58,7 +69,9 @@ def DumpIntegrationIncludes(env):
         ]
         for g in toolchain_incglobs:
             result["toolchain"].extend([os.path.abspath(inc) for inc in glob.glob(g)])
-
+    spine_location = get_spine_location(env.get('spine_dir'))
+    if spine_location:
+            result["build"].append(os.path.abspath(spine_location + '/include'))
     return result
 
 
