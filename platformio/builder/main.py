@@ -84,7 +84,7 @@ DEFAULT_ENV_OPTIONS = dict(
     COMPILATIONDB_PATH=os.path.join("$PROJECT_DIR", "compile_commands.json"),
     LIBPATH=["$BUILD_DIR"],
     PROGNAME="program",
-    PROGPATH=os.path.join("$BUILD_DIR", "$PROGNAME$PROGSUFFIX"),
+    PROGPATH=os.path.join("$PROJECT_DIR", "$PROGNAME$PROGSUFFIX"),
     PROG_PATH="$PROGPATH",  # deprecated
     PYTHONEXE=get_pythonexe_path(),
 )
@@ -240,7 +240,7 @@ if env.IsIntegrationDump():
         mode="w",
         encoding="utf8",
     ) as fp:
-        json.dump(data, fp)
+        json.dump(data, fp, indent=4)
     click.echo("\n%s\n" % json.dumps(data))  # pylint: disable=undefined-variable
     env.Exit(0)
 
