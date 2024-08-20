@@ -58,6 +58,8 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     default=None,
     type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
 )
+@click.option("--language", "-l", default="cpp")
+
 @click.option(
     "-b", "--board", "boards", multiple=True, metavar="ID", callback=validate_boards
 )
@@ -85,14 +87,18 @@ def project_init_cmd(
     no_install_dependencies,
     env_prefix,
     silent,
+    language,
 ):
+    click.echo("Initializing project at %s" % project_dir)
+    click.echo("Initializing project at %s" % language)
+    
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_location)
+        init_base_project(project_dir, spine_location, language)
 
     with fs.cd(project_dir):
         if environment:
@@ -159,9 +165,8 @@ def print_footer(is_new_project):
         fg="green",
     )
 
-
-def init_base_project(project_dir, spine_location):
-    with fs.cd(project_dir):
+def init_cpp_template(project_dir):
+      with fs.cd(project_dir):
         config = ProjectConfig()
         config.save()
         dir_to_readme = [
@@ -181,7 +186,29 @@ def init_base_project(project_dir, spine_location):
             os.makedirs(path)
             if cb:
                 cb(path)
+
+def init_base_project(project_dir, spine_location, project):
+    
+    if (project =="cpp"):
+
+        init_cpp_template(project_dir)
         init_add_spine_folder(project_dir, spine_location)
+
+    elif (project == "py"):
+        
+        init_add_talamo_folder(project_dir, spine_location)
+
+
+def init_add_talamo_folder(project_dir, spine_location):
+
+    symlink_location = os.path.join(project_dir, 'talamo_src')
+
+    if os.path.exists(symlink_location):
+        os.remove(symlink_location)
+
+    os.symlink(spine_location, symlink_location)
+    print(f"Created symlink from {spine_location} to {symlink_location}")
+
 
 
 def init_config_script(config_dir):
