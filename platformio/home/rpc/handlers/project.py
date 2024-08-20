@@ -190,7 +190,7 @@ class ProjectRPC(BaseRPCHandler):
             )
         return sorted(result, key=lambda data: data["platform"]["title"])
 
-    async def init(self, board, framework, project_dir, spine_dir):
+    async def init(self, board, framework, project_dir, spine_dir, language="cpp"):
         assert project_dir
         if not os.path.isdir(project_dir):
             os.makedirs(project_dir)
@@ -199,6 +199,8 @@ class ProjectRPC(BaseRPCHandler):
             args.extend(["--project-option", "framework = %s" % framework])
         if spine_dir:
             args.extend(["--spine-dir", spine_dir])
+        if language:
+            args.extend(["--language", language])
         ide = app.get_session_var("caller_id")
         if ide in ProjectGenerator.get_supported_ides():
             args.extend(["--ide", ide])
