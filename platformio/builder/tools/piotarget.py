@@ -87,13 +87,14 @@ def AddTarget(  # pylint: disable=too-many-arguments
     title=None,
     description=None,
     group="General",
+    language = "cpp",
     always_build=True,
 ):
     if "__PIO_TARGETS" not in env:
         env["__PIO_TARGETS"] = {}
     assert name not in env["__PIO_TARGETS"]
     env["__PIO_TARGETS"][name] = dict(
-        name=name, title=title, description=description, group=group
+        name=name, title=title, description=description, group=group, language=language
     )
     target = env.Alias(name, dependencies, actions)
     if always_build:
