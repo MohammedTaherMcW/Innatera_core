@@ -17,6 +17,7 @@
 
 import json
 import os
+import subprocess
 
 import click
 
@@ -29,6 +30,7 @@ from platformio.project.config import ProjectConfig
 from platformio.project.exception import UndefinedEnvPlatformError
 from platformio.project.helpers import is_platformio_project
 from platformio.project.integration.generator import ProjectGenerator
+from platformio.platform._packages import PlatformPackagesMixin
 from platformio.project.options import ProjectOptions
 
 
@@ -94,7 +96,7 @@ def project_init_cmd(
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_location, project_options)
+        init_base_project(project_dir, spine_location, language)
 
     with fs.cd(project_dir):
         if environment:
@@ -205,7 +207,27 @@ def init_add_talamo_folder(project_dir, spine_location):
     os.symlink(spine_location, symlink_location)
     print(f"Created symlink from {spine_location} to {symlink_location}")
 
-
+def install_python_project(project_dir):
+    script_path = PlatformPackagesMixin.get_package_dir('python-project')
+    script_path = os.path.join(script_path, 'whl_installation.sh')
+    
+    if not os.path.isfile(script_path):
+        print(f"Error: The script {script_path} does not exist.")
+        return
+    
+    if not os.access(script_path, os.X_OK):
+        print(f"Error: The script {script_path} is not executable.")
+        return
+    
+    try:
+        result = subprocess.run([script_path, project_dir], check=True, capture_output=True, text=True)
+        print(f"Script output:\n{result.stdout}")
+        print(f"Script error output:\n{result.stderr}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Script returned a non-zero exit code {e.returncode}")
+        print(f"Script output:\n{e.output}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def init_config_script(config_dir):
     with open(
