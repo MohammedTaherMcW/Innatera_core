@@ -58,8 +58,6 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     default=None,
     type=click.Path(exists=True, file_okay=False, dir_okay=True, writable=True),
 )
-@click.option("--language", "-l", default="cpp")
-
 @click.option(
     "-b", "--board", "boards", multiple=True, metavar="ID", callback=validate_boards
 )
@@ -87,10 +85,8 @@ def project_init_cmd(
     no_install_dependencies,
     env_prefix,
     silent,
-    language,
 ):
     click.echo("Initializing project at %s" % project_dir)
-    click.echo("Initializing project at %s" % language)
     
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
@@ -98,7 +94,7 @@ def project_init_cmd(
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_location, language)
+        init_base_project(project_dir, spine_location, project_options)
 
     with fs.cd(project_dir):
         if environment:
@@ -187,14 +183,14 @@ def init_cpp_template(project_dir):
             if cb:
                 cb(path)
 
-def init_base_project(project_dir, spine_location, project):
+def init_base_project(project_dir, spine_location, framework):
     
-    if (project =="cpp"):
+    if (framework =="cpp"):
 
         init_cpp_template(project_dir)
         init_add_spine_folder(project_dir, spine_location)
 
-    elif (project == "py"):
+    elif (framework == "py"):
         
         init_add_talamo_folder(project_dir, spine_location)
 
