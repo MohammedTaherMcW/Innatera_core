@@ -55,7 +55,7 @@ class ProjectRPC(BaseRPCHandler):
         ).as_tuple()
 
     @staticmethod
-    def config_dump(path, data):        
+    def config_dump(path, data):
         config = ProjectConfig(path, parse_extra=False, expand_interpolations=False)
         config.update(data, clear=True)
         return config.save()
