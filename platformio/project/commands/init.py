@@ -93,10 +93,12 @@ def project_init_cmd(
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
+    framework = PlatformPackagesMixin.get_package_dir('talamo')
+    is_talamo_project = True if framework else False
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_location, language)
+        init_base_project(project_dir, spine_location, is_talamo_project)
 
     with fs.cd(project_dir):
         if environment:
@@ -185,30 +187,31 @@ def init_cpp_template(project_dir):
             if cb:
                 cb(path)
 
-def init_base_project(project_dir, spine_location, framework):
+def init_base_project(project_dir, spine_location, is_talamo_project):
     
-    if (framework =="cpp"):
-
+    if is_talamo_project:
+        init_add_talamo_folder(project_dir)
+        install_talamo_project(project_dir)
+    else:
         init_cpp_template(project_dir)
         init_add_spine_folder(project_dir, spine_location)
 
-    elif (framework == "py"):
-        
-        init_add_talamo_folder(project_dir, spine_location)
+
+def init_add_talamo_folder(project_dir):
+    talamo_folder_path = os.path.join(project_dir, 'talamo')
+    os.makedirs(talamo_folder_path, exist_ok=True)
+    init_talamo_script(talamo_folder_path)
 
 
-def init_add_talamo_folder(project_dir, spine_location):
+def init_talamo_script(talamo_folder_path):
+    sample_file_path = os.path.join(talamo_folder_path, 'sample.py')
+    
+    with open(sample_file_path, 'w') as file:
+        file.write('import talamo\n')
 
-    symlink_location = os.path.join(project_dir, 'talamo_src')
 
-    if os.path.exists(symlink_location):
-        os.remove(symlink_location)
-
-    os.symlink(spine_location, symlink_location)
-    print(f"Created symlink from {spine_location} to {symlink_location}")
-
-def install_python_project(project_dir):
-    script_path = PlatformPackagesMixin.get_package_dir('python-project')
+def install_talamo_project(project_dir):
+    script_path = PlatformPackagesMixin.get_package_dir('talamo')
     script_path = os.path.join(script_path, 'whl_installation.sh')
     
     if not os.path.isfile(script_path):
@@ -228,6 +231,7 @@ def install_python_project(project_dir):
         print(f"Script output:\n{e.output}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+
 
 def init_config_script(config_dir):
     with open(

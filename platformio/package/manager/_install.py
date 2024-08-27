@@ -65,9 +65,9 @@ class PackageManagerInstallMixin:
             spec.uri = (
                 "https://github.com/Ineshmcw/Innatera_home_build"
             )
-        elif spec.name == "python-project":
+        elif spec.name == "talamo":
             spec.uri = (
-                "https://github.com/Ineshmcw/Python"
+                "https://github.com/Ineshmcw/talamo"
             )
 
         if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra" or spec.name == "contrib-piocustom"):
@@ -195,7 +195,7 @@ class PackageManagerInstallMixin:
         tmp_dir = tempfile.mkdtemp(prefix="pkg-installing-", dir=self.get_tmp_dir())
         vcs = None
         try:
-            if spec.name == "contrib-piohome" or spec.name == "python-project":
+            if spec.name == "contrib-piohome" or spec.name == "talamo":
                 repo_dir = os.path.join(tmp_dir, spec.name)
                 if not os.path.isdir(repo_dir):
                     subprocess.check_call(["git", "clone", uri, repo_dir])
