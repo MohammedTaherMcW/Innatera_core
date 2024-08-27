@@ -32,7 +32,7 @@ from platformio.project.helpers import is_platformio_project
 from platformio.project.integration.generator import ProjectGenerator
 from platformio.platform._packages import PlatformPackagesMixin
 from platformio.project.options import ProjectOptions
-
+from platformio.package.manager.core import get_core_package_dir
 
 def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     pm = PlatformPackageManager()
@@ -93,8 +93,7 @@ def project_init_cmd(
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
-    framework = PlatformPackagesMixin.get_package_dir('talamo')
-    is_talamo_project = True if framework else False
+    is_talamo_project = True if project_options == 'talamo' else False
     if is_new_project:
         if not silent:
             print_header(project_dir)
@@ -211,7 +210,7 @@ def init_talamo_script(talamo_folder_path):
 
 
 def install_talamo_project(project_dir):
-    script_path = PlatformPackagesMixin.get_package_dir('talamo')
+    script_path  = get_core_package_dir('talamo')
     script_path = os.path.join(script_path, 'whl_installation.sh')
     
     if not os.path.isfile(script_path):
