@@ -167,6 +167,8 @@ def is_container():
 def get_pythonexe_path():
     return os.environ.get("PYTHONEXEPATH", os.path.normpath(sys.executable))
 
+def get_virtualenv_path():
+    return os.path.basename(os.getcwd())+"_venv"
 
 def copy_pythonpath_to_osenv():
     _PYTHONPATH = []
