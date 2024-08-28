@@ -93,7 +93,7 @@ def project_init_cmd(
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
-    is_talamo_project = True if project_options == 'talamo' else False
+    is_talamo_project = any('talamo' in o for o in (project_options or ()))
     if is_new_project:
         if not silent:
             print_header(project_dir)
