@@ -17,6 +17,7 @@
 
 import json
 import os
+import subprocess
 
 import click
 
@@ -29,8 +30,9 @@ from platformio.project.config import ProjectConfig
 from platformio.project.exception import UndefinedEnvPlatformError
 from platformio.project.helpers import is_platformio_project
 from platformio.project.integration.generator import ProjectGenerator
+from platformio.platform._packages import PlatformPackagesMixin
 from platformio.project.options import ProjectOptions
-
+from platformio.package.manager.core import get_core_package_dir
 
 def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     pm = PlatformPackageManager()
@@ -86,13 +88,16 @@ def project_init_cmd(
     env_prefix,
     silent,
 ):
+    click.echo("Initializing project at %s" % project_dir)
+    
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
+    is_talamo_project = any('talamo' in o for o in (project_options or ()))
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_location)
+        init_base_project(project_dir, spine_location, is_talamo_project)
 
     with fs.cd(project_dir):
         if environment:
@@ -159,9 +164,8 @@ def print_footer(is_new_project):
         fg="green",
     )
 
-
-def init_base_project(project_dir, spine_location):
-    with fs.cd(project_dir):
+def init_cpp_template(project_dir):
+      with fs.cd(project_dir):
         config = ProjectConfig()
         config.save()
         dir_to_readme = [
@@ -181,7 +185,51 @@ def init_base_project(project_dir, spine_location):
             os.makedirs(path)
             if cb:
                 cb(path)
+
+def init_base_project(project_dir, spine_location, is_talamo_project):
+    
+    if is_talamo_project:
+        init_add_talamo_folder(project_dir)
+        install_talamo_project(project_dir)
+    else:
+        init_cpp_template(project_dir)
         init_add_spine_folder(project_dir, spine_location)
+
+
+def init_add_talamo_folder(project_dir):
+    talamo_folder_path = os.path.join(project_dir, 'talamo')
+    os.makedirs(talamo_folder_path, exist_ok=True)
+    init_talamo_script(talamo_folder_path)
+
+
+def init_talamo_script(talamo_folder_path):
+    sample_file_path = os.path.join(talamo_folder_path, 'sample.py')
+    
+    with open(sample_file_path, 'w') as file:
+        file.write('import talamo\n')
+
+
+def install_talamo_project(project_dir):
+    script_path  = get_core_package_dir('talamo')
+    script_path = os.path.join(script_path, 'whl_installation.sh')
+    
+    if not os.path.isfile(script_path):
+        print(f"Error: The script {script_path} does not exist.")
+        return
+    
+    if not os.access(script_path, os.X_OK):
+        print(f"Error: The script {script_path} is not executable.")
+        return
+    
+    try:
+        result = subprocess.run([script_path, project_dir], check=True, capture_output=True, text=True)
+        print(f"Script output:\n{result.stdout}")
+        print(f"Script error output:\n{result.stderr}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Script returned a non-zero exit code {e.returncode}")
+        print(f"Script output:\n{e.output}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 
 def init_config_script(config_dir):

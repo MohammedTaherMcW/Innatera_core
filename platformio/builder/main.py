@@ -30,7 +30,7 @@ from SCons.Script import Variables  # pylint: disable=import-error
 
 from platformio import app, fs
 from platformio.platform.base import PlatformBase
-from platformio.proc import get_pythonexe_path
+from platformio.proc import get_pythonexe_path, get_virtualenv_path
 from platformio.project.helpers import get_project_dir
 from platformio.debug_const import DEBUG
 
@@ -87,6 +87,8 @@ DEFAULT_ENV_OPTIONS = dict(
     PROGPATH=os.path.join("$PROJECT_DIR", "$PROGNAME$PROGSUFFIX"),
     PROG_PATH="$PROGPATH",  # deprecated
     PYTHONEXE=get_pythonexe_path(),
+    VIRTUAL_DIR=os.path.join("$PROJECT_DIR",get_virtualenv_path())
+
 )
 
 # Declare command verbose messages
