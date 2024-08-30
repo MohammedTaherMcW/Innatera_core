@@ -101,7 +101,7 @@ def project_init_cmd(
 
     with fs.cd(project_dir):
         if environment:
-            update_project_env(environment, boards, spine_location, project_options,)
+            update_project_env(environment, boards, spine_location, project_options)
         elif boards:
             update_board_envs(project_dir, boards, project_options, env_prefix)
 
@@ -110,7 +110,7 @@ def project_init_cmd(
         if ide:
             config.validate()
             # init generator and pick the best env if user didn't specify
-            generator = ProjectGenerator(config, environment, ide, boards)
+            generator = ProjectGenerator(config, environment, ide, boards, is_talamo_project)
             if not environment:
                 environment = generator.env_name
 
