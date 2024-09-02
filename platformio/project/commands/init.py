@@ -93,11 +93,20 @@ def project_init_cmd(
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
-    is_talamo_project = any('talamo' in o for o in (project_options or ()))
+    
+    project_type = None
+    for o in (project_options or ()):
+        if 'talamo' in o:
+            project_type = 'talamo'
+        elif 'spine' in o:
+            project_type = 'spine'
+        elif 'combine' in o:
+            project_type = 'combine'
+
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_location, is_talamo_project)
+        init_base_project(project_dir, spine_location, project_type)
 
     with fs.cd(project_dir):
         if environment:
@@ -186,12 +195,18 @@ def init_cpp_template(project_dir):
             if cb:
                 cb(path)
 
-def init_base_project(project_dir, spine_location, is_talamo_project):
-    
-    if is_talamo_project:
+def init_base_project(project_dir, spine_location, project_type):    
+    if project_type == 'talamo':
         init_add_talamo_folder(project_dir)
         install_talamo_project(project_dir)
-    else:
+    elif project_type == 'spine':
+        
+        init_cpp_template(project_dir)
+        init_add_spine_folder(project_dir, spine_location)
+    elif project_type == 'combine':
+
+        init_add_talamo_folder(project_dir)
+        install_talamo_project(project_dir)
         init_cpp_template(project_dir)
         init_add_spine_folder(project_dir, spine_location)
 
