@@ -101,7 +101,7 @@ def project_init_cmd(
 
     with fs.cd(project_dir):
         if environment:
-            update_project_env(environment, boards, spine_location, project_options)
+            update_project_env(environment, project_options)
         elif boards:
             update_board_envs(project_dir, boards, project_options, env_prefix)
 
