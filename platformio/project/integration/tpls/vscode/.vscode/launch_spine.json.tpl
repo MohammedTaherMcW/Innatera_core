@@ -99,7 +99,7 @@
 %
 // AUTOMATICALLY GENERATED FILE. PLEASE DO NOT MODIFY IT MANUALLY
 //
-// PlatformIO Debugging Solution
+// Innatera Debugger
 //
 // Documentation: https://docs.platformio.org/en/latest/plus/debugging.html
 // Configuration: https://docs.platformio.org/en/latest/projectconf/sections/env/options/debug/index.html
