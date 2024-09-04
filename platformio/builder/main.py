@@ -30,7 +30,7 @@ from SCons.Script import Variables  # pylint: disable=import-error
 
 from platformio import app, fs
 from platformio.platform.base import PlatformBase
-from platformio.proc import get_pythonexe_path, get_virtualenv_path
+from platformio.proc import get_pythonexe_path, get_virtualenv_path, get_framework
 from platformio.project.helpers import get_project_dir
 from platformio.debug_const import DEBUG
 
@@ -88,8 +88,6 @@ DEFAULT_ENV_OPTIONS = dict(
     PROG_PATH="$PROGPATH",  # deprecated
     PYTHONEXE=get_pythonexe_path(),
     VIRTUAL_DIR=os.path.join("$PROJECT_DIR",get_virtualenv_path()),
-    PYTHON_BUILD_DIR  = "$PYTHON_BUILD_DIR",
-
 )
 
 # Declare command verbose messages
@@ -136,7 +134,6 @@ env.Replace(
     PROJECTDATA_DIR="$PROJECT_DATA_DIR",  # legacy for dev/platform
     PROJECT_BUILD_DIR=config.get("platformio", "build_dir"),
     BUILD_TYPE=env.GetBuildType(),
-    PYTHON_BUILD_DIR = config.get("python", "python_build_dir"),
     BUILD_CACHE_DIR=config.get("platformio", "build_cache_dir"),
     LIBSOURCE_DIRS=[
         config.get("platformio", "lib_dir"),
@@ -144,6 +141,12 @@ env.Replace(
         config.get("platformio", "globallib_dir"),
     ],
 )
+
+FRAMEWORK = get_framework(env.subst("$PROJECT_DIR"))
+if FRAMEWORK == 'combine':
+    env.Replace(
+        PYTHON_BUILD_DIR = config.get("python", "python_build_dir"),
+    )
 
 if int(ARGUMENTS.get("ISATTY", 0)):
     # pylint: disable=protected-access
