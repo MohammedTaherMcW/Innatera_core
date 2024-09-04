@@ -267,7 +267,9 @@ def update_board_envs(project_dir, boards, extra_project_options, env_prefix, bu
 
         for option, value in envopts.items():
             config.set(section, option, value)
-
+        if project_type == 'combine':   
+            config.add_section("python")
+            config.set("python", "python_build_dir", build_dir)
 
     if modified:
         config.save()
