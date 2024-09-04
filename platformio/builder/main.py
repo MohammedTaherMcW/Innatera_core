@@ -87,7 +87,8 @@ DEFAULT_ENV_OPTIONS = dict(
     PROGPATH=os.path.join("$PROJECT_DIR", "$PROGNAME$PROGSUFFIX"),
     PROG_PATH="$PROGPATH",  # deprecated
     PYTHONEXE=get_pythonexe_path(),
-    VIRTUAL_DIR=os.path.join("$PROJECT_DIR",get_virtualenv_path())
+    VIRTUAL_DIR=os.path.join("$PROJECT_DIR",get_virtualenv_path()),
+    PYTHON_BUILD_DIR  = "$PYTHON_BUILD_DIR",
 
 )
 
@@ -135,6 +136,7 @@ env.Replace(
     PROJECTDATA_DIR="$PROJECT_DATA_DIR",  # legacy for dev/platform
     PROJECT_BUILD_DIR=config.get("platformio", "build_dir"),
     BUILD_TYPE=env.GetBuildType(),
+    PYTHON_BUILD_DIR = config.get("python", "python_build_dir"),
     BUILD_CACHE_DIR=config.get("platformio", "build_cache_dir"),
     LIBSOURCE_DIRS=[
         config.get("platformio", "lib_dir"),
