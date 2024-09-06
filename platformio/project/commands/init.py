@@ -116,12 +116,6 @@ def project_init_cmd(
 ):
     click.echo("Initializing project at %s" % project_dir)
 
-    print("BuildDir , ", build_dir) 
-
-    print("spineDir , ", spine_dir) 
-    
-    print("env_prefix", environment)
-
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
@@ -153,7 +147,7 @@ def project_init_cmd(
         if ide:
             config.validate()
             # init generator and pick the best env if user didn't specify
-            generator = ProjectGenerator(config, environment, ide, boards, is_talamo_project)
+            generator = ProjectGenerator(config, environment, ide, boards, project_type)
             if not environment:
                 environment = generator.env_name
 
