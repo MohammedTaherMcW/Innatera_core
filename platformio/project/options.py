@@ -221,7 +221,7 @@ ProjectOptions = OrderedDict(
                 group="directory",
                 name="build_dir",
                 description=(
-                    "PlatformIO Build System uses this folder for project environments"
+                    "Innatera Build System uses this folder for project environments"
                     " to store compiled object files, static libraries, firmwares, "
                     "and other cached information"
                 ),
@@ -244,7 +244,7 @@ ProjectOptions = OrderedDict(
                 group="directory",
                 name="include_dir",
                 description=(
-                    "A default location for project header files. PlatformIO Build "
+                    "A default location for project header files. Innatera Build "
                     "System automatically adds this path to CPPPATH scope"
                 ),
                 sysenvvar="PLATFORMIO_INCLUDE_DIR",
