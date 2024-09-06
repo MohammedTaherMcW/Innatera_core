@@ -1,5 +1,5 @@
 #!/home/mohujs/Innatera/Innatera_core/innatera_core/bin/python3
-# EASY-INSTALL-ENTRY-SCRIPT: 'platformio==6.1.15','console_scripts','platformio'
+# EASY-INSTALL-ENTRY-SCRIPT: 'platformio==6.1.15','console_scripts','innaterapluginio'
 import re
 import sys
 
@@ -30,4 +30,4 @@ globals().setdefault('load_entry_point', importlib_load_entry_point)
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-    sys.exit(load_entry_point('platformio==6.1.15', 'console_scripts', 'platformio')())
+    sys.exit(load_entry_point('platformio==6.1.15', 'console_scripts', 'innaterapluginio')())
