@@ -56,7 +56,7 @@ def cli(port, host, no_open, shutdown_timeout, session_id):
             [
                 "",
                 "  ___I_",
-                " /\\-_--\\   PlatformIO Home",
+                " /\\-_--\\   Innatera Home",
                 "/  \\_-__\\",
                 "|[]| [] |  %s" % custom_url,
                 "|__|____|__%s" % ("_" * len(custom_url)),
@@ -64,11 +64,11 @@ def cli(port, host, no_open, shutdown_timeout, session_id):
         )
     )
     click.echo("")
-    click.echo("Open PlatformIO custom in your browser by this URL => %s" % custom_url)
+    click.echo("Open Innatera custom in your browser by this URL => %s" % custom_url)
 
     if is_port_used(host, port):
         click.secho(
-            "PlatformIO Custom server is already started in another process.",
+            "Innatera Custom server is already started in another process.",
             fg="yellow",
         )
         if not no_open:

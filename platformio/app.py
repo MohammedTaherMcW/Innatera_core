@@ -55,7 +55,7 @@ DEFAULT_SETTINGS = {
         "value": False,
     },
     "projects_dir": {
-        "description": "Default location for PlatformIO projects (PlatformIO Home)",
+        "description": "Default location for Innatera projects (Innatera Home)",
         "value": get_default_projects_dir(),
         "validator": projects_dir_validate,
     },
