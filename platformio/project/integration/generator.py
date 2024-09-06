@@ -25,12 +25,13 @@ from platformio.project.helpers import load_build_metadata
 
 
 class ProjectGenerator:
-    def __init__(self, config, env_name, ide, boards=None):
+    def __init__(self, config, env_name, ide, boards=None, is_talamo_project=None):
         self.config = config
         self.project_dir = os.path.dirname(config.path)
         self.forced_env_name = env_name
         self.env_name = str(env_name or self.get_best_envname(boards))
         self.ide = str(ide)
+        self.is_talamo_project = is_talamo_project
 
     def get_best_envname(self, boards=None):
         envname = None
@@ -156,6 +157,8 @@ class ProjectGenerator:
     def generate(self):
         tpl_vars = self._load_tplvars()
         for tpl_relpath, tpl_path in self.get_tpls():
+            if os.path.basename(tpl_path) in ["launch_talamo.json.tpl", "launch_spine.json.tpl"]:
+                continue
             dst_dir = self.project_dir
             if tpl_relpath:
                 dst_dir = os.path.join(self.project_dir, tpl_relpath)
@@ -164,6 +167,16 @@ class ProjectGenerator:
             file_name = os.path.basename(tpl_path)[:-4]
             contents = self._render_tpl(tpl_path, tpl_vars)
             self._merge_contents(os.path.join(dst_dir, file_name), contents)
+
+        if not os.path.isfile(self.project_dir + '/.vscode/launch.json'):
+            if self.is_talamo_project:
+                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
+            else:
+                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
+            dst_file_name = "launch.json"
+            dst_dir = os.path.join(self.project_dir, ".vscode")
+            contents = self._render_tpl(tpl_path, tpl_vars)
+            self._merge_contents(os.path.join(dst_dir, dst_file_name), contents)
 
     @staticmethod
     def _render_tpl(tpl_path, tpl_vars):
