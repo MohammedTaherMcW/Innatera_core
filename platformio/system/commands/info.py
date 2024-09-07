@@ -48,7 +48,7 @@ def system_info_cmd(json_output):
         "value": compat.get_locale_encoding(),
     }
     data["core_dir"] = {
-        "title": "PlatformIO Core Directory",
+        "title": "Innatera Core Directory",
         "value": project_config.get("platformio", "core_dir"),
     }
     data["platformio_exe"] = {
