@@ -38,7 +38,7 @@ def system_info_cmd(json_output):
         "value": "{0}.{1}.{2}-{3}.{4}".format(*list(sys.version_info)),
     }
     data["system"] = {"title": "System Type", "value": util.get_systype()}
-    data["platform"] = {"title": "Platform", "value": platform.platform(terse=True)}
+    data["pPlatformIO Core Directorylatform"] = {"title": "Platform", "value": platform.platform(terse=True)}
     data["filesystem_encoding"] = {
         "title": "File System Encoding",
         "value": compat.get_filesystem_encoding(),
