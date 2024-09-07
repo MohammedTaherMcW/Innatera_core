@@ -34,7 +34,7 @@ def get_installed_core_packages():
 
 def get_core_package_dir(name, spec=None, auto_install=True):
     if name not in get_core_dependencies():
-        raise exception.PlatformioException("Please upgrade PlatformIO Core")
+        raise exception.PlatformioException("Please upgrade Innatera Core")
     pm = ToolPackageManager()
     spec = spec or PackageSpec(
         owner="platformio", name=name, requirements=get_core_dependencies()[name]
