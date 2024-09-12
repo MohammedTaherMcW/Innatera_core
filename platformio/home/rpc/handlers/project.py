@@ -191,7 +191,6 @@ class ProjectRPC(BaseRPCHandler):
         return sorted(result, key=lambda data: data["platform"]["title"])
 
     async def init(self, board, framework, project_dir, spine_dir, build_dir):
-        print("Build DIR", build_dir)
         assert project_dir
         if not os.path.isdir(project_dir):
             os.makedirs(project_dir)
@@ -201,7 +200,6 @@ class ProjectRPC(BaseRPCHandler):
         if spine_dir:
             args.extend(["--spine-dir", spine_dir])
         if build_dir:
-            print("Build DIR Exists", build_dir)
             args.extend(["--build-dir", build_dir])
         ide = app.get_session_var("caller_id")
         if ide in ProjectGenerator.get_supported_ides():
