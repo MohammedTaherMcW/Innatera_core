@@ -21,6 +21,9 @@ import subprocess
 
 import click
 
+from platformio.project.config import ProjectConfig
+
+
 from platformio import fs
 from platformio.package.commands.install import install_project_dependencies
 from platformio.package.manager.platform import PlatformPackageManager
@@ -72,6 +75,11 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
     multiple=True,
     help="A `name=value` pair",
 )
+@click.option("--build-dir",
+            "-bd",
+            default=None,
+            type=click.Path(exists=False, file_okay=False, dir_okay=True, writable=True),
+)
 @click.option("--sample-code", is_flag=True)
 @click.option("--no-install-dependencies", is_flag=True)
 @click.option("--env-prefix", default="")
@@ -79,6 +87,7 @@ def validate_boards(ctx, param, value):  # pylint: disable=unused-argument
 def project_init_cmd(
     project_dir,
     spine_dir,
+    build_dir,
     boards,
     ide,
     environment,
@@ -89,28 +98,39 @@ def project_init_cmd(
     silent,
 ):
     click.echo("Initializing project at %s" % project_dir)
-    
+
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
     spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.platformio/packages/framework-innetra/"
-    is_talamo_project = any('talamo' in o for o in (project_options or ()))
+
+    project_type = None
+    for o in (project_options or ()):
+        if 'talamo' in o:
+            project_type = 'talamo'
+        elif 'spine' in o:
+            project_type = 'spine'
+        elif 'combine' in o:
+            project_type = 'combine'
+
     if is_new_project:
         if not silent:
             print_header(project_dir)
-        init_base_project(project_dir, spine_location, is_talamo_project)
+        init_base_project(project_dir, spine_location, build_dir,project_type)
 
     with fs.cd(project_dir):
         if environment:
             update_project_env(environment, project_options)
         elif boards:
-            update_board_envs(project_dir, boards, project_options, env_prefix)
+
+            update_board_envs(project_dir, boards, project_options, env_prefix, build_dir, project_type)
 
         generator = None
         config = ProjectConfig.get_instance(os.path.join(project_dir, "platformio.ini"))
+
         if ide:
             config.validate()
             # init generator and pick the best env if user didn't specify
-            generator = ProjectGenerator(config, environment, ide, boards, is_talamo_project)
+            generator = ProjectGenerator(config, environment, ide, boards, project_type)
             if not environment:
                 environment = generator.env_name
 
@@ -164,49 +184,158 @@ def print_footer(is_new_project):
         fg="green",
     )
 
-def init_cpp_template(project_dir):
-      with fs.cd(project_dir):
-        config = ProjectConfig()
-        config.save()
-        dir_to_readme = [
-            (config.get("platformio", "src_dir"), init_talamo_scripts),
-            (config.get("platformio", "include_dir"), init_include_readme),
-            (config.get("platformio", "lib_dir"), init_lib_readme),
-            (config.get("platformio", "test_dir"), init_test_readme),
-            (project_dir + "/talamo", None),
-            (project_dir + "/configs", init_config_script),
-            (project_dir + "/", init_makefile_script),
-        ]
-        for path, cb in dir_to_readme:
-            if os.path.isdir(path):
-                if cb:
-                    cb(path)
-                continue
-            os.makedirs(path)
-            if cb:
-                cb(path)
 
-def init_base_project(project_dir, spine_location, is_talamo_project):
+
+def init_base_project(project_dir, spine_location,build_dir, project_type):
+    print(f"Project type: {project_type}")
     
-    if is_talamo_project:
-        init_add_talamo_folder(project_dir)
+    if project_type == 'talamo':
+
+        talamo_folder_path = init_add_talamo_folder(project_dir)
+        init_talamo_script(talamo_folder_path)
         install_talamo_project(project_dir)
-    else:
+    elif project_type == 'spine':
+        
         init_cpp_template(project_dir)
         init_add_spine_folder(project_dir, spine_location)
+    elif project_type == 'combine':
+
+        talamo_folder_path = init_add_talamo_folder(project_dir, build_dir)
+        init_combine_script(talamo_folder_path)
+        install_talamo_project(project_dir)
+        init_cpp_template(project_dir+"/app/")
+        init_add_spine_folder(project_dir+"/app/", spine_location)
 
 
-def init_add_talamo_folder(project_dir):
+
+
+def update_board_envs(project_dir, boards, extra_project_options, env_prefix, build_dir, project_type):
+    config = ProjectConfig(
+        os.path.join(project_dir, "platformio.ini"), parse_extra=False
+    )
+    used_boards = []
+    for section in config.sections():
+        cond = [section.startswith("env:"), config.has_option(section, "board")]
+        if all(cond):
+            used_boards.append(config.get(section, "board"))
+
+    pm = PlatformPackageManager()
+    modified = False
+    for id_ in boards:
+        board_config = pm.board_config(id_)
+        if id_ in used_boards:
+            continue
+        used_boards.append(id_)
+        modified = True
+
+        envopts = {"platform": board_config["platform"], "board": id_}
+        # find default framework for board
+        frameworks = board_config.get("frameworks")
+        if frameworks:
+            envopts["framework"] = frameworks[0]
+
+        for item in extra_project_options:
+            if "=" not in item:
+                continue
+            _name, _value = item.split("=", 1)
+            envopts[_name.strip()] = _value.strip()
+
+        section = "env:%s%s" % (env_prefix, id_)
+        print("Creating section %s" % section)
+        config.add_section(section)
+
+        for option, value in envopts.items():
+            config.set(section, option, value)
+        if project_type == 'combine':   
+            config.add_section("python")
+            config.set("python", "python_build_dir", build_dir)
+
+    if modified:
+        config.save()
+
+
+
+def update_project_env(environment, extra_project_options=None):
+    if not extra_project_options:
+        return
+    env_section = "env:%s" % environment
+    option_to_sections = {"platformio": [], env_section: []}
+    for item in extra_project_options:
+        assert "=" in item
+        name, value = item.split("=", 1)
+        name = name.strip()
+        destination = env_section
+        for option in ProjectOptions.values():
+            if option.scope in option_to_sections and option.name == name:
+                destination = option.scope
+                break
+        option_to_sections[destination].append((name, value.strip()))
+
+    config = ProjectConfig(
+        "platformio.ini", parse_extra=False, expand_interpolations=False
+    )
+    for section, options in option_to_sections.items():
+        if not options:
+            continue
+        if not config.has_section(section):
+            config.add_section(section)
+        for name, value in options:
+            config.set(section, name, value)
+
+    config.save()
+
+
+def init_sample_code(config, environment):
+    try:
+        p = PlatformFactory.from_env(environment)
+        return p.generate_sample_code(config, environment)
+    except (NotImplementedError, UndefinedEnvPlatformError):
+        pass
+
+    framework = config.get(f"env:{environment}", "framework", None)
+    if framework != ["arduino"]:
+        return None
+        main_content = """
+    #include <Arduino.h>
+
+    // put function declarations here:
+    int myFunction(int, int);
+
+    void setup() {
+    // put your setup code here, to run once:
+    int result = myFunction(2, 3);
+    }
+
+void loop() {
+  // put your main code here, to run repeatedly:
+}
+
+// put function definitions here:
+int myFunction(int x, int y) {
+  return x + y;
+}
+"""
+    return True
+
+
+
+
+def init_add_talamo_folder(project_dir, build_dir=None):
+    if build_dir:
+        os.makedirs(build_dir, exist_ok=True)
     talamo_folder_path = os.path.join(project_dir, 'talamo')
     os.makedirs(talamo_folder_path, exist_ok=True)
-    init_talamo_script(talamo_folder_path)
+    return talamo_folder_path
 
 
 def init_talamo_script(talamo_folder_path):
     sample_file_path = os.path.join(talamo_folder_path, 'sample.py')
     
     with open(sample_file_path, 'w') as file:
-        file.write('import talamo\n')
+        file.write('''
+import talamo\n''')
+
+
 
 
 def install_talamo_project(project_dir):
@@ -233,6 +362,9 @@ def install_talamo_project(project_dir):
 
 
 def init_config_script(config_dir):
+
+    if not os.path.isdir(config_dir):
+        os.makedirs(config_dir, exist_ok=True)
     with open(
         os.path.join(config_dir, "app_defconfig"), mode="w", encoding="utf8"
     ) as fp:
@@ -252,6 +384,7 @@ CONFIG_CROSS_COMPILE="$(HOME)/.platformio/packages/toolchain-spine/bin/riscv32-c
 
 
 def init_makefile_script(make_dir):
+    os.makedirs(make_dir, exist_ok=True)
     with open(os.path.join(make_dir, "Makefile"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -278,9 +411,8 @@ export APP := $(notdir $(CURDIR))
         )
 
 
-def init_talamo_scripts(talamo_dir):
-    import os
-    import subprocess
+def init_spine_script(talamo_dir):
+    os.makedirs(talamo_dir, exist_ok=True)
 
     with open(os.path.join(talamo_dir, "main.c"), mode="w", encoding="utf8") as fp:
         fp.write(
@@ -391,6 +523,7 @@ def init_add_spine_folder(project_dir, spine_location):
 
 
 def init_include_readme(include_dir):
+    os.makedirs(include_dir, exist_ok=True)
     with open(os.path.join(include_dir, "README"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -437,6 +570,7 @@ https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
 
 
 def init_lib_readme(lib_dir):
+    os.makedirs(lib_dir, exist_ok=True)
     with open(os.path.join(lib_dir, "README"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -490,6 +624,7 @@ More information about Innatera Library Dependency Finder
 
 
 def init_test_readme(test_dir):
+    os.makedirs(test_dir, exist_ok=True)
     with open(os.path.join(test_dir, "README"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -506,7 +641,6 @@ More information about PlatformIO Unit Testing:
 """,
         )
 
-
 def init_cvs_ignore():
     conf_path = ".gitignore"
     if os.path.isfile(conf_path):
@@ -515,114 +649,72 @@ def init_cvs_ignore():
         fp.write(".pio\n")
 
 
-def update_board_envs(project_dir, boards, extra_project_options, env_prefix):
-    config = ProjectConfig(
-        os.path.join(project_dir, "platformio.ini"), parse_extra=False
-    )
-    used_boards = []
-    for section in config.sections():
-        cond = [section.startswith("env:"), config.has_option(section, "board")]
-        if all(cond):
-            used_boards.append(config.get(section, "board"))
+def init_cpp_template(project_dir):
 
-    pm = PlatformPackageManager()
-    modified = False
-    for id_ in boards:
-        board_config = pm.board_config(id_)
-        if id_ in used_boards:
-            continue
-        used_boards.append(id_)
-        modified = True
+        if not os.path.isdir(project_dir):
+            os.mkdir(project_dir)
 
-        envopts = {"platform": board_config["platform"], "board": id_}
-        # find default framework for board
-        frameworks = board_config.get("frameworks")
-        if frameworks:
-            envopts["framework"] = frameworks[0]
+        dir_to_readme = [
+            (project_dir+ "/src", init_spine_script),
+            (project_dir+ "/include", init_include_readme),
+            (project_dir+ "/lib", init_lib_readme),
+            (project_dir+ "/test", init_test_readme),
+            (project_dir + "/configs", init_config_script),
+            (project_dir + "/", init_makefile_script),
+        ]
 
-        for item in extra_project_options:
-            if "=" not in item:
+        for path, cb in dir_to_readme:
+            if os.path.isdir(path):
+                if cb:
+                    cb(path)
                 continue
-            _name, _value = item.split("=", 1)
-            envopts[_name.strip()] = _value.strip()
+            os.makedirs(path)
+            if cb:
+                cb(path)
+def init_combine_script(talamo_folder_path):
 
-        section = "env:%s%s" % (env_prefix, id_)
-        config.add_section(section)
+    sample_file_path = os.path.join(talamo_folder_path, 'sample.py')
+    
+    with open(sample_file_path, 'w') as file:
+        file.write('''
+import talamo
+import os
+import sys
 
-        for option, value in envopts.items():
-            config.set(section, option, value)
+def generate_header(filename, output_dir):
+    """Generate a header file with given filename and content in output_dir."""
+    header_content = """\
+#ifndef EXAMPLE_H
+#define EXAMPLE_H
 
-    if modified:
-        config.save()
+// Function declarations
+void function1();
+int function2(int param);
 
-
-def update_project_env(environment, extra_project_options=None):
-    if not extra_project_options:
-        return
-    env_section = "env:%s" % environment
-    option_to_sections = {"platformio": [], env_section: []}
-    for item in extra_project_options:
-        assert "=" in item
-        name, value = item.split("=", 1)
-        name = name.strip()
-        destination = env_section
-        for option in ProjectOptions.values():
-            if option.scope in option_to_sections and option.name == name:
-                destination = option.scope
-                break
-        option_to_sections[destination].append((name, value.strip()))
-
-    config = ProjectConfig(
-        "platformio.ini", parse_extra=False, expand_interpolations=False
-    )
-    for section, options in option_to_sections.items():
-        if not options:
-            continue
-        if not config.has_section(section):
-            config.add_section(section)
-        for name, value in options:
-            config.set(section, name, value)
-
-    config.save()
-
-
-def init_sample_code(config, environment):
-    try:
-        p = PlatformFactory.from_env(environment)
-        return p.generate_sample_code(config, environment)
-    except (NotImplementedError, UndefinedEnvPlatformError):
-        pass
-
-    framework = config.get(f"env:{environment}", "framework", None)
-    if framework != ["arduino"]:
-        return None
-    main_content = """
-#include <Arduino.h>
-
-// put function declarations here:
-int myFunction(int, int);
-
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
+#endif // EXAMPLE_H
 """
-    is_cpp_project = p.name not in ["intel_mcs51", "ststm8"]
-    src_dir = config.get("platformio", "src_dir")
-    main_path = os.path.join(src_dir, "main.%s" % ("cpp" if is_cpp_project else "c"))
-    if os.path.isfile(main_path):
-        return None
-    if not os.path.isdir(src_dir):
-        os.makedirs(src_dir)
-    with open(main_path, mode="w", encoding="utf8") as fp:
-        fp.write(main_content.strip())
-    return True
+
+    # Ensure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Full path for the output header file
+    full_path = os.path.join(output_dir, filename)
+
+    # Write the content to the specified file
+    with open(full_path, 'w') as file:
+        file.write(header_content)
+
+    print(f"Header file '{filename}' has been created at '{output_dir}'.")
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python generate_header.py <output_directory>")
+        sys.exit(1)
+
+    # Get the output directory from the command-line argument
+    output_dir = sys.argv[1]
+
+    # Generate the header file in the specified directory
+    generate_header('example.h', output_dir)\n''')
+
+

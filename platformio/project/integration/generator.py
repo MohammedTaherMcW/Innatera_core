@@ -25,13 +25,13 @@ from platformio.project.helpers import load_build_metadata
 
 
 class ProjectGenerator:
-    def __init__(self, config, env_name, ide, boards=None, is_talamo_project=None):
+    def __init__(self, config, env_name, ide, boards=None, project_type=None):
         self.config = config
         self.project_dir = os.path.dirname(config.path)
         self.forced_env_name = env_name
         self.env_name = str(env_name or self.get_best_envname(boards))
         self.ide = str(ide)
-        self.is_talamo_project = is_talamo_project
+        self.project_type = project_type
 
     def get_best_envname(self, boards=None):
         envname = None
@@ -169,12 +169,18 @@ class ProjectGenerator:
             self._merge_contents(os.path.join(dst_dir, file_name), contents)
 
         if not os.path.isfile(self.project_dir + '/.vscode/launch.json'):
-            if self.is_talamo_project:
-                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
-            else:
-                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
             dst_file_name = "launch.json"
             dst_dir = os.path.join(self.project_dir, ".vscode")
+            if self.project_type == 'talamo':
+                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
+            elif self.project_type == 'spine':
+                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
+            elif self.project_type == 'combine':
+                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
+                contents = self._render_tpl(tpl_path, tpl_vars)
+                self._merge_contents(os.path.join(dst_dir, dst_file_name), contents)
+                tpl_path = os.path.expanduser("~") + "/.platformio/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
+                
             contents = self._render_tpl(tpl_path, tpl_vars)
             self._merge_contents(os.path.join(dst_dir, dst_file_name), contents)
 
