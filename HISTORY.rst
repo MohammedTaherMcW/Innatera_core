@@ -15,7 +15,7 @@ PlatformIO Core 6
 -----------------
 
 Unlock the true potential of embedded software development with
-PlatformIO's collaborative ecosystem, embracing declarative principles,
+Innatera's collaborative ecosystem, embracing declarative principles,
 test-driven methodologies, and modern toolchains for unrivaled success.
 
 6.1.16 (2024-??-??)

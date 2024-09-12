@@ -22,7 +22,7 @@ from platformio.home.run import run_server
 from platformio.package.manager.core import get_core_package_dir
 
 
-@click.command("home", short_help="GUI to manage PlatformIO")
+@click.command("home", short_help="GUI to manage Innatera")
 @click.option("--port", type=int, default=8008, help="HTTP port, default=8008")
 @click.option(
     "--host",

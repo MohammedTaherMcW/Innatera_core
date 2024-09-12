@@ -85,7 +85,7 @@
 						"-c", "sublimetext",
 						"upgrade"
 					],
-					"name": "Upgrade PlatformIO Core"
+					"name": "Upgrade Innatera Core"
 				}
 			],
 			"working_dir": "${project_path:${folder}}",
