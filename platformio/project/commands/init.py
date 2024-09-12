@@ -207,6 +207,7 @@ def init_base_project(project_dir, spine_location,build_dir, project_type):
     print(f"Project type: {project_type}")
     
     if project_type == 'talamo':
+
         talamo_folder_path = init_add_talamo_folder(project_dir)
         init_talamo_script(talamo_folder_path)
         install_talamo_project(project_dir)
@@ -215,11 +216,12 @@ def init_base_project(project_dir, spine_location,build_dir, project_type):
         init_cpp_template(project_dir)
         init_add_spine_folder(project_dir, spine_location)
     elif project_type == 'combine':
+
         talamo_folder_path = init_add_talamo_folder(project_dir, build_dir)
         init_combine_script(talamo_folder_path)
         install_talamo_project(project_dir)
-        init_cpp_template(project_dir)
-        init_add_spine_folder(project_dir, spine_location)
+        init_cpp_template(project_dir+"/app/")
+        init_add_spine_folder(project_dir+"/app/", spine_location)
 
 
 
@@ -377,6 +379,9 @@ def install_talamo_project(project_dir):
 
 
 def init_config_script(config_dir):
+
+    if not os.path.isdir(config_dir):
+        os.makedirs(config_dir, exist_ok=True)
     with open(
         os.path.join(config_dir, "app_defconfig"), mode="w", encoding="utf8"
     ) as fp:
@@ -396,6 +401,7 @@ CONFIG_CROSS_COMPILE="$(HOME)/.platformio/packages/toolchain-spine/bin/riscv32-c
 
 
 def init_makefile_script(make_dir):
+    os.makedirs(make_dir, exist_ok=True)
     with open(os.path.join(make_dir, "Makefile"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -423,8 +429,7 @@ export APP := $(notdir $(CURDIR))
 
 
 def init_spine_script(talamo_dir):
-    import os
-    import subprocess
+    os.makedirs(talamo_dir, exist_ok=True)
 
     with open(os.path.join(talamo_dir, "main.c"), mode="w", encoding="utf8") as fp:
         fp.write(
@@ -535,6 +540,7 @@ def init_add_spine_folder(project_dir, spine_location):
 
 
 def init_include_readme(include_dir):
+    os.makedirs(include_dir, exist_ok=True)
     with open(os.path.join(include_dir, "README"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -581,6 +587,7 @@ https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
 
 
 def init_lib_readme(lib_dir):
+    os.makedirs(lib_dir, exist_ok=True)
     with open(os.path.join(lib_dir, "README"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -634,6 +641,7 @@ More information about PlatformIO Library Dependency Finder
 
 
 def init_test_readme(test_dir):
+    os.makedirs(test_dir, exist_ok=True)
     with open(os.path.join(test_dir, "README"), mode="w", encoding="utf8") as fp:
         fp.write(
             """
@@ -659,18 +667,19 @@ def init_cvs_ignore():
 
 
 def init_cpp_template(project_dir):
-      with fs.cd(project_dir):
-        config = ProjectConfig()
-        config.save()
+
+        if not os.path.isdir(project_dir):
+            os.mkdir(project_dir)
+
         dir_to_readme = [
-            (config.get("platformio", "src_dir"), init_spine_script),
-            (config.get("platformio", "include_dir"), init_include_readme),
-            (config.get("platformio", "lib_dir"), init_lib_readme),
-            (config.get("platformio", "test_dir"), init_test_readme),
-            (project_dir + "/talamo", None),
+            (project_dir+ "/src", init_spine_script),
+            (project_dir+ "/include", init_include_readme),
+            (project_dir+ "/lib", init_lib_readme),
+            (project_dir+ "/test", init_test_readme),
             (project_dir + "/configs", init_config_script),
             (project_dir + "/", init_makefile_script),
         ]
+        
         for path, cb in dir_to_readme:
             if os.path.isdir(path):
                 if cb:
