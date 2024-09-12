@@ -66,14 +66,14 @@ Options:
 
 Commands:
   access    Manage resource access
-  account   Manage PlatformIO account
+  account   Manage Innatera account
   boards    Board Explorer
   check     Static Code Analysis
   ci        Continuous Integration
-  custom    GUI to manage PlatformIO
+  custom    GUI to manage Innatera
   debug     Unified Debugger
   device    Device manager & Serial/Socket monitor
-  home      GUI to manage PlatformIO
+  home      GUI to manage Innatera
   org       Manage organizations
   pkg       Unified Package Manager
   project   Project Manager
@@ -83,10 +83,10 @@ Commands:
   system    Miscellaneous system commands
   team      Manage organization teams
   test      Unit Testing
-  upgrade   Upgrade PlatformIO Core to the latest version
+  upgrade   Upgrade Innatera Core to the latest version
 
 
-pio project init
+innio project init
 Project has been successfully updated!
 
 ```

@@ -1,4 +1,4 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
+# Copyright (c) 2014-present Innatera <contact@platformio.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,11 +48,17 @@ setup(
         ]
     },
     entry_points={
+     #   "console_scripts": [
+     #       "platformio = platformio.__main__:main",
+     #       "pio = platformio.__main__:main",
+     #       "piodebuggdb = platformio.__main__:debug_gdb_main",
+     #   ] 
+        
         "console_scripts": [
-            "platformio = platformio.__main__:main",
-            "pio = platformio.__main__:main",
-            "piodebuggdb = platformio.__main__:debug_gdb_main",
-        ]
+            "innaterapluginio = platformio.__main__:main",
+            "innio = platformio.__main__:main",
+            "inniodebuggdb = platformio.__main__:debug_gdb_main",
+        ]    
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",

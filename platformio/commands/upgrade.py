@@ -44,12 +44,12 @@ def cli(dev, only_dependencies, verbose):
 
     if not dev and __version__ == get_latest_version():
         return click.secho(
-            "You're up-to-date!\nPlatformIO %s is currently the "
+            "You're up-to-date!\nInnatera %s is currently the "
             "newest version available." % __version__,
             fg="green",
         )
 
-    click.secho("Please wait while upgrading PlatformIO Core ...", fg="yellow")
+    click.secho("Please wait while upgrading Innatera Core ...", fg="yellow")
 
     python_exe = get_pythonexe_path()
     to_develop = dev or not all(c.isdigit() for c in __version__ if c != ".")
@@ -79,7 +79,7 @@ def cli(dev, only_dependencies, verbose):
         assert "version" in output
         actual_version = output.split("version", 1)[1].strip()
         click.secho(
-            "PlatformIO has been successfully upgraded to %s" % actual_version,
+            "Innatera has been successfully upgraded to %s" % actual_version,
             fg="green",
         )
         click.echo("Release notes: ", nl=False)
@@ -90,7 +90,7 @@ def cli(dev, only_dependencies, verbose):
             )
     except (AssertionError, subprocess.CalledProcessError) as exc:
         click.secho(
-            "\nWarning!!! Could not automatically upgrade the PlatformIO Core.",
+            "\nWarning!!! Could not automatically upgrade the Innatera Core.",
             fg="red",
         )
         click.secho(

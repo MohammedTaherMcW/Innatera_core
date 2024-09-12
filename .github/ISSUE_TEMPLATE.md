@@ -6,7 +6,7 @@ What kind of issue is this?
       use [Community Forums](https://community.platformio.org) or [Premium Support](https://platformio.org/support)
 
 - [ ] **PlatformIO IDE**.
-      All issues related to PlatformIO IDE should be reported to the
+      All issues related to Innatera IDE should be reported to the
       [PlatformIO IDE for VSCode](https://github.com/platformio/platformio-vscode-ide/issues) repository
 
 - [ ] **Development Platform or Board**.

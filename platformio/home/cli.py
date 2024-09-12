@@ -22,7 +22,7 @@ from platformio.home.run import run_server
 from platformio.package.manager.core import get_core_package_dir
 
 
-@click.command("home", short_help="GUI to manage PlatformIO")
+@click.command("home", short_help="GUI to manage Innatera")
 @click.option("--port", type=int, default=8008, help="HTTP port, default=8008")
 @click.option(
     "--host",
@@ -71,7 +71,7 @@ def cli(port, host, no_open, shutdown_timeout, session_id):
             [
                 "",
                 "  ___I_",
-                " /\\-_--\\   PlatformIO Home",
+                " /\\-_--\\   Innatera Home",
                 "/  \\_-__\\",
                 "|[]| [] |  %s" % home_url,
                 "|__|____|__%s" % ("_" * len(home_url)),
@@ -79,11 +79,11 @@ def cli(port, host, no_open, shutdown_timeout, session_id):
         )
     )
     click.echo("")
-    click.echo("Open PlatformIO Home in your browser by this URL => %s" % home_url)
+    click.echo("Open Innatera Home in your browser by this URL => %s" % home_url)
 
     if is_port_used(host, port):
         click.secho(
-            "PlatformIO Home server is already started in another process.", fg="yellow"
+            "Innatera Home server is already started in another process.", fg="yellow"
         )
         if not no_open:
             click.launch(home_url)

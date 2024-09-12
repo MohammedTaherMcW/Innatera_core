@@ -97,9 +97,9 @@ class GDBClientProcess(DebugClientProcess):
             ]
 
         banner = [
-            "echo PlatformIO Unified Debugger -> https://bit.ly/pio-debug\\n",
-            "echo PlatformIO: debug_tool = %s\\n" % self.debug_config.tool_name,
-            "echo PlatformIO: Initializing remote target...\\n",
+            "echo Innatera Unified Debugger -> https://bit.ly/pio-debug\\n",
+            "echo Innatera: debug_tool = %s\\n" % self.debug_config.tool_name,
+            "echo Innatera: Initializing remote target...\\n",
         ]
         footer = ["echo %s\\n" % self.INIT_COMPLETED_BANNER]
         commands = banner + commands + footer

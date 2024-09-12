@@ -40,8 +40,8 @@ class HTTPClientError(UserSideException):
 class InternetConnectionError(UserSideException):
     MESSAGE = (
         "You are not connected to the Internet.\n"
-        "PlatformIO needs the Internet connection to"
-        " download dependent packages or to work with PlatformIO Account."
+        "Innatera needs the Internet connection to"
+        " download dependent packages or to work with Innatera Account."
     )
 
 

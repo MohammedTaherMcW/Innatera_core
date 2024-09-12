@@ -25,7 +25,7 @@ class AccountError(PlatformioException):
 
 
 class AccountNotAuthorized(AccountError, UserSideException):
-    MESSAGE = "You are not authorized! Please log in to PlatformIO Account."
+    MESSAGE = "You are not authorized! Please log in to Innatera Account."
 
 
 class AccountAlreadyAuthorized(AccountError, UserSideException):

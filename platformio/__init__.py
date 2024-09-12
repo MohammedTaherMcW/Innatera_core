@@ -19,13 +19,13 @@ __title__ = "platformio"
 __description__ = (
     "Your Gateway to Embedded Software Development Excellence. "
     "Unlock the true potential of embedded software development "
-    "with PlatformIO's collaborative ecosystem, embracing "
+    "with Innatera's collaborative ecosystem, embracing "
     "declarative principles, test-driven methodologies, and "
     "modern toolchains for unrivaled success."
 )
 __url__ = "https://platformio.org"
 
-__author__ = "PlatformIO Labs"
+__author__ = "Innatera Labs"
 __email__ = "contact@piolabs.com"
 
 __license__ = "Apache Software License"

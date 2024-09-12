@@ -762,7 +762,7 @@ class MbedLibBuilder(LibBuilderBase):
             for line in fp.readlines():
                 line = line.strip()
                 if line == "#endif":
-                    lines.append("// PlatformIO Library Dependency Finder (LDF)")
+                    lines.append("// Innatera Library Dependency Finder (LDF)")
                     lines.extend(
                         [
                             "#define %s %s" % (name, value if value is not None else "")

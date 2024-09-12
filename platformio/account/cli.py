@@ -38,7 +38,7 @@ from platformio.account.commands.update import account_update_cmd
         account_token_cmd,
         account_update_cmd,
     ],
-    short_help="Manage PlatformIO account",
+    short_help="Manage Innatera account",
 )
 def cli():
     pass

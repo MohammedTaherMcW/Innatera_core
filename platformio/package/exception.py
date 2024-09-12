@@ -60,7 +60,7 @@ class UnknownPackageError(PackageException):
 
 class NotGlobalLibDir(PackageException):
     MESSAGE = (
-        "The `{0}` is not a PlatformIO project.\n\n"
+        "The `{0}` is not a Innatera project.\n\n"
         "To manage libraries in global storage `{1}`,\n"
         "please use `platformio lib --global {2}` or specify custom storage "
         "`platformio lib --storage-dir /path/to/storage/ {2}`.\n"
