@@ -24,23 +24,6 @@ import click
 from platformio.project.config import ProjectConfig
 
 
-# from platformio.project.commands.scripts import (
-#     init_add_spine_folder,
-#     init_add_talamo_folder,
-#     init_config_script,
-#     init_makefile_script,
-#     init_talamo_script,
-#     init_talamo_scripts,
-#     install_talamo_project,
-#     init_include_readme,
-#     init_lib_readme,
-#     init_cpp_template,
-#     init_cvs_ignore,
-#     init_test_readme
-
-# )
-
-
 from platformio import fs
 from platformio.package.commands.install import install_project_dependencies
 from platformio.package.manager.platform import PlatformPackageManager
@@ -679,7 +662,7 @@ def init_cpp_template(project_dir):
             (project_dir + "/configs", init_config_script),
             (project_dir + "/", init_makefile_script),
         ]
-        
+
         for path, cb in dir_to_readme:
             if os.path.isdir(path):
                 if cb:
