@@ -125,7 +125,7 @@ class PlatformBase(  # pylint: disable=too-many-instance-attributes,too-many-pub
         raise NotImplementedError()
 
     def is_embedded(self):
-        for opts in self.packages.values():
+        for opts in self.packages.values() or "uploader" in opts.get("type"):
             if opts.get("type") == "uploader":
                 return True
         return False
