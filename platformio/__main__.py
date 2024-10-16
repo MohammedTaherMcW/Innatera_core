@@ -115,16 +115,7 @@ def main(argv=None):
                 error_str += """
 ============================================================
 
-An unexpected error occurred. Further steps:
-
-* Verify that you have the latest version of PlatformIO using
-  `python -m pip install -U platformio` command
-
-* Try to find answer in FAQ Troubleshooting section
-  https://docs.platformio.org/page/faq/index.html
-
-* Report this problem to the developers
-  https://github.com/platformio/platformio-core/issues
+An unexpected error occurred.
 
 ============================================================
 """

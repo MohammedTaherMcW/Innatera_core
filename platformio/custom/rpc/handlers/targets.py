@@ -20,7 +20,7 @@ class PIOTargets:
         if not targets:
             raise JSONRPC20DispatchException("No valid targets specified.")
 
-        pio = os.path.expanduser("~") + "/.platformio/penv/bin/pio"
+        pio = os.path.expanduser("~") + "/.innatera/penv/bin/pio"
         for target in targets:
             result = subprocess.call(
                 [

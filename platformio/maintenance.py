@@ -138,12 +138,8 @@ def after_upgrade(ctx):
             % (__version__, last_version_str),
             fg="yellow",
         )
-        click.secho("Please remove multiple PIO Cores from a system:", fg="yellow")
-        click.secho(
-            "https://docs.platformio.org/en/latest/core"
-            "/installation/troubleshooting.html",
-            fg="cyan",
-        )
+        click.secho("Please remove multiple Innatera Cores from a system:", fg="yellow")
+
         click.secho("*" * terminal_width, fg="yellow")
         return None
 

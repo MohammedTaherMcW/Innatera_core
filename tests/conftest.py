@@ -67,7 +67,7 @@ def clirunner(request, tmpdir_factory):
 
 
 def _isolated_pio_core(request, tmpdir_factory):
-    core_dir = tmpdir_factory.mktemp(".platformio")
+    core_dir = tmpdir_factory.mktemp(".innatera")
     os.environ["PLATFORMIO_CORE_DIR"] = str(core_dir)
 
     def fin():

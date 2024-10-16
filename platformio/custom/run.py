@@ -58,7 +58,6 @@ async def protected_page(_):
 
 def run_server(host, port, no_open, shutdown_timeout, home_url):
     contrib_dir = get_core_package_dir("contrib-piocustom")
-    print("Contrib path: %s" % contrib_dir)
     if not os.path.isdir(contrib_dir):
         raise PlatformioException("Invalid path to PIO Custom Contrib")
 

@@ -91,9 +91,9 @@ def validate_dir(path):
 
 
 def get_default_core_dir():
-    path = os.path.join(fs.expanduser("~"), ".platformio")
+    path = os.path.join(fs.expanduser("~"), ".innatera")
     if IS_WINDOWS:
-        win_core_dir = os.path.splitdrive(path)[0] + "\\.platformio"
+        win_core_dir = os.path.splitdrive(path)[0] + "\\.innatera"
         if os.path.isdir(win_core_dir):
             return win_core_dir
     return path

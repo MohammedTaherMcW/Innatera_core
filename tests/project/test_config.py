@@ -113,7 +113,7 @@ build_flags = -Og
 src_filter = ${custom.src_filter} +<c>
 """
 
-DEFAULT_CORE_DIR = os.path.join(fs.expanduser("~"), ".platformio")
+DEFAULT_CORE_DIR = os.path.join(fs.expanduser("~"), ".innatera")
 
 
 @pytest.fixture(scope="module")
@@ -146,7 +146,7 @@ def test_warnings(config):
 
 def test_defaults(config):
     assert config.get("platformio", "core_dir") == os.path.join(
-        os.path.expanduser("~"), ".platformio"
+        os.path.expanduser("~"), ".innatera"
     )
     assert config.get("strict_ldf", "lib_deps", ["Empty"]) == ["Empty"]
     assert config.get("env:extra_2", "lib_compat_mode") == "soft"
@@ -573,7 +573,7 @@ def test_dump(tmpdir_factory):
 @pytest.mark.skipif(sys.platform != "win32", reason="runs only on windows")
 def test_win_core_root_dir(tmpdir_factory):
     try:
-        win_core_root_dir = os.path.splitdrive(fs.expanduser("~"))[0] + "\\.platformio"
+        win_core_root_dir = os.path.splitdrive(fs.expanduser("~"))[0] + "\\.innatera"
         remove_dir_at_exit = False
         if not os.path.isdir(win_core_root_dir):
             remove_dir_at_exit = True
