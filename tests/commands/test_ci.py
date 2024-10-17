@@ -14,8 +14,8 @@
 
 from os.path import isfile, join
 
-from platformio.commands.ci import cli as cmd_ci
-from platformio.package.commands.install import package_install_cmd
+from Innatera.commands.ci import cli as cmd_ci
+from Innatera.package.commands.install import package_install_cmd
 
 
 def test_ci_empty(clirunner):

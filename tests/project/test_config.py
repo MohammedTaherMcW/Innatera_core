@@ -21,9 +21,9 @@ from pathlib import Path
 
 import pytest
 
-from platformio import fs
-from platformio.project.config import ProjectConfig
-from platformio.project.exception import (
+from Innatera import fs
+from Innatera.project.config import ProjectConfig
+from Innatera.project.exception import (
     InvalidEnvNameError,
     InvalidProjectConfError,
     UnknownEnvNamesError,

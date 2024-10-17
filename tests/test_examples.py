@@ -18,11 +18,11 @@ from glob import glob
 
 import pytest
 
-from platformio import fs, proc
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.platform.factory import PlatformFactory
-from platformio.project.config import ProjectConfig
-from platformio.project.exception import ProjectError
+from Innatera import fs, proc
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.platform.factory import PlatformFactory
+from Innatera.project.config import ProjectConfig
+from Innatera.project.exception import ProjectError
 
 
 def pytest_generate_tests(metafunc):

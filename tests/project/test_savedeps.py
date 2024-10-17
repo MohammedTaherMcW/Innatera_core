@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from platformio.package.meta import PackageSpec
-from platformio.project.config import ProjectConfig
-from platformio.project.savedeps import save_project_dependencies
+from Innatera.package.meta import PackageSpec
+from Innatera.project.config import ProjectConfig
+from Innatera.project.savedeps import save_project_dependencies
 
 PROJECT_CONFIG_TPL = """
 [env]

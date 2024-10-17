@@ -20,8 +20,8 @@ import sys
 
 import pytest
 
-from platformio import fs
-from platformio.check.cli import cli as cmd_check
+from Innatera import fs
+from Innatera.check.cli import cli as cmd_check
 
 DEFAULT_CONFIG = """
 [env:native]

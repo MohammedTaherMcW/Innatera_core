@@ -15,7 +15,7 @@
 from os import listdir
 from os.path import dirname, isdir, join, normpath
 
-from platformio.commands.ci import cli as cmd_ci
+from Innatera.commands.ci import cli as cmd_ci
 
 EXAMPLES_DIR = normpath(join(dirname(__file__), "examples"))
 

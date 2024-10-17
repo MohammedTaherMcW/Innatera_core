@@ -16,8 +16,8 @@
 
 import re
 
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.commands.outdated import package_outdated_cmd
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.commands.outdated import package_outdated_cmd
 
 PROJECT_OUTDATED_CONFIG_TPL = """
 [env:devkit]

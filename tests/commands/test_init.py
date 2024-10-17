@@ -15,11 +15,11 @@
 import json
 import os
 
-from platformio import fs
-from platformio.commands.boards import cli as cmd_boards
-from platformio.project.commands.init import project_init_cmd
-from platformio.project.config import ProjectConfig
-from platformio.project.exception import ProjectEnvsNotAvailableError
+from Innatera import fs
+from Innatera.commands.boards import cli as cmd_boards
+from Innatera.project.commands.init import project_init_cmd
+from Innatera.project.config import ProjectConfig
+from Innatera.project.exception import ProjectEnvsNotAvailableError
 
 
 def validate_pioproject(pioproject_dir):

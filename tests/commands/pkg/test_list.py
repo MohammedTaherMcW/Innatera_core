@@ -14,8 +14,8 @@
 
 # pylint: disable=unused-argument
 
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.commands.list import package_list_cmd
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.commands.list import package_list_cmd
 
 PROJECT_CONFIG_TPL = """
 [env]

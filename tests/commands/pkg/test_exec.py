@@ -16,8 +16,8 @@
 
 import pytest
 
-from platformio.package.commands.exec import package_exec_cmd
-from platformio.util import strip_ansi_codes
+from Innatera.package.commands.exec import package_exec_cmd
+from Innatera.util import strip_ansi_codes
 
 
 def test_pkg_not_installed(clirunner, validate_cliresult, isolated_pio_core):

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from platformio.package.commands.search import package_search_cmd
+from Innatera.package.commands.search import package_search_cmd
 
 
 def test_empty_query(clirunner, validate_cliresult):

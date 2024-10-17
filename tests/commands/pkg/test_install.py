@@ -18,14 +18,14 @@ import os
 
 import pytest
 
-from platformio import fs
-from platformio.dependencies import get_core_dependencies
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.manager.library import LibraryPackageManager
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.package.manager.tool import ToolPackageManager
-from platformio.package.meta import PackageSpec
-from platformio.project.config import ProjectConfig
+from Innatera import fs
+from Innatera.dependencies import get_core_dependencies
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.manager.library import LibraryPackageManager
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.package.manager.tool import ToolPackageManager
+from Innatera.package.meta import PackageSpec
+from Innatera.project.config import ProjectConfig
 
 PROJECT_CONFIG_TPL = """
 [env]

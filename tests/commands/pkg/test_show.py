@@ -14,8 +14,8 @@
 
 import pytest
 
-from platformio.exception import UserSideException
-from platformio.package.commands.show import package_show_cmd
+from Innatera.exception import UserSideException
+from Innatera.package.commands.show import package_show_cmd
 
 
 def test_spec_name(clirunner, validate_cliresult):

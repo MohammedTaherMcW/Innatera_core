@@ -16,16 +16,16 @@
 
 import os
 
-from platformio import fs
-from platformio.dependencies import get_core_dependencies
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.commands.update import package_update_cmd
-from platformio.package.exception import UnknownPackageError
-from platformio.package.manager.library import LibraryPackageManager
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.package.manager.tool import ToolPackageManager
-from platformio.package.meta import PackageSpec
-from platformio.project.config import ProjectConfig
+from Innatera import fs
+from Innatera.dependencies import get_core_dependencies
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.commands.update import package_update_cmd
+from Innatera.package.exception import UnknownPackageError
+from Innatera.package.manager.library import LibraryPackageManager
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.package.manager.tool import ToolPackageManager
+from Innatera.package.meta import PackageSpec
+from Innatera.project.config import ProjectConfig
 
 DALLASTEMPERATURE_LATEST_VERSION = "3.11.0"
 

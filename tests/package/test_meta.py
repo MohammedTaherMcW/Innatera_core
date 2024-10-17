@@ -17,7 +17,7 @@ import os
 import jsondiff
 import semantic_version
 
-from platformio.package.meta import (
+from Innatera.package.meta import (
     PackageCompatibility,
     PackageMetadata,
     PackageOutdatedResult,

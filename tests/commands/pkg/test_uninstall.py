@@ -16,14 +16,14 @@
 
 import os
 
-from platformio import fs
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.commands.uninstall import package_uninstall_cmd
-from platformio.package.exception import UnknownPackageError
-from platformio.package.manager.library import LibraryPackageManager
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.package.manager.tool import ToolPackageManager
-from platformio.project.config import ProjectConfig
+from Innatera import fs
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.commands.uninstall import package_uninstall_cmd
+from Innatera.package.exception import UnknownPackageError
+from Innatera.package.manager.library import LibraryPackageManager
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.package.manager.tool import ToolPackageManager
+from Innatera.project.config import ProjectConfig
 
 PROJECT_CONFIG_TPL = """
 [env]

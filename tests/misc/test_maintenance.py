@@ -16,9 +16,9 @@
 
 from time import time
 
-from platformio import app, maintenance
-from platformio.__main__ import cli as cli_pio
-from platformio.commands import upgrade as cmd_upgrade
+from Innatera import app, maintenance
+from Innatera.__main__ import cli as cli_pio
+from Innatera.commands import upgrade as cmd_upgrade
 
 
 def test_check_pio_upgrade(clirunner, isolated_pio_core, validate_cliresult):

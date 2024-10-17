@@ -21,9 +21,9 @@ import time
 import pytest
 from click.testing import CliRunner
 
-from platformio import http
-from platformio.package.meta import PackageSpec, PackageType
-from platformio.registry.client import RegistryClient
+from Innatera import http
+from Innatera.package.meta import PackageSpec, PackageType
+from Innatera.registry.client import RegistryClient
 
 
 def pytest_configure(config):

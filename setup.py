@@ -14,7 +14,7 @@
 
 from setuptools import find_packages, setup
 
-from platformio import (
+from innaterapluginio import (
     __author__,
     __description__,
     __email__,
@@ -23,7 +23,7 @@ from platformio import (
     __url__,
     __version__,
 )
-from platformio.dependencies import get_pip_dependencies
+from innaterapluginio.dependencies import get_pip_dependencies
 
 setup(
     name=__title__,
@@ -36,10 +36,10 @@ setup(
     license=__license__,
     install_requires=get_pip_dependencies(),
     python_requires=">=3.6",
-    packages=find_packages(include=["platformio", "platformio.*"]),
+    packages=find_packages(include=["innaterapluginio", "innaterapluginio.*"]),
     package_data={
-        "platformio": [
-            "assets/system/99-platformio-udev.rules",
+        "innaterapluginio": [
+            "assets/system/99-innaterapluginio-udev.rules",
             "project/integration/tpls/*/*.tpl",
             "project/integration/tpls/*/.*.tpl",  # include hidden files
             "project/integration/tpls/*/.*/*.tpl",  # include hidden folders
@@ -55,9 +55,9 @@ setup(
      #   ] 
         
         "console_scripts": [
-            "innaterapluginio = platformio.__main__:main",
-            "innio = platformio.__main__:main",
-            "inniodebuggdb = platformio.__main__:debug_gdb_main",
+            "innaterapluginio = innaterapluginio.__main__:main",
+            "innio = innaterapluginio.__main__:main",
+            "inniodebuggdb = innaterapluginio.__main__:debug_gdb_main",
         ]    
     },
     classifiers=[

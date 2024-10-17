@@ -14,7 +14,7 @@
 
 from pathlib import Path
 
-from platformio.run.cli import cli as cmd_run
+from Innatera.run.cli import cli as cmd_run
 
 
 def test_generic_build(clirunner, validate_cliresult, tmpdir):

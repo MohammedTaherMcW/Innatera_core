@@ -20,11 +20,11 @@ import os
 import pytest
 import semantic_version
 
-from platformio.commands.lib import cli as cmd_lib
-from platformio.package.meta import PackageType
-from platformio.package.vcsclient import VCSClientFactory
-from platformio.project.config import ProjectConfig
-from platformio.registry.client import RegistryClient
+from Innatera.commands.lib import cli as cmd_lib
+from Innatera.package.meta import PackageType
+from Innatera.package.vcsclient import VCSClientFactory
+from Innatera.project.config import ProjectConfig
+from Innatera.registry.client import RegistryClient
 
 
 def test_saving_deps(clirunner, validate_cliresult, isolated_pio_core, tmpdir_factory):

@@ -20,9 +20,9 @@ from pathlib import Path
 
 import pytest
 
-from platformio import proc
-from platformio.fs import load_json
-from platformio.test.cli import cli as pio_test_cmd
+from Innatera import proc
+from Innatera.fs import load_json
+from Innatera.test.cli import cli as pio_test_cmd
 
 
 def test_calculator_example(tmp_path: Path):

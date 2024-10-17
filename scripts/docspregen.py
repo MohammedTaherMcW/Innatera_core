@@ -22,9 +22,9 @@ sys.path.append("..")
 
 import click  # noqa: E402
 
-from platformio import fs  # noqa: E402
-from platformio.package.manager.platform import PlatformPackageManager  # noqa: E402
-from platformio.platform.factory import PlatformFactory  # noqa: E402
+from Innatera import fs  # noqa: E402
+from Innatera.package.manager.platform import PlatformPackageManager  # noqa: E402
+from Innatera.platform.factory import PlatformFactory  # noqa: E402
 
 
 RST_COPYRIGHT = """..  Copyright (c) 2014-present PlatformIO <contact@platformio.org>

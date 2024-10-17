@@ -18,10 +18,10 @@ import tarfile
 
 import pytest
 
-from platformio import fs
-from platformio.compat import IS_WINDOWS
-from platformio.package.exception import UnknownManifestError
-from platformio.package.pack import PackagePacker
+from Innatera import fs
+from Innatera.compat import IS_WINDOWS
+from Innatera.package.exception import UnknownManifestError
+from Innatera.package.pack import PackagePacker
 
 
 def test_base(tmpdir_factory):

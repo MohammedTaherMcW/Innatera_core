@@ -19,9 +19,9 @@ import tarfile
 import jsondiff
 import pytest
 
-from platformio.compat import IS_WINDOWS
-from platformio.package.manifest import parser
-from platformio.package.manifest.schema import ManifestSchema, ManifestValidationError
+from Innatera.compat import IS_WINDOWS
+from Innatera.package.manifest import parser
+from Innatera.package.manifest.schema import ManifestSchema, ManifestValidationError
 
 
 def test_library_json_parser():
