@@ -95,7 +95,7 @@ class ProjectGenerator:
             "platformio_path": (
                 sys.argv[0]
                 if os.path.isfile(sys.argv[0])
-                else where_is_program("platformio")
+                else where_is_program("innaterapluginio")
             ),
             "env_path": os.getenv("PATH"),
             "env_pathsep": os.pathsep,
@@ -172,15 +172,17 @@ class ProjectGenerator:
             dst_file_name = "launch.json"
             dst_dir = os.path.join(self.project_dir, ".vscode")
             if self.project_type == 'talamo':
-                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
+                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/innaterapluginio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
             elif self.project_type == 'spine':
-                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
+
+                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/innaterapluginio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
             elif self.project_type == 'combine':
-                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
+                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/innaterapluginio/project/integration/tpls/vscode/.vscode/launch_talamo.json.tpl"
                 contents = self._render_tpl(tpl_path, tpl_vars)
                 self._merge_contents(os.path.join(dst_dir, dst_file_name), contents)
-                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/platformio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
-                
+                tpl_path = os.path.expanduser("~") + "/.innatera/penv/lib/python3.10/site-packages/innaterapluginio/project/integration/tpls/vscode/.vscode/launch_spine.json.tpl"
+            
+
             contents = self._render_tpl(tpl_path, tpl_vars)
             self._merge_contents(os.path.join(dst_dir, dst_file_name), contents)
 

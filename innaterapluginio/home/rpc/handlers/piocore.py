@@ -98,7 +98,7 @@ class MultiThreadingStdStream:
 
 @util.memoized(expire="60s")
 def get_core_fullpath():
-    return proc.where_is_program("platformio" + (".exe" if IS_WINDOWS else ""))
+    return proc.where_is_program("innaterapluginio" + (".exe" if IS_WINDOWS else ""))
 
 
 class PIOCoreRPC(BaseRPCHandler):

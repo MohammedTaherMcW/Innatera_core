@@ -195,7 +195,7 @@ def copy_pythonpath_to_osenv():
         if not IS_WINDOWS:
             conditions.append(
                 os.path.isdir(os.path.join(p, "click"))
-                or os.path.isdir(os.path.join(p, "platformio"))
+                or os.path.isdir(os.path.join(p, "innaterapluginio"))
             )
         if all(conditions):
             _PYTHONPATH.append(p)

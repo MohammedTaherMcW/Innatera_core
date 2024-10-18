@@ -54,7 +54,7 @@ def system_info_cmd(json_output):
     data["platformio_exe"] = {
         "title": "Innatera Core Executable",
         "value": proc.where_is_program(
-            "platformio.exe" if compat.IS_WINDOWS else "platformio"
+            "innaterapluginio.exe" if compat.IS_WINDOWS else "innaterapluginio"
         ),
     }
     data["python_exe"] = {
