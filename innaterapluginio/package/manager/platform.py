@@ -129,7 +129,7 @@ class PlatformPackageManager(
         url = "https://github.com/MohammedTaherMcW/framework_innatera/raw/Innatera-refactor/innatera.tar.xz"
         dest_path = self.download(url, checksum=None)
         self.unpack(dest_path, self.package_dir)
-        pkg_path = os.path.join(self.package_dir, "innetra")
+        pkg_path = os.path.join(self.package_dir, "Innatera")
         
         if not os.path.isdir(pkg_path):
             self.unpack(dest_path, self.package_dir)

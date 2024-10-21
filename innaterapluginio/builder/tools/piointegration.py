@@ -36,7 +36,7 @@ def IsIntegrationDump(_):
     return set(["__idedata", "idedata"]) & set(COMMAND_LINE_TARGETS)
 
 def get_spine_location(spine_dir):
-    spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.innatera/packages/framework-innetra/"
+    spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.innatera/packages/framework-innatera/"
     return spine_location
 
 def DumpIntegrationIncludes(env):

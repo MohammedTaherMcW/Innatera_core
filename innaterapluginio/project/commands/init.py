@@ -101,7 +101,7 @@ def project_init_cmd(
 
     project_dir = os.path.abspath(project_dir)
     is_new_project = not is_platformio_project(project_dir)
-    spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.innatera/packages/framework-innetra/"
+    spine_location = os.path.abspath(spine_dir) if spine_dir else os.path.expanduser("~") + "/.innatera/packages/framework-innatera/"
 
     project_type = None
     for o in (project_options or ()):
@@ -391,10 +391,10 @@ def init_makefile_script(make_dir):
 # Makefile
 
 # Define the build directory
-BUILD_DIR ?= $(CURDIR)/.pio/build/innetra_board
+BUILD_DIR ?= $(CURDIR)/.pio/build/innatera_board
 
 # Spine directory
-export SPINE_DIR := $(HOME)/.innatera/packages/framework-innetra
+export SPINE_DIR := $(HOME)/.innatera/packages/framework-innatera
 
 # Object files
 obj-y += src/main.o
