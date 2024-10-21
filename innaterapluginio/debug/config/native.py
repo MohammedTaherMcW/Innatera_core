@@ -17,17 +17,19 @@ from innaterapluginio.debug.config.base import DebugConfigBase
 
 
 class NativeDebugConfig(DebugConfigBase):
+    DEFAULT_PORT = ":3333"
     GDB_INIT_SCRIPT = """
 define pio_reset_halt_target
+    monitor reset halt
 end
 
 define pio_reset_run_target
+    monitor reset
 end
 
-define pio_restart_target
-end
-
+target extended-remote $DEBUG_PORT
+monitor init
+$LOAD_CMDS
+pio_reset_halt_target
 $INIT_BREAK
-""" + (
-        "set startup-with-shell off" if not IS_WINDOWS else ""
-    )
+"""

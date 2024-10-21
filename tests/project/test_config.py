@@ -119,15 +119,15 @@ DEFAULT_CORE_DIR = os.path.join(fs.expanduser("~"), ".innatera")
 @pytest.fixture(scope="module")
 def config(tmpdir_factory):
     tmpdir = tmpdir_factory.mktemp("project")
-    tmpdir.join("platformio.ini").write(BASE_CONFIG)
+    tmpdir.join("innaterapluginio.ini").write(BASE_CONFIG)
     tmpdir.join("extra_envs.ini").write(EXTRA_ENVS_CONFIG)
     tmpdir.join("extra_debug.ini").write(EXTRA_DEBUG_CONFIG)
     with tmpdir.as_cwd():
-        return ProjectConfig(tmpdir.join("platformio.ini").strpath)
+        return ProjectConfig(tmpdir.join("innaterapluginio.ini").strpath)
 
 
 def test_empty_config():
-    config = ProjectConfig("/non/existing/platformio.ini")
+    config = ProjectConfig("/non/existing/innaterapluginio.ini")
     # unknown section
     with pytest.raises(InvalidProjectConfError):
         config.get("unknown_section", "unknown_option")
@@ -438,7 +438,7 @@ def test_items(config):
 
 def test_update_and_save(tmpdir_factory):
     tmpdir = tmpdir_factory.mktemp("project")
-    tmpdir.join("platformio.ini").write(
+    tmpdir.join("innaterapluginio.ini").write(
         """
 [platformio]
 extra_configs = a.ini, b.ini
@@ -447,7 +447,7 @@ extra_configs = a.ini, b.ini
 board = myboard
     """
     )
-    config = ProjectConfig(tmpdir.join("platformio.ini").strpath)
+    config = ProjectConfig(tmpdir.join("innaterapluginio.ini").strpath)
     assert config.envs() == ["myenv"]
     assert config.as_tuple()[0][1][0][1] == ["a.ini", "b.ini"]
 
@@ -466,7 +466,7 @@ board = myboard
     ]
 
     config.save()
-    contents = tmpdir.join("platformio.ini").read()
+    contents = tmpdir.join("innaterapluginio.ini").read()
     assert contents[-4:] == "yes\n"
     lines = [
         line.strip()
@@ -487,7 +487,7 @@ board = myboard
 
 def test_update_and_clear(tmpdir_factory):
     tmpdir = tmpdir_factory.mktemp("project")
-    tmpdir.join("platformio.ini").write(
+    tmpdir.join("innaterapluginio.ini").write(
         """
 [platformio]
 extra_configs = a.ini, b.ini
@@ -496,7 +496,7 @@ extra_configs = a.ini, b.ini
 board = myboard
     """
     )
-    config = ProjectConfig(tmpdir.join("platformio.ini").strpath)
+    config = ProjectConfig(tmpdir.join("innaterapluginio.ini").strpath)
     assert config.sections() == ["platformio", "env:myenv"]
     config.update([["mysection", [("opt1", "value1"), ("opt2", "value2")]]], clear=True)
     assert config.as_tuple() == [
@@ -506,11 +506,11 @@ board = myboard
 
 def test_dump(tmpdir_factory):
     tmpdir = tmpdir_factory.mktemp("project")
-    tmpdir.join("platformio.ini").write(BASE_CONFIG)
+    tmpdir.join("innaterapluginio.ini").write(BASE_CONFIG)
     tmpdir.join("extra_envs.ini").write(EXTRA_ENVS_CONFIG)
     tmpdir.join("extra_debug.ini").write(EXTRA_DEBUG_CONFIG)
     config = ProjectConfig(
-        tmpdir.join("platformio.ini").strpath,
+        tmpdir.join("innaterapluginio.ini").strpath,
         parse_extra=False,
         expand_interpolations=False,
     )
@@ -588,13 +588,13 @@ def test_win_core_root_dir(tmpdir_factory):
 
         # Override in config
         tmpdir = tmpdir_factory.mktemp("project")
-        tmpdir.join("platformio.ini").write(
+        tmpdir.join("innaterapluginio.ini").write(
             """
 [platformio]
 core_dir = ~/.pio
         """
         )
-        config = ProjectConfig(tmpdir.join("platformio.ini").strpath)
+        config = ProjectConfig(tmpdir.join("innaterapluginio.ini").strpath)
         assert config.get("platformio", "core_dir") != win_core_root_dir
         assert config.get("platformio", "core_dir") == os.path.realpath(
             fs.expanduser("~/.pio")
@@ -607,7 +607,7 @@ core_dir = ~/.pio
 
 
 def test_this(tmp_path: Path):
-    project_conf = tmp_path / "platformio.ini"
+    project_conf = tmp_path / "innaterapluginio.ini"
     project_conf.write_text(
         """
 [common]
@@ -627,7 +627,7 @@ custom_option = ${this.board}
 def test_project_name(tmp_path: Path):
     project_dir = tmp_path / "my-project-name"
     project_dir.mkdir()
-    project_conf = project_dir / "platformio.ini"
+    project_conf = project_dir / "innaterapluginio.ini"
     project_conf.write_text(
         """
 [env:myenv]
@@ -649,7 +649,7 @@ name = custom-project-name
 
 
 def test_nested_interpolation(tmp_path: Path):
-    project_conf = tmp_path / "platformio.ini"
+    project_conf = tmp_path / "innaterapluginio.ini"
     project_conf.write_text(
         """
 [platformio]
@@ -687,7 +687,7 @@ test_testing_command =
 
 
 def test_extends_order(tmp_path: Path):
-    project_conf = tmp_path / "platformio.ini"
+    project_conf = tmp_path / "innaterapluginio.ini"
     project_conf.write_text(
         """
 [a]
@@ -708,7 +708,7 @@ extends = a, b, c
 
 
 def test_invalid_env_names(tmp_path: Path):
-    project_conf = tmp_path / "platformio.ini"
+    project_conf = tmp_path / "innaterapluginio.ini"
     project_conf.write_text(
         """
 [env:app:1]
@@ -720,7 +720,7 @@ def test_invalid_env_names(tmp_path: Path):
 
 
 def test_linting_errors(tmp_path: Path):
-    project_conf = tmp_path / "platformio.ini"
+    project_conf = tmp_path / "innaterapluginio.ini"
     project_conf.write_text(
         """
 [env:app1]
@@ -737,7 +737,7 @@ broken_line
 
 
 def test_linting_warnings(tmp_path: Path):
-    project_conf = tmp_path / "platformio.ini"
+    project_conf = tmp_path / "innaterapluginio.ini"
     project_conf.write_text(
         """
 [platformio]

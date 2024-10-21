@@ -156,7 +156,7 @@ class DebugConfigBase:  # pylint: disable=too-many-instance-attributes
         return data
 
     def _configure_server(self):
-        # user disabled server in platformio.ini
+        # user disabled server in innaterapluginio.ini
         if "debug_server" in self.env_options and not self.env_options.get(
             "debug_server"
         ):

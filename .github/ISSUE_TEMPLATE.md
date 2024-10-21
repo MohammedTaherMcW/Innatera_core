@@ -50,7 +50,7 @@ What kind of issue is this?
 
 ### If problems with PlatformIO Build System:
 
-**The content of `platformio.ini`:**
+**The content of `innaterapluginio.ini`:**
 ```ini
 Insert here...
 ```

@@ -140,8 +140,8 @@ class RemoteAgentService(RemoteClientBase):
     ):
         assert options and "project_id" in options
         project_dir = os.path.join(self.working_dir, "projects", options["project_id"])
-        origin_pio_ini = os.path.join(project_dir, "platformio.ini")
-        back_pio_ini = os.path.join(project_dir, "platformio.ini.bak")
+        origin_pio_ini = os.path.join(project_dir, "innaterapluginio.ini")
+        back_pio_ini = os.path.join(project_dir, "innaterapluginio.ini.bak")
 
         # remove insecure project options
         try:

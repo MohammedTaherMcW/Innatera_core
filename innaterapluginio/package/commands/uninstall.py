@@ -42,7 +42,7 @@ from innaterapluginio.project.savedeps import pkg_to_save_spec, save_project_dep
 @click.option(
     "--no-save",
     is_flag=True,
-    help="Prevent removing specified packages from `platformio.ini`",
+    help="Prevent removing specified packages from `innaterapluginio.ini`",
 )
 @click.option("--skip-dependencies", is_flag=True, help="Skip package dependencies")
 @click.option("-g", "--global", is_flag=True, help="Uninstall global packages")

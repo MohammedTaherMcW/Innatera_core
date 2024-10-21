@@ -46,7 +46,7 @@ def pytest_generate_tests(metafunc):
     for examples_dir in examples_dirs:
         candidates = {}
         for root, _, files in os.walk(examples_dir):
-            if "platformio.ini" not in files or ".skiptest" in files:
+            if "innaterapluginio.ini" not in files or ".skiptest" in files:
                 continue
             if "mbed-legacy-examples" in root:
                 continue

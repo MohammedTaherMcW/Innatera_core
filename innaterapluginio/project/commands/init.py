@@ -125,7 +125,7 @@ def project_init_cmd(
             update_board_envs(project_dir, boards, project_options, env_prefix, build_dir, project_type)
 
         generator = None
-        config = ProjectConfig.get_instance(os.path.join(project_dir, "platformio.ini"))
+        config = ProjectConfig.get_instance(os.path.join(project_dir, "innaterapluginio.ini"))
 
         if ide:
             config.validate()
@@ -173,7 +173,7 @@ def print_header(project_dir):
     )
     click.echo("%s - Put project source files here" % click.style("src", fg="cyan"))
     click.echo(
-        "%s - Project Configuration File" % click.style("platformio.ini", fg="cyan")
+        "%s - Project Configuration File" % click.style("innaterapluginio.ini", fg="cyan")
     )
 
 
@@ -211,7 +211,7 @@ def init_base_project(project_dir, spine_location,build_dir, project_type):
 
 def update_board_envs(project_dir, boards, extra_project_options, env_prefix, build_dir, project_type):
     config = ProjectConfig(
-        os.path.join(project_dir, "platformio.ini"), parse_extra=False
+        os.path.join(project_dir, "innaterapluginio.ini"), parse_extra=False
     )
     used_boards = []
     for section in config.sections():
@@ -272,7 +272,7 @@ def update_project_env(environment, extra_project_options=None):
         option_to_sections[destination].append((name, value.strip()))
 
     config = ProjectConfig(
-        "platformio.ini", parse_extra=False, expand_interpolations=False
+        "innaterapluginio.ini", parse_extra=False, expand_interpolations=False
     )
     for section, options in option_to_sections.items():
         if not options:
@@ -598,7 +598,7 @@ For example, see a structure of the following two libraries `Foo` and `Bar`:
 |  |
 |  |- README --> THIS FILE
 |
-|- platformio.ini
+|- innaterapluginio.ini
 |--src
    |- main.c
 

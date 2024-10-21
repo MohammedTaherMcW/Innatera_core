@@ -39,7 +39,7 @@ def pkg_to_save_spec(pkg, user_spec):
 def save_project_dependencies(
     project_dir, specs, scope, action="add", environments=None
 ):
-    config = ProjectConfig.get_instance(os.path.join(project_dir, "platformio.ini"))
+    config = ProjectConfig.get_instance(os.path.join(project_dir, "innaterapluginio.ini"))
     config.validate(environments)
     for env in config.envs():
         if environments and env not in environments:

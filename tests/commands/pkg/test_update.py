@@ -153,7 +153,7 @@ def test_project(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "innaterapluginio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir)],
@@ -183,7 +183,7 @@ def test_project(
         ]
 
         # update packages
-        (project_dir / "platformio.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
+        (project_dir / "innaterapluginio.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
         result = clirunner.invoke(package_update_cmd)
         validate_cliresult(result)
         config = ProjectConfig()
@@ -229,7 +229,7 @@ def test_custom_project_libraries(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "innaterapluginio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     spec = "milesburton/DallasTemperature@^3.8.0"
     result = clirunner.invoke(
         package_install_cmd,
@@ -300,7 +300,7 @@ def test_custom_project_tools(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "innaterapluginio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     spec = "toolchain-atmelavr@~1.50400.0"
     result = clirunner.invoke(
         package_install_cmd,
@@ -347,7 +347,7 @@ def test_custom_project_platforms(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "innaterapluginio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     spec = "atmelavr@^2"
     result = clirunner.invoke(
         package_install_cmd,

@@ -1,5 +1,5 @@
 Makefile
-platformio.ini
+innaterapluginio.ini
 .gitignore
 % for file in src_files:
 {{file}}

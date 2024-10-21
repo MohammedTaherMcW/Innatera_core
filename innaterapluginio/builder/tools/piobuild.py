@@ -379,7 +379,7 @@ def BuildFrameworks(env, frameworks):
 
     if "BOARD" not in env:
         sys.stderr.write(
-            "Please specify `board` in `platformio.ini` to use "
+            "Please specify `board` in `innaterapluginio.ini` to use "
             "with '%s' framework\n" % ", ".join(frameworks)
         )
         env.Exit(1)

@@ -109,7 +109,7 @@ from innaterapluginio.project.options import ProjectOptions
 @click.option(
     "-e",
     "--environment",
-    help="Load configuration from `platformio.ini` and the specified environment",
+    help="Load configuration from `innaterapluginio.ini` and the specified environment",
 )
 def device_monitor_cmd(**options):
     with fs.cd(options["project_dir"]):

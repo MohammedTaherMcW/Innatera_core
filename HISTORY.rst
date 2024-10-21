@@ -1,7 +1,7 @@
 Release Notes
 =============
 
-.. |PIOCONF| replace:: `"platformio.ini" <https://docs.platformio.org/en/latest/projectconf.html>`__ configuration file
+.. |PIOCONF| replace:: `"innaterapluginio.ini" <https://docs.platformio.org/en/latest/projectconf.html>`__ configuration file
 .. |LIBRARYJSON| replace:: `library.json <https://docs.platformio.org/en/latest/manifests/library-json/index.html>`__
 .. |LDF| replace:: `LDF <https://docs.platformio.org/en/latest/librarymanager/ldf.html>`__
 .. |INTERPOLATION| replace:: `Interpolation of Values <https://docs.platformio.org/en/latest/projectconf/interpolation.html>`__
