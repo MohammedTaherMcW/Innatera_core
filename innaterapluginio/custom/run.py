@@ -81,7 +81,7 @@ def run_server(host, port, no_open, shutdown_timeout, home_url):
             routes=routes,
             on_startup=[
                 lambda: click.echo(
-                    "Innatera Home has been started. Press Ctrl+C to shutdown."
+                    "PIO Home has been started. Press Ctrl+C to shutdown."
                 ),
                 lambda: None if no_open else click.launch(home_url),
             ],
