@@ -70,9 +70,9 @@ class PackageManagerInstallMixin:
                 "https://github.com/Ineshmcw/talamo"
             )
 
-        if(spec.name == "innetra" or spec.name =="toolchain-spine" or spec.name == "framework-innetra" or spec.name == "contrib-piocustom"):
+        if(spec.name == "innatera" or spec.name =="toolchain-spine" or spec.name == "framework-innatera" or spec.name == "contrib-piocustom"):
             spec.uri = (
-                "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
+                "https://github.com/MohammedTaherMcW/framework_innatera/raw/Innatera-refactor/"
                 + spec.name
                 + ".tar.xz"
             )

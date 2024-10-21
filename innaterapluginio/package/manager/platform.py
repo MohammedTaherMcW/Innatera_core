@@ -126,7 +126,7 @@ class PlatformPackageManager(
     @util.memoized(expire="5s")
     def get_installed_boards(self):
         boards = []
-        url = "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/innetra.tar.xz"
+        url = "https://github.com/MohammedTaherMcW/framework_innatera/raw/Innatera-refactor/innatera.tar.xz"
         dest_path = self.download(url, checksum=None)
         self.unpack(dest_path, self.package_dir)
         pkg_path = os.path.join(self.package_dir, "innetra")
