@@ -48,17 +48,17 @@ setup(
         ]
     },
     entry_points={
-     #   "console_scripts": [
-     #       "platformio = platformio.__main__:main",
-     #       "pio = platformio.__main__:main",
-     #       "piodebuggdb = platformio.__main__:debug_gdb_main",
-     #   ] 
+       "console_scripts": [
+           "platformio = platformio.__main__:main",
+           "pio = platformio.__main__:main",
+           "piodebuggdb = platformio.__main__:debug_gdb_main",
+       ] 
         
-        "console_scripts": [
-            "innaterapluginio = platformio.__main__:main",
-            "innio = platformio.__main__:main",
-            "inniodebuggdb = platformio.__main__:debug_gdb_main",
-        ]    
+        # "console_scripts": [
+        #     "innaterapluginio = platformio.__main__:main",
+        #     "innio = platformio.__main__:main",
+        #     "inniodebuggdb = platformio.__main__:debug_gdb_main",
+        # ]    
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
