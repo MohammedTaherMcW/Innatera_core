@@ -212,7 +212,7 @@ ProjectOptions = OrderedDict(
                     "external library dependencies"
                 ),
                 sysenvvar="PLATFORMIO_WORKSPACE_DIR",
-                default=os.path.join("${PROJECT_DIR}", ".pio"),
+                default=os.path.join("${PROJECT_DIR}", ".snp"),
                 validate=validate_dir,
             ),
             ConfigPlatformioOption(
