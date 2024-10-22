@@ -10,7 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-VERSION = (6, 1, 15)
+VERSION = (1, 0, 0)
 __version__ = ".".join([str(s) for s in VERSION])
 
 __title__ = "innaterapluginio"

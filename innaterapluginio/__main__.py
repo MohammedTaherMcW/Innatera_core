@@ -24,7 +24,7 @@ from innaterapluginio.compat import IS_CYGWIN, ensure_python3
 @click.command(
     cls=PlatformioCLI, context_settings=dict(help_option_names=["-h", "--help"])
 )
-@click.version_option(__version__, prog_name="PlatformIO Core")
+@click.version_option(__version__, prog_name="Innatera Core")
 @click.option("--force", "-f", is_flag=True, help="DEPRECATED", hidden=True)
 @click.option("--caller", "-c", help="Caller ID (service)")
 @click.option("--no-ansi", is_flag=True, help="Do not print ANSI control characters")

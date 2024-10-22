@@ -30,7 +30,7 @@ DEVELOP_INIT_SCRIPT_URL = (
 )
 
 
-@click.command("upgrade", short_help="Upgrade PlatformIO Core to the latest version")
+@click.command("upgrade", short_help="Upgrade Innatera Core to the latest version")
 @click.option("--dev", is_flag=True, help="Use development branch")
 @click.option("--only-dependencies", is_flag=True)
 @click.option("--verbose", "-v", is_flag=True)
@@ -51,7 +51,7 @@ def cli(dev, only_dependencies, verbose):
 
     python_exe = get_pythonexe_path()
     to_develop = dev or not all(c.isdigit() for c in __version__ if c != ".")
-    pkg_spec = DEVELOP_ZIP_URL if to_develop else "platformio"
+    pkg_spec = DEVELOP_ZIP_URL
 
     try:
         # PIO Core
@@ -63,14 +63,14 @@ def cli(dev, only_dependencies, verbose):
 
         # PyPI dependencies
         subprocess.run(
-            [python_exe, "-m", "platformio", "upgrade", "--only-dependencies"],
+            [python_exe, "-m", "innaterapluginio", "upgrade", "--only-dependencies"],
             check=False,
             stdout=subprocess.PIPE,
         )
 
         # Check version
         output = subprocess.run(
-            [python_exe, "-m", "platformio", "--version"],
+            [python_exe, "-m", "innaterapluginio", "--version"],
             check=True,
             stdout=subprocess.PIPE,
         ).stdout.decode()

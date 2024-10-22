@@ -30,7 +30,7 @@ from innaterapluginio.project.config import ProjectConfig
 def system_info_cmd(json_output):
     project_config = ProjectConfig()
     data = {}
-    data["core_version"] = {"title": "PlatformIO Core", "value": __version__}
+    data["core_version"] = {"title": "Innatera Core", "value": __version__}
     data["python_version"] = {
         "title": "Python",
         "value": "{0}.{1}.{2}-{3}.{4}".format(*list(sys.version_info)),
