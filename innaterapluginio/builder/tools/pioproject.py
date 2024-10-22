@@ -27,8 +27,6 @@ def GetProjectOption(env, option, default=MISSING):
 
 
 def LoadProjectOptions(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioproject - LoadProjectOptions \n\n")
     config = env.GetProjectConfig()
     section = "env:" + env["PIOENV"]
     for option in config.options(section):
@@ -47,8 +45,6 @@ def exists(_):
 
 
 def generate(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioproject - generate \n\n")
     env.AddMethod(GetProjectConfig)
     env.AddMethod(GetProjectOptions)
     env.AddMethod(GetProjectOption)

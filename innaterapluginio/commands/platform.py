@@ -40,8 +40,6 @@ def cli():
 @click.option("--json-output", is_flag=True)
 @click.pass_context
 def platform_search(ctx, query, json_output):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - platform_search \n\n")
     if not json_output:
         click.secho(
             "\nWARNING: This command is deprecated and will be removed in "
@@ -71,8 +69,6 @@ def platform_search(ctx, query, json_output):
 @click.argument("query", required=False)
 @click.option("--json-output", is_flag=True)
 def platform_frameworks(query, json_output):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - platform_frameworks \n\n")
     if not json_output:
         click.secho(
             "\nWARNING: This command is deprecated and will be removed in "
@@ -107,8 +103,6 @@ def platform_frameworks(query, json_output):
 @click.option("--json-output", is_flag=True)
 @click.pass_context
 def platform_list(ctx, json_output):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - platform_list \n\n")
     if not json_output:
         click.secho(
             "\nWARNING: This command is deprecated and will be removed in "
@@ -134,8 +128,6 @@ def platform_list(ctx, json_output):
 @click.option("--json-output", is_flag=True)
 @click.pass_context
 def platform_show(ctx, platform, json_output):  # pylint: disable=too-many-branches
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - platform_show \n\n")
     if not json_output:
         click.secho(
             "\nWARNING: This command is deprecated and will be removed in "

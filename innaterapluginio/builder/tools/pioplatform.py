@@ -35,14 +35,10 @@ def _PioPlatform():
 
 
 def PioPlatform(_):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - PioPlatform \n\n")
     return _PioPlatform()
 
 
 def BoardConfig(env, board=None):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - BoardConfig \n\n")
     with fs.cd(env.subst("$PROJECT_DIR")):
         try:
             p = env.PioPlatform()
@@ -56,8 +52,6 @@ def BoardConfig(env, board=None):
 
 
 def GetFrameworkScript(env, framework):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - GetFrameworkScript \n\n")
     p = env.PioPlatform()
     assert p.frameworks and framework in p.frameworks
     script_path = env.subst(p.frameworks[framework]["script"])
@@ -67,8 +61,6 @@ def GetFrameworkScript(env, framework):
 
 
 def LoadPioPlatform(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - LoadPioPlatform \n\n")
     p = env.PioPlatform()
 
     # Ensure real platform name
@@ -138,8 +130,6 @@ def LoadPioPlatform(env):
 
 
 def PrintConfiguration(env):  # pylint: disable=too-many-statements
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - PrintConfiguration \n\n")
     platform = env.PioPlatform()
     pkg_metadata = PackageItem(platform.get_dir()).metadata
     board_config = env.BoardConfig() if "BOARD" in env else None
@@ -156,8 +146,6 @@ def PrintConfiguration(env):  # pylint: disable=too-many-statements
         )
 
     def _get_plaform_data():
-        if DEBUG == 1:
-            print("Debug: Entering - builder - tools - pioplatform - PrintConfiguration - _get_plaform_data \n\n")
         data = [
             "PLATFORM: %s (%s)"
             % (
@@ -176,8 +164,6 @@ def PrintConfiguration(env):  # pylint: disable=too-many-statements
         return data
 
     def _get_hardware_data():
-        if DEBUG == 1:
-            print("Debug: Entering - builder - tools - pioplatform - PrintConfiguration - _get_hardware_data \n\n")
         data = ["HARDWARE:"]
         mcu = env.subst("$BOARD_MCU")
         f_cpu = env.subst("$BOARD_F_CPU")
@@ -197,8 +183,6 @@ def PrintConfiguration(env):  # pylint: disable=too-many-statements
         return data
 
     def _get_debug_data():
-        if DEBUG == 1:
-            print("Debug: Entering - builder - tools - pioplatform - PrintConfiguration - _get_debug_data \n\n")
         debug_tools = (
             board_config.get("debug", {}).get("tools") if board_config else None
         )
@@ -224,8 +208,6 @@ def PrintConfiguration(env):  # pylint: disable=too-many-statements
         return data
 
     def _get_packages_data():
-        if DEBUG == 1:
-            print("Debug: Entering - builder - tools - pioplatform - PrintConfiguration - _get_packages_data \n\n")
         data = []
         for item in platform.dump_used_packages():
             original_version = get_original_version(item["version"])
@@ -258,8 +240,6 @@ def exists(_):
 
 
 def generate(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - pioplatform - generate \n\n")
     env.AddMethod(PioPlatform)
     env.AddMethod(BoardConfig)
     env.AddMethod(GetFrameworkScript)

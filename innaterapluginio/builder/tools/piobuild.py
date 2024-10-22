@@ -27,7 +27,6 @@ from innaterapluginio.compat import IS_MACOS, string_types
 from innaterapluginio.package.version import pepver_to_semver
 from innaterapluginio.proc import where_is_program
 from innaterapluginio.debug_const import DEBUG
-
 SRC_HEADER_EXT = ["h", "hpp"]
 SRC_ASM_EXT = ["S", "spp", "SPP", "sx", "s", "asm", "ASM"]
 SRC_C_EXT = ["c"]
@@ -38,6 +37,7 @@ SRC_FILTER_DEFAULT = ["+<*>", "-<.git%s>" % os.sep, "-<.svn%s>" % os.sep]
 
 def isBuildTarget(env):
     return "makedebug" in COMMAND_LINE_TARGETS or "makerelease" in COMMAND_LINE_TARGETS
+
 
 def ExecuteBuildProject(env, build_type):
     print(f"Running build type {build_type}")
@@ -56,10 +56,7 @@ def ExecuteBuildProject(env, build_type):
     except Exception as e:
         print(f"Unexpected error during make {build_type}: {e}")
 
-
 def scons_patched_match_splitext(path, suffixes=None):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - scons_patched_match_splitext \n\n")
     """Patch SCons Builder, append $OBJSUFFIX to the end of each target"""
     tokens = Util.splitext(path)
     if suffixes and tokens[1] and tokens[1] in suffixes:
@@ -68,8 +65,6 @@ def scons_patched_match_splitext(path, suffixes=None):
 
 
 def GetBuildType(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - GetBuildType \n\n")
     modes = []
     if (
         set(["__debug", "sizedata"])  # sizedata = for memory inspection
@@ -83,8 +78,6 @@ def GetBuildType(env):
 
 
 def BuildProgram(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - BuildProgram \n\n")
     env.ProcessProgramDeps()
     env.ProcessProjectDeps()
 
@@ -118,8 +111,6 @@ def BuildProgram(env):
 
 
 def ProcessProgramDeps(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - ProcessProgramDeps \n\n")
     def _append_pio_macros():
         core_version = pepver_to_semver(__version__)
         env.AppendUnique(
@@ -159,8 +150,6 @@ def ProcessProgramDeps(env):
 
 
 def ProcessCompileDbToolchainOption(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - ProcessCompileDbToolchainOption \n\n")
     if "compiledb" in COMMAND_LINE_TARGETS:
         # Resolve absolute path of toolchain
         for cmd in ("CC", "CXX", "AS"):
@@ -180,8 +169,6 @@ def ProcessCompileDbToolchainOption(env):
 
 
 def ProcessProjectDeps(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - ProcessProjectDeps \n\n")
     plb = env.ConfigureProjectLibBuilder()
 
     # prepend project libs to the beginning of list
@@ -221,8 +208,6 @@ def ProcessProjectDeps(env):
 
 
 def ParseFlagsExtended(env, flags):  # pylint: disable=too-many-branches
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - ParseFlagsExtended \n\n")
     if not isinstance(flags, list):
         flags = [flags]
     result = {}
@@ -263,8 +248,6 @@ def ParseFlagsExtended(env, flags):  # pylint: disable=too-many-branches
 
 
 def ProcessFlags(env, flags):  # pylint: disable=too-many-branches
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - ProcessFlags \n\n")
     if not flags:
         return
     env.Append(**env.ParseFlagsExtended(flags))
@@ -285,8 +268,6 @@ def ProcessFlags(env, flags):  # pylint: disable=too-many-branches
 
 
 def ProcessUnFlags(env, flags):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - ProcessUnFlags \n\n")
     if not flags:
         return
     parsed = env.ParseFlagsExtended(flags)
@@ -310,8 +291,6 @@ def StringifyMacro(env, value):  # pylint: disable=unused-argument
 
 
 def MatchSourceFiles(env, src_dir, src_filter=None, src_exts=None):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - MatchSourceFiles \n\n")
     src_filter = env.subst(src_filter) if src_filter else None
     src_filter = src_filter or SRC_FILTER_DEFAULT
     src_exts = src_exts or (SRC_BUILD_EXT + SRC_HEADER_EXT)
@@ -321,8 +300,6 @@ def MatchSourceFiles(env, src_dir, src_filter=None, src_exts=None):
 def CollectBuildFiles(
     env, variant_dir, src_dir, src_filter=None, duplicate=False
 ):  # pylint: disable=too-many-locals
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - CollectBuildFiles \n\n")
     sources = []
     variants = []
 
@@ -364,14 +341,10 @@ def CollectBuildFiles(
 
 
 def AddBuildMiddleware(env, callback, pattern=None):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - AddBuildMiddleware \n\n")
     env.Append(__PIO_BUILD_MIDDLEWARES=[(callback, pattern)])
 
 
 def BuildFrameworks(env, frameworks):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - BuildFrameworks \n\n")
     if not frameworks:
         return
 
@@ -398,16 +371,12 @@ def BuildFrameworks(env, frameworks):
 
 
 def BuildLibrary(env, variant_dir, src_dir, src_filter=None, nodes=None):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - BuildLibrary \n\n")
     env.ProcessUnFlags(env.get("BUILD_UNFLAGS"))
     nodes = nodes or env.CollectBuildFiles(variant_dir, src_dir, src_filter)
     return env.StaticLibrary(env.subst(variant_dir), nodes)
 
 
 def BuildSources(env, variant_dir, src_dir, src_filter=None):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - BuildSources \n\n")
     if env.get("PIOMAINPROG"):
         sys.stderr.write(
             "Error: The main program is already constructed and the inline "
@@ -429,8 +398,6 @@ def exists(_):
 
 
 def generate(env):
-    if DEBUG == 1:
-        print("Debug: Entering - builder - tools - piobuild - generate \n\n")
     env.AddMethod(GetBuildType)
     env.AddMethod(isBuildTarget)
     env.AddMethod(ExecuteBuildProject)
@@ -449,3 +416,4 @@ def generate(env):
     env.AddMethod(BuildLibrary)
     env.AddMethod(BuildSources)
     return env
+
