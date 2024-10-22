@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -169,36 +167,9 @@ def after_upgrade(ctx):
 
 
 def print_welcome_banner():
-    terminal_width = shutil.get_terminal_size().columns
-    click.echo("*" * terminal_width)
-    click.echo("If you like %s, please:" % (click.style("Innatera", fg="cyan")))
-    click.echo(
-        "- %s it on GitHub > %s"
-        % (
-            click.style("star", fg="cyan"),
-            click.style("https://github.com/platformio/platformio-core", fg="cyan"),
-        )
-    )
-    click.echo(
-        "- %s us on LinkedIn to stay up-to-date "
-        "on the latest project news > %s"
-        % (
-            click.style("follow", fg="cyan"),
-            click.style("https://www.linkedin.com/company/platformio/", fg="cyan"),
-        )
-    )
-    if not os.getenv("PLATFORMIO_IDE"):
-        click.echo(
-            "- %s Innatera IDE for embedded development > %s"
-            % (
-                click.style("try", fg="cyan"),
-                click.style("https://platformio.org/platformio-ide", fg="cyan"),
-            )
-        )
-
-    click.echo("*" * terminal_width)
-    click.echo("")
-
+    click.echo("*" * shutil.get_terminal_size().columns)
+    click.echo("Thank you for using %s!" % (click.style("Innatera", fg="cyan")))
+    click.echo("*" * shutil.get_terminal_size().columns)
 
 def check_platformio_upgrade():
     interval = int(app.get_setting("check_platformio_interval")) * 3600 * 24
@@ -223,24 +194,12 @@ def check_platformio_upgrade():
 
     terminal_width = shutil.get_terminal_size().columns
 
-    click.echo("")
-    click.echo("*" * terminal_width)
     click.secho(
-        "There is a new version %s of Innatera available.\n"
-        "Please upgrade it via `" % latest_version,
+        "There is a new version of Innatera available.\n"
+        "Please upgrade it via `",
         fg="yellow",
         nl=False,
     )
-    if os.path.join("Cellar", "platformio") in fs.get_source_dir():
-        click.secho("brew update && brew upgrade", fg="cyan", nl=False)
-        click.secho("` command.", fg="yellow")
-    else:
-        click.secho("platformio upgrade", fg="cyan", nl=False)
-        click.secho("` or `", fg="yellow", nl=False)
-        click.secho("python -m pip install -U platformio", fg="cyan", nl=False)
-        click.secho("` command.", fg="yellow")
-    click.secho("Changes: ", fg="yellow", nl=False)
-    click.secho("https://docs.platformio.org/en/latest/history.html", fg="cyan")
     click.echo("*" * terminal_width)
     click.echo("")
 
@@ -271,8 +230,8 @@ def check_prune_system():
     click.echo("*" * terminal_width)
     click.secho(
         "We found %s of unnecessary Innatera system data (temporary files, "
-        "unnecessary packages, etc.).\nUse `pio system prune --dry-run` to list "
-        "them or `pio system prune` to save disk space."
+        "unnecessary packages, etc.).\nUse `innaterapluginio system prune --dry-run` to list "
+        "them or `innaterapluginio system prune` to save disk space."
         % fs.humanize_file_size(unnecessary_size),
         fg="yellow",
     )

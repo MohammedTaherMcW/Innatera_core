@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -35,7 +33,7 @@ def projects_dir_validate(projects_dir):
 
 DEFAULT_SETTINGS = {
     "check_platformio_interval": {
-        "description": "Check for the new PlatformIO Core interval (days)",
+        "description": "Check for the new InnateraPluginIO Core interval (days)",
         "value": 7,
     },
     "check_prune_system_threshold": {
@@ -264,7 +262,7 @@ def get_project_id(project_dir):
 
 def get_user_agent():
     data = [
-        "PlatformIO/%s" % __version__,
+        "innaterpluginio/%s" % __version__,
         "CI/%d" % int(proc.is_ci()),
         "Container/%d" % int(proc.is_container()),
     ]

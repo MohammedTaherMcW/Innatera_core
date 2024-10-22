@@ -1,6 +1,4 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
+#Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -124,7 +122,6 @@ class retry:
 
 
 def singleton(cls):
-    """From PEP-318 http://www.python.org/dev/peps/pep-0318/#examples"""
     _instances = {}
 
     def get_instance(*args, **kwargs):
@@ -149,7 +146,6 @@ def get_systype():
 
 
 def pioversion_to_intstr():
-    """Legacy for  framework-zephyr/scripts/platformio/platformio-build-pre.py"""
     vermatch = re.match(r"^([\d\.]+)", __version__)
     assert vermatch
     return [int(i) for i in vermatch.group(1).split(".")[:3]]
