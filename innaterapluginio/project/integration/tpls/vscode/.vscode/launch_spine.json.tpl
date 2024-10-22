@@ -11,9 +11,9 @@
 %
 % def get_pio_configurations():
 %  predebug = {
-%    "type": "platformio-debug",
+%    "type": "Innatera-debug",
 %    "request": "launch",
-%    "name": "PIO Debug (skip Pre-Debug)",
+%    "name": "Innatera Debug (skip Pre-Debug)",
 %    "executable": _escape_path(prog_path),
 %    "projectEnvName": env_name if forced_env_name else default_debug_env_name,
 %    "toolchainBinDir": _escape_path(os.path.dirname(cc_path)),
@@ -24,13 +24,13 @@
 %    predebug["svdPath"] = _escape_path(svd_path)
 %  end
 %  debug = predebug.copy()
-%  debug["name"] = "PIO Debug"
+%  debug["name"] = "Innatera Debug"
 %  debug["preLaunchTask"] = {
 %    "type": "PlatformIO",
 %    "task": ("Pre-Debug (%s)" % env_name) if len(config.envs()) > 1 and forced_env_name else "Pre-Debug",
 %  }
 %  noloading = predebug.copy()
-%  noloading["name"] = "PIO Debug (without uploading)"
+%  noloading["name"] = "Innatera Debug (without uploading)"
 %  noloading["loadMode"] = "manual"
 %  return [debug, predebug, noloading]
 % end
@@ -52,7 +52,7 @@
 %    for c in get_pio_configurations()
 %  ]
 %  return any(
-%    c.get("type", "") != "platformio-debug"
+%    c.get("type", "") != "Innatera-debug"
 %    or c.get("name", "") in pio_config_names
 %    for c in launch_config.get("configurations", [])
 %  )
@@ -70,7 +70,7 @@
 %  external_configurations = [
 %    c
 %    for c in launch_config["configurations"]
-%    if c.get("type", "") != "platformio-debug" or c.get("name", "") not in pio_config_names
+%    if c.get("type", "") != "Innatera-debug" or c.get("name", "") not in pio_config_names
 %  ]
 %
 %  launch_config["configurations"] = external_configurations
