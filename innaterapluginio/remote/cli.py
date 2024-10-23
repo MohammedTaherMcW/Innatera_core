@@ -339,7 +339,7 @@ def device_list(agents, json_output):
 @click.option(
     "-e",
     "--environment",
-    help="Load configuration from `innaterapluginio.ini` and specified environment",
+    help="Load configuration from `conf.ini` and specified environment",
 )
 @click.option(
     "--sock",

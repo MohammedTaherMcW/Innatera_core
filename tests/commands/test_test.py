@@ -96,7 +96,7 @@ def test_list_tests(clirunner, validate_cliresult, tmp_path: Path):
 def test_group_and_custom_runner(clirunner, validate_cliresult, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native
@@ -202,7 +202,7 @@ int main() {
 
 def test_crashed_program(clirunner, tmpdir):
     project_dir = tmpdir.mkdir("project")
-    project_dir.join("innaterapluginio.ini").write(
+    project_dir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -250,7 +250,7 @@ int main(int argc, char *argv[]) {
 def test_custom_testing_command(clirunner, validate_cliresult, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:uno]
 platform = atmelavr
@@ -309,7 +309,7 @@ void loop() {
 
 def test_unity_setup_teardown(clirunner, validate_cliresult, tmpdir):
     project_dir = tmpdir.mkdir("project")
-    project_dir.join("innaterapluginio.ini").write(
+    project_dir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -355,7 +355,7 @@ int main() {
 def test_unity_custom_config(clirunner, validate_cliresult, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native
@@ -407,7 +407,7 @@ int main() {
 
 def test_legacy_unity_custom_transport(clirunner, validate_cliresult, tmpdir):
     project_dir = tmpdir.mkdir("project")
-    project_dir.join("innaterapluginio.ini").write(
+    project_dir.join("conf.ini").write(
         """
 [env:embedded]
 platform = ststm32
@@ -476,7 +476,7 @@ void unittest_uart_end(){}
 def test_doctest_framework(clirunner, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native

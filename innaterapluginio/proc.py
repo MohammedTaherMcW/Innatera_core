@@ -172,17 +172,17 @@ def get_virtualenv_path():
 
 def get_framework(path):
     try:
-        with open(os.path.join(path, "innaterapluginio.ini"), 'r') as file:
+        with open(os.path.join(path, "conf.ini"), 'r') as file:
             content = file.read()
             framework_match = re.search(r'framework\s*=\s*(\w+)', content)
             if framework_match:
                 return framework_match.group(1)
                 # click.echo(framework_match.group(1))
             else:
-                click.echo("No framework found in innaterapluginio.ini file")
+                click.echo("No framework found in conf.ini file")
                 return None
     except FileNotFoundError:
-        click.echo("No innaterapluginio.ini file found")
+        click.echo("No conf.ini file found")
 
 def copy_pythonpath_to_osenv():
     _PYTHONPATH = []

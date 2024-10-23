@@ -38,7 +38,7 @@ class ProjectRPC(BaseRPCHandler):
         assert "path" in init_kwargs
         if os.path.isdir(init_kwargs["path"]):
             project_dir = init_kwargs["path"]
-            init_kwargs["path"] = os.path.join(init_kwargs["path"], "innaterapluginio.ini")
+            init_kwargs["path"] = os.path.join(init_kwargs["path"], "conf.ini")
         elif os.path.isfile(init_kwargs["path"]):
             project_dir = os.path.dirname(init_kwargs["path"])
         else:
@@ -160,7 +160,7 @@ class ProjectRPC(BaseRPCHandler):
             for project_dir, _, __ in os.walk(examples_dir):
                 project_description = None
                 try:
-                    config = ProjectConfig(os.path.join(project_dir, "innaterapluginio.ini"))
+                    config = ProjectConfig(os.path.join(project_dir, "conf.ini"))
                     config.validate(silent=True)
                     project_description = config.get("platformio", "description")
                 except ProjectError:
@@ -347,7 +347,7 @@ class ProjectRPC(BaseRPCHandler):
     def configuration(project_dir, env):
         assert is_platformio_project(project_dir)
         with fs.cd(project_dir):
-            config = ProjectConfig(os.path.join(project_dir, "innaterapluginio.ini"))
+            config = ProjectConfig(os.path.join(project_dir, "conf.ini"))
             platform = PlatformFactory.from_env(env, autoinstall=True)
             platform_pkg = PlatformPackageManager().get_package(platform.get_dir())
             board_id = config.get(f"env:{env}", "board", None)

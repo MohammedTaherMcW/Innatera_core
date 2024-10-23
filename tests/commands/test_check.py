@@ -74,7 +74,7 @@ EXPECTED_DEFECTS = EXPECTED_ERRORS + EXPECTED_WARNINGS + EXPECTED_STYLE
 @pytest.fixture(scope="module")
 def check_dir(tmpdir_factory):
     tmpdir = tmpdir_factory.mktemp("project")
-    tmpdir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    tmpdir.join("conf.ini").write(DEFAULT_CONFIG)
     tmpdir.mkdir("src").join("main.cpp").write(TEST_CODE)
     return tmpdir
 
@@ -125,7 +125,7 @@ def test_check_tool_complex_defines_handled(
 ):
     project_dir = tmpdir_factory.mktemp("project_dir")
 
-    project_dir.join("innaterapluginio.ini").write(
+    project_dir.join("conf.ini").write(
         DEFAULT_CONFIG
         + R"""
 check_tool = cppcheck, clangtidy, pvs-studio
@@ -172,7 +172,7 @@ int main()
 
 def test_check_language_standard_definition_passed(clirunner, tmpdir):
     config = DEFAULT_CONFIG + "\nbuild_flags = -std=c++17"
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.cpp").write(TEST_CODE)
     result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir), "-v"])
 
@@ -187,7 +187,7 @@ def test_check_language_standard_option_is_converted(clirunner, tmpdir):
 build_flags = -std=gnu++1y
     """
     )
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.cpp").write(TEST_CODE)
     result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir), "-v"])
 
@@ -202,7 +202,7 @@ check_flags = --std=c++03
 build_flags = -std=c++17
     """
     )
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.cpp").write(TEST_CODE)
     result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir), "-v"])
 
@@ -212,7 +212,7 @@ build_flags = -std=c++17
 
 def test_check_language_standard_for_c_language(clirunner, tmpdir):
     config = DEFAULT_CONFIG + "\nbuild_flags = -std=c11"
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.c").write(TEST_CODE)
     result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir), "-v"])
 
@@ -258,7 +258,7 @@ def test_check_silent_mode(clirunner, validate_cliresult, check_dir):
 
 
 def test_check_no_source_files(clirunner, tmpdir):
-    tmpdir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    tmpdir.join("conf.ini").write(DEFAULT_CONFIG)
     tmpdir.mkdir("src")
 
     result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir)])
@@ -285,7 +285,7 @@ def test_check_bad_flag_passed(clirunner, check_dir):
 
 
 def test_check_success_if_no_errors(clirunner, validate_cliresult, tmpdir):
-    tmpdir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    tmpdir.join("conf.ini").write(DEFAULT_CONFIG)
     tmpdir.mkdir("src").join("main.c").write(
         """
 #include <stdlib.h>
@@ -320,7 +320,7 @@ def test_check_individual_flags_passed(clirunner, validate_cliresult, tmpdir):
     pvs-studio: --analysis-mode=4
 """
 
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.cpp").write(
         PVS_STUDIO_FREE_LICENSE_HEADER + TEST_CODE
     )
@@ -345,7 +345,7 @@ def test_check_individual_flags_passed(clirunner, validate_cliresult, tmpdir):
 
 def test_check_cppcheck_misra_addon(clirunner, validate_cliresult, tmpdir_factory):
     check_dir = tmpdir_factory.mktemp("project")
-    check_dir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    check_dir.join("conf.ini").write(DEFAULT_CONFIG)
     check_dir.mkdir("src").join("main.c").write(TEST_CODE)
     check_dir.join("misra.json").write(
         """
@@ -393,7 +393,7 @@ R21.4 text.
 
 def test_check_fails_on_defects_only_with_flag(clirunner, validate_cliresult, tmpdir):
     config = DEFAULT_CONFIG + "\ncheck_tool = cppcheck, clangtidy"
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.cpp").write(TEST_CODE)
 
     default_result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir)])
@@ -410,7 +410,7 @@ def test_check_fails_on_defects_only_on_specified_level(
     clirunner, validate_cliresult, tmpdir
 ):
     config = DEFAULT_CONFIG + "\ncheck_tool = cppcheck, clangtidy"
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.c").write(
         """
 #include <stdlib.h>
@@ -447,7 +447,7 @@ framework = arduino
 check_tool = pvs-studio
 """
 
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.c").write(PVS_STUDIO_FREE_LICENSE_HEADER + TEST_CODE)
 
     result = clirunner.invoke(
@@ -465,7 +465,7 @@ check_tool = pvs-studio
 def test_check_pvs_studio_fails_without_license(clirunner, tmpdir):
     config = DEFAULT_CONFIG + "\ncheck_tool = pvs-studio"
 
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.c").write(TEST_CODE)
 
     default_result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir)])
@@ -491,7 +491,7 @@ check_flags = --lic-file=./pvs-studio.lic
 """
     )
 
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.c").write(TEST_CODE)
     tmpdir.join("pvs-studio.lic").write(
         """
@@ -548,7 +548,7 @@ project(hello_world)
 target_sources(app PRIVATE ../src/main.c)"""
         )
 
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir)])
     validate_cliresult(result)
     defects = sum(count_defects(result.output))
@@ -563,7 +563,7 @@ board = nrf52_dk
 framework = arduino
 """
 
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.c").write(TEST_CODE)
 
     result = clirunner.invoke(
@@ -582,7 +582,7 @@ framework = arduino
 
 def test_check_multiline_error(clirunner, tmpdir_factory):
     project_dir = tmpdir_factory.mktemp("project")
-    project_dir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    project_dir.join("conf.ini").write(DEFAULT_CONFIG)
 
     project_dir.mkdir("include").join("main.h").write(
         """
@@ -613,7 +613,7 @@ int main() {}
 def test_check_handles_spaces_in_paths(clirunner, validate_cliresult, tmpdir_factory):
     tmpdir = tmpdir_factory.mktemp("project dir")
     config = DEFAULT_CONFIG + "\ncheck_tool = cppcheck, clangtidy, pvs-studio"
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.mkdir("src").join("main.cpp").write(
         PVS_STUDIO_FREE_LICENSE_HEADER + TEST_CODE
     )
@@ -646,7 +646,7 @@ def test_check_src_filter(
     number_of_checked_files,
 ):
     tmpdir = tmpdir_factory.mktemp("project")
-    tmpdir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    tmpdir.join("conf.ini").write(DEFAULT_CONFIG)
 
     src_dir = tmpdir.mkdir("src")
     src_dir.join("main.cpp").write(TEST_CODE)
@@ -678,7 +678,7 @@ check_src_filters =
     +<tests/test.cpp>
     """
     )
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
 
     src_dir = tmpdir.mkdir("src")
     src_dir.join("main.cpp").write(TEST_CODE)
@@ -698,7 +698,7 @@ def test_check_custom_pattern_absolute_path_legacy(
     clirunner, validate_cliresult, tmpdir_factory
 ):
     project_dir = tmpdir_factory.mktemp("project")
-    project_dir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    project_dir.join("conf.ini").write(DEFAULT_CONFIG)
 
     check_dir = tmpdir_factory.mktemp("custom_src_dir")
     check_dir.join("main.cpp").write(TEST_CODE)
@@ -720,7 +720,7 @@ def test_check_custom_pattern_relative_path_legacy(
     clirunner, validate_cliresult, tmpdir_factory
 ):
     tmpdir = tmpdir_factory.mktemp("project")
-    tmpdir.join("innaterapluginio.ini").write(DEFAULT_CONFIG)
+    tmpdir.join("conf.ini").write(DEFAULT_CONFIG)
 
     src_dir = tmpdir.mkdir("src")
     src_dir.join("main.cpp").write(TEST_CODE)
@@ -751,7 +751,7 @@ check_patterns =
     tests/test.cpp
     """
     )
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
 
     src_dir = tmpdir.mkdir("src")
     src_dir.join("main.cpp").write(TEST_CODE)
@@ -784,7 +784,7 @@ platform = native
 check_src_filters =
     +<test/*>
     """
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
 
     src_dir = tmpdir.mkdir("src")
     src_dir.join("main.cpp").write(TEST_CODE)
@@ -813,7 +813,7 @@ src_dir = ./
     """
         + DEFAULT_CONFIG
     )
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     tmpdir.join("main.cpp").write(TEST_CODE)
     tmpdir.mkdir("spi").join("uart.cpp").write(TEST_CODE)
 
@@ -837,7 +837,7 @@ src_dir = {external_src_dir}
     """
         + DEFAULT_CONFIG
     )
-    tmpdir.join("innaterapluginio.ini").write(config)
+    tmpdir.join("conf.ini").write(config)
     external_src_dir.join("main.cpp").write(TEST_CODE)
 
     result = clirunner.invoke(cmd_check, ["--project-dir", str(tmpdir)])

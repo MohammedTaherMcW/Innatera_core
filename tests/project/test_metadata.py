@@ -16,7 +16,7 @@ from Innatera.project.commands.metadata import project_metadata_cmd
 
 
 def test_metadata_dump(clirunner, validate_cliresult, tmpdir):
-    tmpdir.join("innaterapluginio.ini").write(
+    tmpdir.join("conf.ini").write(
         """
 [env:native]
 platform = native

@@ -6,7 +6,7 @@
       </df>
       <df name="src">
       </df>
-      <in>innaterapluginio.ini</in>
+      <in>conf.ini</in>
     </df>
   </logicalFolder>
   <projectmakefile></projectmakefile>

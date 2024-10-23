@@ -1,7 +1,7 @@
 all:
 	platformio -c qtcreator run
 
-# regenerate project files to reflect innaterapluginio.ini changes
+# regenerate project files to reflect conf.ini changes
 project-update:
 	@echo "This will overwrite project metadata files.  Are you sure? [y/N] " \
 	    && read ans && [ $${ans:-'N'} = 'y' ]

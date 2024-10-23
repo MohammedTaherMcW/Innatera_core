@@ -45,7 +45,7 @@ platform_packages =
 def test_save_libraries(tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     specs = [
         PackageSpec("milesburton/DallasTemperature@^3.9"),
         PackageSpec("adafruit/Adafruit GPS Library@^1.6.0"),
@@ -56,7 +56,7 @@ def test_save_libraries(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="lib_deps", action="add", environments=["debug"]
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "lib_deps") == [
         "SPI",
         "bblanchon/ArduinoJson",
@@ -71,7 +71,7 @@ def test_save_libraries(tmp_path):
 
     # add to the the all environments
     save_project_dependencies(str(project_dir), specs, scope="lib_deps", action="add")
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "lib_deps") == [
         "SPI",
         "bblanchon/ArduinoJson",
@@ -98,7 +98,7 @@ def test_save_libraries(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "lib_deps") == [
         "adafruit/Adafruit GPS Library@^1.6.0",
         "https://github.com/nanopb/nanopb.git",
@@ -111,7 +111,7 @@ def test_save_libraries(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "lib_deps") == [
         "https://github.com/nanopb/nanopb.git",
     ]
@@ -120,7 +120,7 @@ def test_save_libraries(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="lib_deps", action="remove"
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "lib_deps") == [
         "SPI",
         "bblanchon/ArduinoJson",
@@ -132,7 +132,7 @@ def test_save_libraries(tmp_path):
 def test_save_tools(tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     specs = [
         PackageSpec("platformio/framework-espidf@^2"),
         PackageSpec("platformio/tool-esptoolpy"),
@@ -146,7 +146,7 @@ def test_save_tools(tmp_path):
         action="add",
         environments=["debug"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
         "platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git",
@@ -164,7 +164,7 @@ def test_save_tools(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="platform_packages", action="add"
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
         "platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git",
@@ -188,7 +188,7 @@ def test_save_tools(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "platform_packages") == [
         "platformio/tool-esptoolpy",
     ]
@@ -200,7 +200,7 @@ def test_save_tools(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
     ]
@@ -209,7 +209,7 @@ def test_save_tools(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="platform_packages", action="remove"
     )
-    config = ProjectConfig.get_instance(str(project_dir / "innaterapluginio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
         "platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git",

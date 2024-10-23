@@ -63,9 +63,9 @@ class RunOrTestClient(AsyncClientBase):
     def add_project_items(self, psync):
         with fs.cd(self.options["project_dir"]):
             cfg = ProjectConfig.get_instance(
-                os.path.join(self.options["project_dir"], "innaterapluginio.ini")
+                os.path.join(self.options["project_dir"], "conf.ini")
             )
-            psync.add_item(cfg.path, "innaterapluginio.ini")
+            psync.add_item(cfg.path, "conf.ini")
             psync.add_item(cfg.get("platformio", "shared_dir"), "shared")
             psync.add_item(cfg.get("platformio", "boards_dir"), "boards")
 

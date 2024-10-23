@@ -169,4 +169,4 @@ def _copy_project_conf(build_dir, project_conf):
     config = ProjectConfig(project_conf, parse_extra=False)
     if config.has_section("platformio"):
         config.remove_section("platformio")
-    config.save(os.path.join(build_dir, "innaterapluginio.ini"))
+    config.save(os.path.join(build_dir, "conf.ini"))

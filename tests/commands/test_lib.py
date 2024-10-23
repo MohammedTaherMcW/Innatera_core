@@ -28,7 +28,7 @@ from Innatera.registry.client import RegistryClient
 def test_saving_deps(clirunner, validate_cliresult, isolated_pio_core, tmpdir_factory):
     regclient = RegistryClient()
     project_dir = tmpdir_factory.mktemp("project")
-    project_dir.join("innaterapluginio.ini").write(
+    project_dir.join("conf.ini").write(
         """
 [env]
 lib_deps = ArduinoJson
@@ -49,7 +49,7 @@ lib_deps =
     )
     validate_cliresult(result)
     aj_pkg_data = regclient.get_package(PackageType.LIBRARY, "bblanchon", "ArduinoJson")
-    config = ProjectConfig(os.path.join(str(project_dir), "innaterapluginio.ini"))
+    config = ProjectConfig(os.path.join(str(project_dir), "conf.ini"))
     assert sorted(config.get("env:one", "lib_deps")) == sorted(
         [
             "bblanchon/ArduinoJson@^%s" % aj_pkg_data["version"]["name"],
@@ -73,7 +73,7 @@ lib_deps =
     ll_pkg_data = regclient.get_package(
         PackageType.LIBRARY, "mbed-sam-grove", "LinkedList"
     )
-    config = ProjectConfig(os.path.join(str(project_dir), "innaterapluginio.ini"))
+    config = ProjectConfig(os.path.join(str(project_dir), "conf.ini"))
     assert sorted(config.get("env:one", "lib_deps")) == sorted(
         [
             "bblanchon/ArduinoJson@^%s" % aj_pkg_data["version"]["name"],
@@ -95,7 +95,7 @@ lib_deps =
         ],
     )
     validate_cliresult(result)
-    config = ProjectConfig(os.path.join(str(project_dir), "innaterapluginio.ini"))
+    config = ProjectConfig(os.path.join(str(project_dir), "conf.ini"))
     assert len(config.get("env:one", "lib_deps")) == 4
     assert config.get("env:one", "lib_deps")[3] == (
         "https://github.com/OttoWinter/async-mqtt-client.git#v0.8.3 @ 0.8.3"
@@ -120,7 +120,7 @@ lib_deps =
         ],
     )
     validate_cliresult(result)
-    config = ProjectConfig(os.path.join(str(project_dir), "innaterapluginio.ini"))
+    config = ProjectConfig(os.path.join(str(project_dir), "conf.ini"))
     assert len(config.get("env:one", "lib_deps")) == 2
     assert len(config.get("env:two", "lib_deps")) == 2
     assert config.get("env:one", "lib_deps") == [

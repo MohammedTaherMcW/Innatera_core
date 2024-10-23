@@ -84,7 +84,7 @@ class InvalidJSONFile(ValueError, UserSideException):
 class CIBuildEnvsEmpty(UserSideException):
     MESSAGE = (
         "Can't find Innatera build environments.\n"
-        "Please specify `--board` or path to `innaterapluginio.ini` with "
+        "Please specify `--board` or path to `conf.ini` with "
         "predefined environments using `--project-conf` option"
     )
 

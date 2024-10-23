@@ -130,7 +130,7 @@ def test_skip_dependencies(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir), "-e", "devkit", "--skip-dependencies"],
@@ -155,7 +155,7 @@ def test_baremetal_project(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir), "-e", "baremetal"],
@@ -186,7 +186,7 @@ def test_project(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir)],
@@ -244,7 +244,7 @@ def test_private_lib_deps(
 }
 """
     )
-    (project_dir / "innaterapluginio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:private]
 platform = native
@@ -295,7 +295,7 @@ def test_remove_project_unused_libdeps(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir), "-e", "baremetal"],
@@ -355,7 +355,7 @@ def test_unknown_project_dependencies(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:unknown_platform]
 platform = unknown_platform
@@ -394,7 +394,7 @@ def test_custom_project_libraries(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     spec = "bblanchon/ArduinoJson@^5"
     result = clirunner.invoke(
         package_install_cmd,
@@ -469,7 +469,7 @@ def test_custom_project_tools(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     spec = "platformio/tool-openocd @ ^2"
     result = clirunner.invoke(
         package_install_cmd,
@@ -541,7 +541,7 @@ def test_custom_project_platforms(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     spec = "atmelavr@^3.4.0"
     result = clirunner.invoke(
         package_install_cmd,

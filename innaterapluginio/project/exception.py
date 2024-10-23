@@ -19,7 +19,7 @@ class ProjectError(PlatformioException):
 
 class NotPlatformIOProjectError(ProjectError, UserSideException):
     MESSAGE = (
-        "Not a PlatformIO project. `innaterapluginio.ini` file has not been "
+        "Not a PlatformIO project. `conf.ini` file has not been "
         "found in current working directory ({0}). To initialize new project "
         "please use `platformio project init` command"
     )
@@ -34,7 +34,7 @@ class UndefinedEnvPlatformError(ProjectError, UserSideException):
 
 
 class ProjectEnvsNotAvailableError(ProjectError, UserSideException):
-    MESSAGE = "Please setup environments in `innaterapluginio.ini` file"
+    MESSAGE = "Please setup environments in `conf.ini` file"
 
 
 class UnknownEnvNamesError(ProjectError, UserSideException):

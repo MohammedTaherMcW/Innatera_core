@@ -29,7 +29,7 @@ def get_project_dir():
 def is_platformio_project(project_dir=None):
     if not project_dir:
         project_dir = get_project_dir()
-    return os.path.isfile(os.path.join(project_dir, "innaterapluginio.ini"))
+    return os.path.isfile(os.path.join(project_dir, "conf.ini"))
 
 
 def find_project_dir_above(path):

@@ -81,7 +81,7 @@
 %
 //
 // !!! WARNING !!! AUTO-GENERATED FILE!
-// PLEASE DO NOT MODIFY IT AND USE "innaterapluginio.ini":
+// PLEASE DO NOT MODIFY IT AND USE "conf.ini":
 // https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
 //
 {

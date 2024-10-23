@@ -57,7 +57,7 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
-    <None Include="innaterapluginio.ini" />
+    <None Include="conf.ini" />
   </ItemGroup>
   % for file in src_files:
   <ItemGroup>

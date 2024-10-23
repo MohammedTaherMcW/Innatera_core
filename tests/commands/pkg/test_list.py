@@ -34,7 +34,7 @@ lib_deps =
 def test_project(clirunner, validate_cliresult, isolated_pio_core, tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir)],

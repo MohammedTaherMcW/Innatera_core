@@ -737,10 +737,10 @@ def test_examples_from_dir(tmpdir_factory):
     # PlatformIO project #1
     pio_dir = examples_dir.mkdir("PlatformIO").mkdir("hello")
     pio_dir.join(".vimrc").write("")
-    pio_ini = pio_dir.join("innaterapluginio.ini")
+    pio_ini = pio_dir.join("conf.ini")
     pio_ini.write("")
     if not IS_WINDOWS:
-        pio_dir.join("innaterapluginio.ini.copy").mksymlinkto(pio_ini)
+        pio_dir.join("conf.ini.copy").mksymlinkto(pio_ini)
     pio_dir.mkdir("include").join("main.h").write("")
     pio_dir.mkdir("src").join("main.cpp").write("")
 
@@ -757,7 +757,7 @@ def test_examples_from_dir(tmpdir_factory):
 
     # PlatformIO project #2
     pio_dir = examples_dir.mkdir("world")
-    pio_dir.join("innaterapluginio.ini").write("")
+    pio_dir.join("conf.ini").write("")
     pio_dir.join("README").write("")
     pio_dir.join("extra.py").write("")
     pio_dir.mkdir("include").join("world.h").write("")
@@ -800,7 +800,7 @@ def test_examples_from_dir(tmpdir_factory):
                         "name": "PlatformIO/hello",
                         "base": os.path.join("examples", "PlatformIO", "hello"),
                         "files": [
-                            "innaterapluginio.ini",
+                            "conf.ini",
                             os.path.join("include", "main.h"),
                             os.path.join("src", "main.cpp"),
                         ],
@@ -824,7 +824,7 @@ def test_examples_from_dir(tmpdir_factory):
                         "name": "world",
                         "base": "examples/world",
                         "files": [
-                            "innaterapluginio.ini",
+                            "conf.ini",
                             os.path.join("include", "world.h"),
                             os.path.join("src", "world.c"),
                             "README",

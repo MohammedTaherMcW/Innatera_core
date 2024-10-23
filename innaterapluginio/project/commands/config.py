@@ -70,7 +70,7 @@ def lint_configuration(json_output=False):
         return click.echo(result)
     if not errors and not warnings:
         return click.secho(
-            'The "innaterapluginio.ini" configuration file is free from linting errors.',
+            'The "conf.ini" configuration file is free from linting errors.',
             fg="green",
         )
     if errors:

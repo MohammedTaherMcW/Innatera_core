@@ -21,7 +21,7 @@ from Innatera.project.exception import ProjectEnvsNotAvailableError
 
 
 def validate_pioproject(pioproject_dir):
-    pioconf_path = os.path.join(pioproject_dir, "innaterapluginio.ini")
+    pioconf_path = os.path.join(pioproject_dir, "conf.ini")
     assert os.path.isfile(pioconf_path) and os.path.getsize(pioconf_path) > 0
     assert os.path.isdir(os.path.join(pioproject_dir, "src")) and os.path.isdir(
         os.path.join(pioproject_dir, "lib")
@@ -54,7 +54,7 @@ def test_init_duplicated_boards(clirunner, validate_cliresult, tmpdir):
         )
     validate_cliresult(result)
     validate_pioproject(project_dir)
-    config = ProjectConfig(os.path.join(project_dir, "innaterapluginio.ini"))
+    config = ProjectConfig(os.path.join(project_dir, "conf.ini"))
     config.validate()
     assert set(config.sections()) == set(["env:uno"])
 
@@ -148,7 +148,7 @@ def test_init_special_board(clirunner, validate_cliresult):
         validate_cliresult(result)
         boards = json.loads(result.output)
 
-        config = ProjectConfig(os.path.join(os.getcwd(), "innaterapluginio.ini"))
+        config = ProjectConfig(os.path.join(os.getcwd(), "conf.ini"))
         config.validate()
 
         expected_result = dict(
@@ -176,7 +176,7 @@ def test_init_enable_auto_uploading(clirunner, validate_cliresult):
         )
         validate_cliresult(result)
         validate_pioproject(os.getcwd())
-        config = ProjectConfig(os.path.join(os.getcwd(), "innaterapluginio.ini"))
+        config = ProjectConfig(os.path.join(os.getcwd(), "conf.ini"))
         config.validate()
         expected_result = dict(
             targets=["upload"], platform="atmelavr", board="uno", framework=["arduino"]
@@ -201,7 +201,7 @@ def test_init_custom_framework(clirunner, validate_cliresult):
         )
         validate_cliresult(result)
         validate_pioproject(os.getcwd())
-        config = ProjectConfig(os.path.join(os.getcwd(), "innaterapluginio.ini"))
+        config = ProjectConfig(os.path.join(os.getcwd(), "conf.ini"))
         config.validate()
         expected_result = dict(platform="teensy", board="teensy31", framework=["mbed"])
         assert config.has_section("env:teensy31")

@@ -75,7 +75,7 @@ def invoke_command(ctx, cmd, **kwargs):
     multiple=True,
     help=(
         "Manage libraries for the specific project build environments "
-        "declared in `innaterapluginio.ini`"
+        "declared in `conf.ini`"
     ),
 )
 @click.pass_context
@@ -117,7 +117,7 @@ def cli(ctx, **options):
             continue
         with fs.cd(storage_dir):
             config = ProjectConfig.get_instance(
-                os.path.join(storage_dir, "innaterapluginio.ini")
+                os.path.join(storage_dir, "conf.ini")
             )
             config.validate(options["environment"], silent=in_silence)
             libdeps_dir = config.get("platformio", "libdeps_dir")
@@ -137,7 +137,7 @@ def cli(ctx, **options):
     "--save/--no-save",
     is_flag=True,
     default=True,
-    help="Save installed libraries into the `innaterapluginio.ini` dependency list"
+    help="Save installed libraries into the `conf.ini` dependency list"
     " (enabled by default)",
 )
 @click.option("-s", "--silent", is_flag=True, help="Suppress progress reporting")
@@ -174,7 +174,7 @@ def lib_install(  # pylint: disable=too-many-arguments,unused-argument
     "--save/--no-save",
     is_flag=True,
     default=True,
-    help="Remove libraries from the `innaterapluginio.ini` dependency list and save changes"
+    help="Remove libraries from the `conf.ini` dependency list and save changes"
     " (enabled by default)",
 )
 @click.option("-s", "--silent", is_flag=True, help="Suppress progress reporting")

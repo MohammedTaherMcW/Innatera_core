@@ -37,12 +37,12 @@ lib_deps = milesburton/DallasTemperature@^3.9.0
 def test_project(clirunner, validate_cliresult, isolated_pio_core, tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     result = clirunner.invoke(package_install_cmd, ["-d", str(project_dir)])
     validate_cliresult(result)
 
     # overwrite config
-    (project_dir / "innaterapluginio.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
     result = clirunner.invoke(package_outdated_cmd, ["-d", str(project_dir)])
     validate_cliresult(result)
 

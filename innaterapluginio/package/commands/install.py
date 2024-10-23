@@ -47,7 +47,7 @@ from innaterapluginio.test.runners.factory import TestRunnerFactory
 @click.option(
     "--no-save",
     is_flag=True,
-    help="Prevent saving specified packages to `innaterapluginio.ini`",
+    help="Prevent saving specified packages to `conf.ini`",
 )
 @click.option("--skip-dependencies", is_flag=True, help="Skip package dependencies")
 @click.option("-g", "--global", is_flag=True, help="Install package globally")

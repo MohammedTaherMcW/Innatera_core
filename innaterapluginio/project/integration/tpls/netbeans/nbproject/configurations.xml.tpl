@@ -2,7 +2,7 @@
 <configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
-      <in>innaterapluginio.ini</in>
+      <in>conf.ini</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -66,7 +66,7 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
-      <item path="innaterapluginio.ini" ex="false" tool="3" flavor2="0">
+      <item path="conf.ini" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
