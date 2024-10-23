@@ -26,7 +26,7 @@
 %  debug = predebug.copy()
 %  debug["name"] = "Innatera Debug"
 %  debug["preLaunchTask"] = {
-%    "type": "PlatformIO",
+%    "type": "innaterapluginio",
 %    "task": ("Pre-Debug (%s)" % env_name) if len(config.envs()) > 1 and forced_env_name else "Pre-Debug",
 %  }
 %  noloading = predebug.copy()
@@ -101,7 +101,5 @@
 //
 // Innatera Debugger
 //
-// Documentation: https://docs.platformio.org/en/latest/plus/debugging.html
-// Configuration: https://docs.platformio.org/en/latest/projectconf/sections/env/options/debug/index.html
 
 {{ json.dumps(get_launch_configuration(), indent=4, ensure_ascii=False) }}
