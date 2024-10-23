@@ -62,7 +62,7 @@ async def protected_page(_):
 def run_server(host, port, no_open, shutdown_timeout, home_url):
     contrib_dir = get_core_package_dir("contrib-piohome")
     if not os.path.isdir(contrib_dir):
-        raise PlatformioException("Invalid path to PIO Home Contrib")
+        raise PlatformioException("Invalid path to Innatera Home Contrib")
 
     ws_rpc_factory = WebSocketJSONRPCServerFactory(shutdown_timeout)
     ws_rpc_factory.add_object_handler(AccountRPC(), namespace="account")
@@ -90,7 +90,7 @@ def run_server(host, port, no_open, shutdown_timeout, home_url):
             routes=routes,
             on_startup=[
                 lambda: click.echo(
-                    "PIO Home has been started. Press Ctrl+C to shutdown."
+                    "Innatera Home has been started. Press Ctrl+C to shutdown."
                 ),
                 lambda: None if no_open else click.launch(home_url),
             ],
