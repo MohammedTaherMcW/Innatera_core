@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,16 +14,16 @@
 
 import os
 
-from platformio import fs
-from platformio.dependencies import get_core_dependencies
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.commands.update import package_update_cmd
-from platformio.package.exception import UnknownPackageError
-from platformio.package.manager.library import LibraryPackageManager
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.package.manager.tool import ToolPackageManager
-from platformio.package.meta import PackageSpec
-from platformio.project.config import ProjectConfig
+from Innatera import fs
+from Innatera.dependencies import get_core_dependencies
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.commands.update import package_update_cmd
+from Innatera.package.exception import UnknownPackageError
+from Innatera.package.manager.library import LibraryPackageManager
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.package.manager.tool import ToolPackageManager
+from Innatera.package.meta import PackageSpec
+from Innatera.project.config import ProjectConfig
 
 DALLASTEMPERATURE_LATEST_VERSION = "3.11.0"
 
@@ -153,7 +151,7 @@ def test_project(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir)],
@@ -183,7 +181,7 @@ def test_project(
         ]
 
         # update packages
-        (project_dir / "platformio.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
+        (project_dir / "conf.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
         result = clirunner.invoke(package_update_cmd)
         validate_cliresult(result)
         config = ProjectConfig()
@@ -229,7 +227,7 @@ def test_custom_project_libraries(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     spec = "milesburton/DallasTemperature@^3.8.0"
     result = clirunner.invoke(
         package_install_cmd,
@@ -300,7 +298,7 @@ def test_custom_project_tools(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     spec = "toolchain-atmelavr@~1.50400.0"
     result = clirunner.invoke(
         package_install_cmd,
@@ -347,7 +345,7 @@ def test_custom_project_platforms(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     spec = "atmelavr@^2"
     result = clirunner.invoke(
         package_install_cmd,

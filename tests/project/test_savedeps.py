@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,9 +10,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from platformio.package.meta import PackageSpec
-from platformio.project.config import ProjectConfig
-from platformio.project.savedeps import save_project_dependencies
+from Innatera.package.meta import PackageSpec
+from Innatera.project.config import ProjectConfig
+from Innatera.project.savedeps import save_project_dependencies
 
 PROJECT_CONFIG_TPL = """
 [env]
@@ -47,7 +45,7 @@ platform_packages =
 def test_save_libraries(tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     specs = [
         PackageSpec("milesburton/DallasTemperature@^3.9"),
         PackageSpec("adafruit/Adafruit GPS Library@^1.6.0"),
@@ -58,7 +56,7 @@ def test_save_libraries(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="lib_deps", action="add", environments=["debug"]
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "lib_deps") == [
         "SPI",
         "bblanchon/ArduinoJson",
@@ -73,7 +71,7 @@ def test_save_libraries(tmp_path):
 
     # add to the the all environments
     save_project_dependencies(str(project_dir), specs, scope="lib_deps", action="add")
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "lib_deps") == [
         "SPI",
         "bblanchon/ArduinoJson",
@@ -100,7 +98,7 @@ def test_save_libraries(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "lib_deps") == [
         "adafruit/Adafruit GPS Library@^1.6.0",
         "https://github.com/nanopb/nanopb.git",
@@ -113,7 +111,7 @@ def test_save_libraries(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "lib_deps") == [
         "https://github.com/nanopb/nanopb.git",
     ]
@@ -122,7 +120,7 @@ def test_save_libraries(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="lib_deps", action="remove"
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "lib_deps") == [
         "SPI",
         "bblanchon/ArduinoJson",
@@ -134,7 +132,7 @@ def test_save_libraries(tmp_path):
 def test_save_tools(tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     specs = [
         PackageSpec("platformio/framework-espidf@^2"),
         PackageSpec("platformio/tool-esptoolpy"),
@@ -148,7 +146,7 @@ def test_save_tools(tmp_path):
         action="add",
         environments=["debug"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
         "platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git",
@@ -166,7 +164,7 @@ def test_save_tools(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="platform_packages", action="add"
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
         "platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git",
@@ -190,7 +188,7 @@ def test_save_tools(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "platform_packages") == [
         "platformio/tool-esptoolpy",
     ]
@@ -202,7 +200,7 @@ def test_save_tools(tmp_path):
         action="remove",
         environments=["release"],
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:release", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
     ]
@@ -211,7 +209,7 @@ def test_save_tools(tmp_path):
     save_project_dependencies(
         str(project_dir), specs, scope="platform_packages", action="remove"
     )
-    config = ProjectConfig.get_instance(str(project_dir / "platformio.ini"))
+    config = ProjectConfig.get_instance(str(project_dir / "conf.ini"))
     assert config.get("env:debug", "platform_packages") == [
         "platformio/tool-jlink@^1.75001.0",
         "platformio/framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32.git",

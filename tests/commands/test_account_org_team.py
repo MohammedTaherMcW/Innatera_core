@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -21,9 +19,9 @@ import random
 import pytest
 import requests
 
-from platformio.account.cli import cli as cmd_account
-from platformio.account.org.cli import cli as cmd_org
-from platformio.account.team.cli import cli as cmd_team
+from Innatera.account.cli import cli as cmd_account
+from Innatera.account.org.cli import cli as cmd_org
+from Innatera.account.team.cli import cli as cmd_team
 
 pytestmark = pytest.mark.skipif(
     not all(

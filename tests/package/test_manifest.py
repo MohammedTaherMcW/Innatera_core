@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,9 +17,9 @@ import tarfile
 import jsondiff
 import pytest
 
-from platformio.compat import IS_WINDOWS
-from platformio.package.manifest import parser
-from platformio.package.manifest.schema import ManifestSchema, ManifestValidationError
+from Innatera.compat import IS_WINDOWS
+from Innatera.package.manifest import parser
+from Innatera.package.manifest.schema import ManifestSchema, ManifestValidationError
 
 
 def test_library_json_parser():
@@ -739,10 +737,10 @@ def test_examples_from_dir(tmpdir_factory):
     # PlatformIO project #1
     pio_dir = examples_dir.mkdir("PlatformIO").mkdir("hello")
     pio_dir.join(".vimrc").write("")
-    pio_ini = pio_dir.join("platformio.ini")
+    pio_ini = pio_dir.join("conf.ini")
     pio_ini.write("")
     if not IS_WINDOWS:
-        pio_dir.join("platformio.ini.copy").mksymlinkto(pio_ini)
+        pio_dir.join("conf.ini.copy").mksymlinkto(pio_ini)
     pio_dir.mkdir("include").join("main.h").write("")
     pio_dir.mkdir("src").join("main.cpp").write("")
 
@@ -759,7 +757,7 @@ def test_examples_from_dir(tmpdir_factory):
 
     # PlatformIO project #2
     pio_dir = examples_dir.mkdir("world")
-    pio_dir.join("platformio.ini").write("")
+    pio_dir.join("conf.ini").write("")
     pio_dir.join("README").write("")
     pio_dir.join("extra.py").write("")
     pio_dir.mkdir("include").join("world.h").write("")
@@ -802,7 +800,7 @@ def test_examples_from_dir(tmpdir_factory):
                         "name": "PlatformIO/hello",
                         "base": os.path.join("examples", "PlatformIO", "hello"),
                         "files": [
-                            "platformio.ini",
+                            "conf.ini",
                             os.path.join("include", "main.h"),
                             os.path.join("src", "main.cpp"),
                         ],
@@ -826,7 +824,7 @@ def test_examples_from_dir(tmpdir_factory):
                         "name": "world",
                         "base": "examples/world",
                         "files": [
-                            "platformio.ini",
+                            "conf.ini",
                             os.path.join("include", "world.h"),
                             os.path.join("src", "world.c"),
                             "README",

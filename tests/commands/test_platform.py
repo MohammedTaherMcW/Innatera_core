@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,9 +15,9 @@
 import json
 import os
 
-from platformio.commands import platform as cli_platform
-from platformio.package.exception import UnknownPackageError
-from platformio.util import strip_ansi_codes
+from Innatera.commands import platform as cli_platform
+from Innatera.package.exception import UnknownPackageError
+from Innatera.util import strip_ansi_codes
 
 
 def test_search_json_output(clirunner, validate_cliresult, isolated_pio_core):

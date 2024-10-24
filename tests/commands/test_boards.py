@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,8 +12,8 @@
 
 import json
 
-from platformio.commands.boards import cli as cmd_boards
-from platformio.commands.platform import platform_search as cmd_platform_search
+from Innatera.commands.boards import cli as cmd_boards
+from Innatera.commands.platform import platform_search as cmd_platform_search
 
 
 def test_board_json_output(clirunner, validate_cliresult):

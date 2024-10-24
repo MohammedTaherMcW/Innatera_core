@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,11 +12,11 @@
 
 import json
 
-from platformio.project.commands.metadata import project_metadata_cmd
+from Innatera.project.commands.metadata import project_metadata_cmd
 
 
 def test_metadata_dump(clirunner, validate_cliresult, tmpdir):
-    tmpdir.join("platformio.ini").write(
+    tmpdir.join("conf.ini").write(
         """
 [env:native]
 platform = native

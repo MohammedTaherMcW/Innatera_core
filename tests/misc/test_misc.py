@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,8 +15,8 @@
 import pytest
 import requests
 
-from platformio import __check_internet_hosts__, http, proc
-from platformio.registry.client import RegistryClient
+from Innatera import __check_internet_hosts__, http, proc
+from Innatera.registry.client import RegistryClient
 
 
 def test_platformio_cli():

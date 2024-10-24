@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -20,9 +18,9 @@ from pathlib import Path
 
 import pytest
 
-from platformio import proc
-from platformio.fs import load_json
-from platformio.test.cli import cli as pio_test_cmd
+from Innatera import proc
+from Innatera.fs import load_json
+from Innatera.test.cli import cli as pio_test_cmd
 
 
 def test_calculator_example(tmp_path: Path):
@@ -98,7 +96,7 @@ def test_list_tests(clirunner, validate_cliresult, tmp_path: Path):
 def test_group_and_custom_runner(clirunner, validate_cliresult, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native
@@ -204,7 +202,7 @@ int main() {
 
 def test_crashed_program(clirunner, tmpdir):
     project_dir = tmpdir.mkdir("project")
-    project_dir.join("platformio.ini").write(
+    project_dir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -252,7 +250,7 @@ int main(int argc, char *argv[]) {
 def test_custom_testing_command(clirunner, validate_cliresult, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:uno]
 platform = atmelavr
@@ -311,7 +309,7 @@ void loop() {
 
 def test_unity_setup_teardown(clirunner, validate_cliresult, tmpdir):
     project_dir = tmpdir.mkdir("project")
-    project_dir.join("platformio.ini").write(
+    project_dir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -357,7 +355,7 @@ int main() {
 def test_unity_custom_config(clirunner, validate_cliresult, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native
@@ -409,7 +407,7 @@ int main() {
 
 def test_legacy_unity_custom_transport(clirunner, validate_cliresult, tmpdir):
     project_dir = tmpdir.mkdir("project")
-    project_dir.join("platformio.ini").write(
+    project_dir.join("conf.ini").write(
         """
 [env:embedded]
 platform = ststm32
@@ -478,7 +476,7 @@ void unittest_uart_end(){}
 def test_doctest_framework(clirunner, tmp_path: Path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native

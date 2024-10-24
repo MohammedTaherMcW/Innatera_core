@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,8 +12,8 @@
 
 # pylint: disable=unused-argument
 
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.commands.list import package_list_cmd
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.commands.list import package_list_cmd
 
 PROJECT_CONFIG_TPL = """
 [env]
@@ -36,7 +34,7 @@ lib_deps =
 def test_project(clirunner, validate_cliresult, isolated_pio_core, tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir)],

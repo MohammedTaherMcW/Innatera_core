@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,10 +15,10 @@
 import json
 import re
 
-from platformio.cli import PlatformioCLI
-from platformio.commands.lib import cli as cmd_lib
-from platformio.package.exception import UnknownPackageError
-from platformio.util import strip_ansi_codes
+from Innatera.cli import PlatformioCLI
+from Innatera.commands.lib import cli as cmd_lib
+from Innatera.package.exception import UnknownPackageError
+from Innatera.util import strip_ansi_codes
 
 PlatformioCLI.leftover_args = ["--json-output"]  # hook for click
 ARDUINO_JSON_VERSION = "6.21.5"

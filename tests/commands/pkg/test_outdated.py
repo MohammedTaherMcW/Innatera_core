@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,8 +14,8 @@
 
 import re
 
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.commands.outdated import package_outdated_cmd
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.commands.outdated import package_outdated_cmd
 
 PROJECT_OUTDATED_CONFIG_TPL = """
 [env:devkit]
@@ -39,12 +37,12 @@ lib_deps = milesburton/DallasTemperature@^3.9.0
 def test_project(clirunner, validate_cliresult, isolated_pio_core, tmp_path):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_OUTDATED_CONFIG_TPL)
     result = clirunner.invoke(package_install_cmd, ["-d", str(project_dir)])
     validate_cliresult(result)
 
     # overwrite config
-    (project_dir / "platformio.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_UPDATED_CONFIG_TPL)
     result = clirunner.invoke(package_outdated_cmd, ["-d", str(project_dir)])
     validate_cliresult(result)
 

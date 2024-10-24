@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -21,9 +19,9 @@ import time
 import pytest
 from click.testing import CliRunner
 
-from platformio import http
-from platformio.package.meta import PackageSpec, PackageType
-from platformio.registry.client import RegistryClient
+from Innatera import http
+from Innatera.package.meta import PackageSpec, PackageType
+from Innatera.registry.client import RegistryClient
 
 
 def pytest_configure(config):
@@ -67,7 +65,7 @@ def clirunner(request, tmpdir_factory):
 
 
 def _isolated_pio_core(request, tmpdir_factory):
-    core_dir = tmpdir_factory.mktemp(".platformio")
+    core_dir = tmpdir_factory.mktemp(".innatera")
     os.environ["PLATFORMIO_CORE_DIR"] = str(core_dir)
 
     def fin():

@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,8 +12,8 @@
 
 from os.path import isfile, join
 
-from platformio.commands.ci import cli as cmd_ci
-from platformio.package.commands.install import package_install_cmd
+from Innatera.commands.ci import cli as cmd_ci
+from Innatera.package.commands.install import package_install_cmd
 
 
 def test_ci_empty(clirunner):
@@ -51,7 +49,7 @@ def test_ci_build_dir(clirunner, tmpdir_factory, validate_cliresult):
         ],
     )
     validate_cliresult(result)
-    assert not isfile(join(build_dir, "platformio.ini"))
+    assert not isfile(join(build_dir, "conf.ini"))
 
 
 def test_ci_keep_build_dir(clirunner, tmpdir_factory, validate_cliresult):
@@ -68,7 +66,7 @@ def test_ci_keep_build_dir(clirunner, tmpdir_factory, validate_cliresult):
         ],
     )
     validate_cliresult(result)
-    assert isfile(join(build_dir, "platformio.ini"))
+    assert isfile(join(build_dir, "conf.ini"))
 
     # 2nd attempt
     result = clirunner.invoke(
@@ -159,7 +157,7 @@ def test_ci_project_conf(clirunner, validate_cliresult):
         [
             join(project_dir, "src", "main.cpp"),
             "--project-conf",
-            join(project_dir, "platformio.ini"),
+            join(project_dir, "conf.ini"),
         ],
     )
     validate_cliresult(result)

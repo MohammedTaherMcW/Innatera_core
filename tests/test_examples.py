@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -18,11 +16,11 @@ from glob import glob
 
 import pytest
 
-from platformio import fs, proc
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.platform.factory import PlatformFactory
-from platformio.project.config import ProjectConfig
-from platformio.project.exception import ProjectError
+from Innatera import fs, proc
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.platform.factory import PlatformFactory
+from Innatera.project.config import ProjectConfig
+from Innatera.project.exception import ProjectError
 
 
 def pytest_generate_tests(metafunc):
@@ -46,7 +44,7 @@ def pytest_generate_tests(metafunc):
     for examples_dir in examples_dirs:
         candidates = {}
         for root, _, files in os.walk(examples_dir):
-            if "platformio.ini" not in files or ".skiptest" in files:
+            if "conf.ini" not in files or ".skiptest" in files:
                 continue
             if "mbed-legacy-examples" in root:
                 continue

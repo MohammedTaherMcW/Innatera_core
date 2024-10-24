@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -18,10 +16,10 @@ import tarfile
 
 import pytest
 
-from platformio import fs
-from platformio.compat import IS_WINDOWS
-from platformio.package.exception import UnknownManifestError
-from platformio.package.pack import PackagePacker
+from Innatera import fs
+from Innatera.compat import IS_WINDOWS
+from Innatera.package.exception import UnknownManifestError
+from Innatera.package.pack import PackagePacker
 
 
 def test_base(tmpdir_factory):

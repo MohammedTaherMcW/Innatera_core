@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,7 +12,7 @@
 
 from pathlib import Path
 
-from platformio.run.cli import cli as cmd_run
+from Innatera.run.cli import cli as cmd_run
 
 
 def test_generic_build(clirunner, validate_cliresult, tmpdir):
@@ -32,7 +30,7 @@ def test_generic_build(clirunner, validate_cliresult, tmpdir):
         ),
     ]
 
-    tmpdir.join("platformio.ini").write(
+    tmpdir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -160,7 +158,7 @@ void dummy(void ) {};
 
 
 def test_build_unflags(clirunner, validate_cliresult, tmpdir):
-    tmpdir.join("platformio.ini").write(
+    tmpdir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -224,7 +222,7 @@ int main() {
 
 
 def test_debug_default_build_flags(clirunner, validate_cliresult, tmpdir):
-    tmpdir.join("platformio.ini").write(
+    tmpdir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -256,7 +254,7 @@ int main() {
 def test_debug_custom_build_flags(clirunner, validate_cliresult, tmpdir):
     custom_debug_build_flags = ("-O3", "-g3", "-ggdb3")
 
-    tmpdir.join("platformio.ini").write(
+    tmpdir.join("conf.ini").write(
         """
 [env:native]
 platform = native
@@ -319,7 +317,7 @@ int main() {
 }
 """
     )
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native
@@ -346,7 +344,7 @@ int main(void) {
 }
 """
     )
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native
@@ -436,7 +434,7 @@ int main() {
 }
 """
     )
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:native]
 platform = native

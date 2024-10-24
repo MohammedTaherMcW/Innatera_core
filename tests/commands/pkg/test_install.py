@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -18,14 +16,14 @@ import os
 
 import pytest
 
-from platformio import fs
-from platformio.dependencies import get_core_dependencies
-from platformio.package.commands.install import package_install_cmd
-from platformio.package.manager.library import LibraryPackageManager
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.package.manager.tool import ToolPackageManager
-from platformio.package.meta import PackageSpec
-from platformio.project.config import ProjectConfig
+from Innatera import fs
+from Innatera.dependencies import get_core_dependencies
+from Innatera.package.commands.install import package_install_cmd
+from Innatera.package.manager.library import LibraryPackageManager
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.package.manager.tool import ToolPackageManager
+from Innatera.package.meta import PackageSpec
+from Innatera.project.config import ProjectConfig
 
 PROJECT_CONFIG_TPL = """
 [env]
@@ -132,7 +130,7 @@ def test_skip_dependencies(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir), "-e", "devkit", "--skip-dependencies"],
@@ -157,7 +155,7 @@ def test_baremetal_project(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir), "-e", "baremetal"],
@@ -188,7 +186,7 @@ def test_project(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir)],
@@ -246,7 +244,7 @@ def test_private_lib_deps(
 }
 """
     )
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:private]
 platform = native
@@ -297,7 +295,7 @@ def test_remove_project_unused_libdeps(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     result = clirunner.invoke(
         package_install_cmd,
         ["-d", str(project_dir), "-e", "baremetal"],
@@ -357,7 +355,7 @@ def test_unknown_project_dependencies(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(
+    (project_dir / "conf.ini").write_text(
         """
 [env:unknown_platform]
 platform = unknown_platform
@@ -396,7 +394,7 @@ def test_custom_project_libraries(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     spec = "bblanchon/ArduinoJson@^5"
     result = clirunner.invoke(
         package_install_cmd,
@@ -471,7 +469,7 @@ def test_custom_project_tools(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     spec = "platformio/tool-openocd @ ^2"
     result = clirunner.invoke(
         package_install_cmd,
@@ -543,7 +541,7 @@ def test_custom_project_platforms(
 ):
     project_dir = tmp_path / "project"
     project_dir.mkdir()
-    (project_dir / "platformio.ini").write_text(PROJECT_CONFIG_TPL)
+    (project_dir / "conf.ini").write_text(PROJECT_CONFIG_TPL)
     spec = "atmelavr@^3.4.0"
     result = clirunner.invoke(
         package_install_cmd,

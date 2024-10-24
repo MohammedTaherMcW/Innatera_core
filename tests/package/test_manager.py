@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -23,16 +21,16 @@ from random import random
 import pytest
 import semantic_version
 
-from platformio import fs, util
-from platformio.package.exception import (
+from Innatera import fs, util
+from Innatera.package.exception import (
     MissingPackageManifestError,
     UnknownPackageError,
 )
-from platformio.package.manager.library import LibraryPackageManager
-from platformio.package.manager.platform import PlatformPackageManager
-from platformio.package.manager.tool import ToolPackageManager
-from platformio.package.meta import PackageSpec
-from platformio.package.pack import PackagePacker
+from Innatera.package.manager.library import LibraryPackageManager
+from Innatera.package.manager.platform import PlatformPackageManager
+from Innatera.package.manager.tool import ToolPackageManager
+from Innatera.package.meta import PackageSpec
+from Innatera.package.pack import PackagePacker
 
 
 def test_download(isolated_pio_core):

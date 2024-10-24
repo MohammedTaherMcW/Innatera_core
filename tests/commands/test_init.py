@@ -1,5 +1,3 @@
-# Copyright (c) 2014-present PlatformIO <contact@platformio.org>
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,15 +13,15 @@
 import json
 import os
 
-from platformio import fs
-from platformio.commands.boards import cli as cmd_boards
-from platformio.project.commands.init import project_init_cmd
-from platformio.project.config import ProjectConfig
-from platformio.project.exception import ProjectEnvsNotAvailableError
+from Innatera import fs
+from Innatera.commands.boards import cli as cmd_boards
+from Innatera.project.commands.init import project_init_cmd
+from Innatera.project.config import ProjectConfig
+from Innatera.project.exception import ProjectEnvsNotAvailableError
 
 
 def validate_pioproject(pioproject_dir):
-    pioconf_path = os.path.join(pioproject_dir, "platformio.ini")
+    pioconf_path = os.path.join(pioproject_dir, "conf.ini")
     assert os.path.isfile(pioconf_path) and os.path.getsize(pioconf_path) > 0
     assert os.path.isdir(os.path.join(pioproject_dir, "src")) and os.path.isdir(
         os.path.join(pioproject_dir, "lib")
@@ -56,7 +54,7 @@ def test_init_duplicated_boards(clirunner, validate_cliresult, tmpdir):
         )
     validate_cliresult(result)
     validate_pioproject(project_dir)
-    config = ProjectConfig(os.path.join(project_dir, "platformio.ini"))
+    config = ProjectConfig(os.path.join(project_dir, "conf.ini"))
     config.validate()
     assert set(config.sections()) == set(["env:uno"])
 
@@ -150,7 +148,7 @@ def test_init_special_board(clirunner, validate_cliresult):
         validate_cliresult(result)
         boards = json.loads(result.output)
 
-        config = ProjectConfig(os.path.join(os.getcwd(), "platformio.ini"))
+        config = ProjectConfig(os.path.join(os.getcwd(), "conf.ini"))
         config.validate()
 
         expected_result = dict(
@@ -178,7 +176,7 @@ def test_init_enable_auto_uploading(clirunner, validate_cliresult):
         )
         validate_cliresult(result)
         validate_pioproject(os.getcwd())
-        config = ProjectConfig(os.path.join(os.getcwd(), "platformio.ini"))
+        config = ProjectConfig(os.path.join(os.getcwd(), "conf.ini"))
         config.validate()
         expected_result = dict(
             targets=["upload"], platform="atmelavr", board="uno", framework=["arduino"]
@@ -203,7 +201,7 @@ def test_init_custom_framework(clirunner, validate_cliresult):
         )
         validate_cliresult(result)
         validate_pioproject(os.getcwd())
-        config = ProjectConfig(os.path.join(os.getcwd(), "platformio.ini"))
+        config = ProjectConfig(os.path.join(os.getcwd(), "conf.ini"))
         config.validate()
         expected_result = dict(platform="teensy", board="teensy31", framework=["mbed"])
         assert config.has_section("env:teensy31")
