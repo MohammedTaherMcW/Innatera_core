@@ -27,7 +27,7 @@
 %  debug["name"] = "Innatera Debug"
 %  debug["preLaunchTask"] = {
 %    "type": "innatera",
-%    "task": ("Flash (%s)" % env_name) if len(config.envs()) > 1 and forced_env_name else "Pre-Debug",
+%    "task": ("Flash (innatera_board)"),
 %  }
 %  noloading = predebug.copy()
 %  noloading["name"] = "Innatera Debug (without uploading)"
