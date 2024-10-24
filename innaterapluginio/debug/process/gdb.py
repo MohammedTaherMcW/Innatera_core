@@ -23,7 +23,7 @@ from innaterapluginio.debug.process.client import DebugClientProcess
 
 class GDBClientProcess(DebugClientProcess):
     PIO_SRC_NAME = ".pioinit"
-    INIT_COMPLETED_BANNER = "PlatformIO: Initialization completed"
+    INIT_COMPLETED_BANNER = "Innatera SNP GDB: Initialization completed"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

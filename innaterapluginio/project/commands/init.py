@@ -389,7 +389,7 @@ def init_makefile_script(make_dir):
 # Makefile
 
 # Define the build directory
-BUILD_DIR ?= $(CURDIR)/.pio/build/innatera_board
+BUILD_DIR ?= $(CURDIR)/.snp/build/innatera_board
 
 # Spine directory
 export SPINE_DIR := $(HOME)/.innatera/packages/framework-innatera
