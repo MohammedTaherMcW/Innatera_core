@@ -21,7 +21,7 @@ from innaterapluginio.device.monitor.filters.base import register_filters
 from innaterapluginio.device.monitor.terminal import get_available_filters, start_terminal
 from innaterapluginio.platform.factory import PlatformFactory
 from innaterapluginio.project.config import ProjectConfig
-from innaterapluginio.project.exception import NotPlatformIOProjectError
+from innaterapluginio.project.exception import NotInnateraProjectError
 from innaterapluginio.project.options import ProjectOptions
 
 
@@ -117,7 +117,7 @@ def device_monitor_cmd(**options):
             project_options = get_project_options(options["environment"])
             if "platform" in project_options:
                 platform = PlatformFactory.new(project_options["platform"])
-        except NotPlatformIOProjectError:
+        except NotInnateraProjectError:
             pass
 
         options = apply_project_monitor_options(options, project_options)

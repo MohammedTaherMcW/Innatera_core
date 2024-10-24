@@ -18,7 +18,7 @@ from twisted.spread import pb  # pylint: disable=import-error
 from innaterapluginio import proc
 from innaterapluginio.device.list.util import list_serial_ports
 from innaterapluginio.project.config import ProjectConfig
-from innaterapluginio.project.exception import NotPlatformIOProjectError
+from innaterapluginio.project.exception import NotInnateraProjectError
 from innaterapluginio.remote.ac.process import ProcessAsyncCmd
 from innaterapluginio.remote.ac.psync import ProjectSyncAsyncCmd
 from innaterapluginio.remote.ac.serial import SerialPortAsyncCmd
@@ -162,7 +162,7 @@ class RemoteAgentService(RemoteClientBase):
                 origin_pio_ini,
                 (os.path.getatime(back_pio_ini), os.path.getmtime(back_pio_ini)),
             )
-        except NotPlatformIOProjectError as exc:
+        except NotInnateraProjectError as exc:
             raise pb.Error(str(exc)) from exc
 
         cmd_args = ["platformio", "--force", command, "-d", project_dir]

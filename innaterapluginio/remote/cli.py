@@ -30,7 +30,7 @@ from innaterapluginio.device.monitor.command import (
     get_project_options,
 )
 from innaterapluginio.package.manager.core import get_core_package_dir
-from innaterapluginio.project.exception import NotPlatformIOProjectError
+from innaterapluginio.project.exception import NotInnateraProjectError
 from innaterapluginio.project.options import ProjectOptions
 from innaterapluginio.run.cli import cli as cmd_run
 from innaterapluginio.test.cli import cli as test_cmd
@@ -357,7 +357,7 @@ def device_monitor(ctx, agents, **kwargs):
     try:
         with fs.cd(kwargs["project_dir"]):
             project_options = get_project_options(kwargs["environment"])
-    except NotPlatformIOProjectError:
+    except NotInnateraProjectError:
         pass
 
     kwargs = apply_project_monitor_options(kwargs, project_options)

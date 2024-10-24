@@ -17,11 +17,11 @@ class ProjectError(PlatformioException):
     pass
 
 
-class NotPlatformIOProjectError(ProjectError, UserSideException):
+class NotInnateraProjectError(ProjectError, UserSideException):
     MESSAGE = (
-        "Not a PlatformIO project. `conf.ini` file has not been "
+        "Not a Innatera project. `conf.ini` file has not been "
         "found in current working directory ({0}). To initialize new project "
-        "please use `platformio project init` command"
+        "please use `innaterapluginio project init` command"
     )
 
 

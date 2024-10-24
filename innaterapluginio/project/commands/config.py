@@ -17,7 +17,7 @@ from tabulate import tabulate
 
 from innaterapluginio import fs
 from innaterapluginio.project.config import ProjectConfig
-from innaterapluginio.project.exception import NotPlatformIOProjectError
+from innaterapluginio.project.exception import NotInnateraProjectError
 from innaterapluginio.project.helpers import is_platformio_project
 
 
@@ -32,7 +32,7 @@ from innaterapluginio.project.helpers import is_platformio_project
 @click.option("--json-output", is_flag=True)
 def project_config_cmd(project_dir, lint, json_output):
     if not is_platformio_project(project_dir):
-        raise NotPlatformIOProjectError(project_dir)
+        raise NotInnateraProjectError(project_dir)
     with fs.cd(project_dir):
         if lint:
             return lint_configuration(json_output)
