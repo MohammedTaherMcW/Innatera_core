@@ -70,7 +70,7 @@ class PackageManagerInstallMixin:
 
         if(spec.name == "innatera" or spec.name =="toolchain-spine" or spec.name == "framework-innatera" or spec.name == "contrib-piocustom"):
             spec.uri = (
-                "https://github.com/MohammedTaherMcW/framework_innatera/raw/Innatera-refactor/"
+                "https://github.com/MohammedTaherMcW/framework_innatera/raw/master/"
                 + spec.name
                 + ".tar.xz"
             )
